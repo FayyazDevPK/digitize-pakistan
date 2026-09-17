@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.kyc',
     'corsheaders',
+    'apps.content',
 ]
 
 MIDDLEWARE = [
