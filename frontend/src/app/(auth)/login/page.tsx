@@ -1,21 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { login } from "@/lib/api-client";
+import { storeTokens } from "@/lib/auth";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ access: string; refresh: string } | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setResult(null);
     try {
       const data = await login(username, password);
-      setResult(data);
+      storeTokens(data.access, data.refresh);
+      router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
@@ -38,14 +40,7 @@ export default function LoginPage() {
         />
         <button type="submit">Log in</button>
       </form>
-
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {result && (
-        <div style={{ marginTop: 16, wordBreak: "break-all" }}>
-          <p>Logged in. Access token (first 40 chars):</p>
-          <code>{result.access.slice(0, 40)}...</code>
-        </div>
-      )}
     </div>
   );
 }
