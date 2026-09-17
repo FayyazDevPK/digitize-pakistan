@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.kyc',
     'corsheaders',
     'apps.content',
+    'apps.learning_paths',
 ]
 
 MIDDLEWARE = [
