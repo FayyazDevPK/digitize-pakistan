@@ -4,10 +4,25 @@ from decimal import Decimal
 from django.core.cache import cache
 from django.db.models import Sum
 
-from .models import RewardRule, RewardsLedgerEntry
+from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
+
+POINTS_TO_RS = Decimal("0.25")  # 1,000 pts = Rs 250
+MIN_WITHDRAWAL_RS = Decimal("2000")
 
 
 class RewardCapExceeded(Exception):
+    pass
+
+
+class KYCNotApproved(Exception):
+    pass
+
+
+class InsufficientBalance(Exception):
+    pass
+
+
+class BelowMinimumWithdrawal(Exception):
     pass
 
 
@@ -55,3 +70,50 @@ def award_points(user, reward_type, source_content=None):
     cache.set(cache_key, str(new_today), timeout=90000)
 
     return entry
+
+
+def request_withdrawal(user, points, method, account_ref):
+    """
+    Creates a withdrawal request for `points`, converted to Rs at the
+    fixed POINTS_TO_RS rate.
+
+    HARD SECURITY BOUNDARY: no withdrawal is created unless the user's
+    KYC status is APPROVED. This check lives here, in the service layer,
+    not in the view or the frontend -- this is the one place that must
+    never be bypassed.
+    """
+    if user.kyc_status != "APPROVED":
+        raise KYCNotApproved("KYC approval is required before withdrawal.")
+
+    points = Decimal(points)
+    amount_rs = points * POINTS_TO_RS
+
+    if amount_rs < MIN_WITHDRAWAL_RS:
+        raise BelowMinimumWithdrawal(
+            f"Minimum withdrawal is Rs {MIN_WITHDRAWAL_RS} ({MIN_WITHDRAWAL_RS / POINTS_TO_RS:.0f} pts)."
+        )
+
+    balance = get_balance(user)
+    if points > balance:
+        raise InsufficientBalance(f"Insufficient balance: have {balance}, requested {points}.")
+
+    new_balance = balance - points
+
+    RewardsLedgerEntry.objects.create(
+        user=user,
+        type="WITHDRAWAL",
+        amount=-points,
+        balance_after=new_balance,
+        status="CONFIRMED",
+    )
+
+    withdrawal = WithdrawalRequest.objects.create(
+        user=user,
+        points_requested=points,
+        amount_rs=amount_rs,
+        method=method,
+        account_ref=account_ref,
+        status="REQUESTED",
+    )
+
+    return withdrawal

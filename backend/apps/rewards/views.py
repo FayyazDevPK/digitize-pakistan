@@ -4,9 +4,18 @@ from rest_framework.views import APIView
 
 from apps.content.models import Content
 
-from .models import RewardsLedgerEntry
-from .serializers import RewardsLedgerEntrySerializer
-from .services import get_balance
+from .models import RewardsLedgerEntry, WithdrawalRequest
+from .serializers import (
+    RewardsLedgerEntrySerializer,
+    WithdrawalRequestSerializer,
+)
+from .services import (
+    BelowMinimumWithdrawal,
+    InsufficientBalance,
+    KYCNotApproved,
+    get_balance,
+    request_withdrawal,
+)
 from .tasks import award_read_engagement
 
 
@@ -35,3 +44,30 @@ class TriggerReadView(APIView):
 
         task = award_read_engagement.delay(request.user.id, content_id)
         return Response({"status": "queued", "task_id": task.id})
+
+
+class WithdrawalView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        withdrawals = WithdrawalRequest.objects.filter(user=request.user)
+        return Response(WithdrawalRequestSerializer(withdrawals, many=True).data)
+
+    def post(self, request):
+        points = request.data.get("points")
+        method = request.data.get("method")
+        account_ref = request.data.get("account_ref")
+
+        if not points or not method or not account_ref:
+            return Response(
+                {"detail": "points, method, and account_ref are required."}, status=400
+            )
+
+        try:
+            withdrawal = request_withdrawal(request.user, points, method, account_ref)
+        except KYCNotApproved as e:
+            return Response({"detail": str(e)}, status=403)
+        except (BelowMinimumWithdrawal, InsufficientBalance) as e:
+            return Response({"detail": str(e)}, status=400)
+
+        return Response(WithdrawalRequestSerializer(withdrawal).data, status=201)

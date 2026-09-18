@@ -59,3 +59,34 @@ class RewardsLedgerEntry(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.amount:+} pts ({self.type})"
+
+
+class WithdrawalRequest(models.Model):
+    METHOD_CHOICES = [
+        ("EASYPAISA", "Easypaisa"),
+        ("JAZZCASH", "JazzCash"),
+        ("BANK_TRANSFER", "Bank Transfer"),
+    ]
+    STATUS_CHOICES = [
+        ("REQUESTED", "Requested"),
+        ("APPROVED", "Approved"),
+        ("PAID", "Paid"),
+        ("REJECTED", "Rejected"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="withdrawal_requests"
+    )
+    points_requested = models.DecimalField(max_digits=12, decimal_places=2)
+    amount_rs = models.DecimalField(max_digits=12, decimal_places=2)
+    method = models.CharField(max_length=20, choices=METHOD_CHOICES)
+    account_ref = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="REQUESTED")
+    requested_at = models.DateTimeField(auto_now_add=True)
+    processed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-requested_at"]
+
+    def __str__(self):
+        return f"{self.user} - Rs {self.amount_rs} ({self.status})"

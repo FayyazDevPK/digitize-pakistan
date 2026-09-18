@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import RewardsLedgerEntry
+from .models import RewardsLedgerEntry, WithdrawalRequest
 
 
 class RewardsLedgerEntrySerializer(serializers.ModelSerializer):
@@ -19,3 +19,19 @@ class RewardsLedgerEntrySerializer(serializers.ModelSerializer):
             "status",
             "created_at",
         ]
+
+
+class WithdrawalRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WithdrawalRequest
+        fields = [
+            "id",
+            "points_requested",
+            "amount_rs",
+            "method",
+            "account_ref",
+            "status",
+            "requested_at",
+            "processed_at",
+        ]
+        read_only_fields = ["amount_rs", "status", "requested_at", "processed_at"]
