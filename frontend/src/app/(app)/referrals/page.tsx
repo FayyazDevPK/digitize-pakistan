@@ -16,6 +16,12 @@ interface ReferralsData {
   referrals: ReferralEntry[];
 }
 
+const STATUS_STYLE: Record<string, string> = {
+  REWARDED: "bg-success-bg text-success border border-success",
+  QUALIFIED: "bg-premium-bg text-premium border border-premium",
+  PENDING: "bg-white border border-dashed border-border-strong text-muted",
+};
+
 export default function ReferralsPage() {
   const router = useRouter();
   const [data, setData] = useState<ReferralsData | null>(null);
@@ -44,50 +50,50 @@ export default function ReferralsPage() {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  if (loading) return <p style={{ padding: 40 }}>Loading...</p>;
-  if (!data) return <p style={{ padding: 40 }}>Could not load referrals.</p>;
+  if (loading) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
+  if (!data)
+    return <p className="p-10 font-mono text-sm text-muted">Could not load referrals.</p>;
 
   return (
-    <div style={{ maxWidth: 520, margin: "60px auto", fontFamily: "sans-serif" }}>
-      <h1>Referrals</h1>
+    <div className="max-w-lg mx-auto mt-16 px-4 pb-16">
+      <h1 className="font-display text-3xl mb-6">Referrals</h1>
 
-      <div style={{ padding: 16, background: "#f5f5f5", borderRadius: 6, marginBottom: 24 }}>
-        <div style={{ fontSize: 11, color: "#666", textTransform: "uppercase" }}>
+      <div className="bg-paper-raised border border-border rounded-md p-5 mb-8">
+        <div className="font-mono text-[11px] uppercase text-muted mb-1">
           Your referral code
         </div>
-        <div style={{ fontFamily: "monospace", fontSize: 20, fontWeight: 600, margin: "4px 0" }}>
-          {data.referral_code}
-        </div>
-        <button onClick={copyLink}>{copied ? "Copied!" : "Copy invite link"}</button>
+        <div className="font-mono text-2xl font-semibold mb-3">{data.referral_code}</div>
+        <button
+          onClick={copyLink}
+          className="font-mono text-xs bg-ink text-paper rounded-sm px-3 py-2 hover:bg-vermilion-deep transition-colors"
+        >
+          {copied ? "Copied!" : "Copy invite link"}
+        </button>
       </div>
 
-      <h2 style={{ fontSize: 16 }}>People you've referred ({data.referrals.length})</h2>
-      {data.referrals.length === 0 && <p style={{ color: "#666" }}>No referrals yet.</p>}
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <h2 className="font-display text-lg mb-3">
+        People you&apos;ve referred ({data.referrals.length})
+      </h2>
+      {data.referrals.length === 0 && (
+        <p className="font-mono text-sm text-muted">No referrals yet.</p>
+      )}
+      <div className="bg-paper-raised border border-border rounded-md overflow-hidden">
         {data.referrals.map((r) => (
-          <li
+          <div
             key={r.id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "10px 0",
-              borderBottom: "1px solid #ddd",
-            }}
+            className="flex justify-between items-center px-5 py-3 border-b border-border last:border-b-0"
           >
-            <span>{r.referred_username}</span>
+            <span className="text-sm">{r.referred_username}</span>
             <span
-              style={{
-                fontSize: 11,
-                fontFamily: "monospace",
-                color:
-                  r.status === "REWARDED" ? "green" : r.status === "QUALIFIED" ? "#b8860b" : "#999",
-              }}
+              className={`font-mono text-[10px] px-2 py-0.5 rounded-sm ${
+                STATUS_STYLE[r.status] ?? STATUS_STYLE.PENDING
+              }`}
             >
               {r.status}
             </span>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
