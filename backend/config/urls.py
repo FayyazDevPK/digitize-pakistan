@@ -11,4 +11,5 @@ urlpatterns = [
     path("api/me/", MeView.as_view(), name="me"),
     path("api/content/", include("apps.content.urls")),
     path("api/learning-paths/", include("apps.learning_paths.urls")),
+    path("api/rewards/", include("apps.rewards.urls")),
 ]
