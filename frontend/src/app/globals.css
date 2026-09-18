@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-ink: #12151C;
+  --color-paper: #F2EEE7;
+  --color-paper-raised: #FAF7F2;
+  --color-border: #E3DED5;
+  --color-border-strong: #D8D2C7;
+  --color-muted: #656C7A;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-vermilion: #E0512B;
+  --color-vermilion-deep: #B23C1B;
+
+  --color-premium: #8A6118;
+  --color-premium-bg: #FFF9EC;
+  --color-verified: #14455C;
+  --color-verified-bg: #E7EEF2;
+  --color-creator: #7A2E5E;
+  --color-creator-bg: #FBEEF6;
+  --color-success: #1B7A57;
+  --color-success-bg: #E6F3ED;
+  --color-alert: #B92D2D;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
