@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.learning_paths',
     'django_celery_results',
     'apps.rewards',
+    'apps.referrals',
 ]
 
 MIDDLEWARE = [
@@ -161,4 +162,11 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
+}
+
+CELERY_BEAT_SCHEDULE = {
+    "evaluate-referral-qualifications": {
+        "task": "apps.referrals.tasks.evaluate_referral_qualifications",
+        "schedule": 300.0,
+    },
 }

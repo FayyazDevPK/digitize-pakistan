@@ -1,3 +1,5 @@
+import secrets
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -29,8 +31,17 @@ class User(AbstractUser):
     referred_by = models.ForeignKey(
         "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="referrals"
     )
+    referral_code = models.CharField(max_length=12, unique=True, blank=True)
     display_name = models.CharField(max_length=100, blank=True)
     avatar_url = models.URLField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.referral_code:
+            code = secrets.token_hex(4).upper()
+            while User.objects.filter(referral_code=code).exists():
+                code = secrets.token_hex(4).upper()
+            self.referral_code = code
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.username
