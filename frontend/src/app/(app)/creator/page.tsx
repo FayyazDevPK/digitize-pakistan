@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import AppSidebar from "@/components/AppSidebar";
+import MobileTabBar from "@/components/MobileTabBar";
 
 interface CreatorProfile {
   id: number;
@@ -38,6 +40,7 @@ export default function CreatorPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
@@ -91,6 +94,7 @@ export default function CreatorPage() {
       setTitle("");
       setExcerpt("");
       setBody("");
+      setShowForm(false);
       load();
     } else {
       const data = await res.json().catch(() => ({}));
@@ -102,109 +106,168 @@ export default function CreatorPage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-xl mx-auto mt-16 px-4 pb-16">
-      <h1 className="font-display text-3xl mb-6">Creator Program</h1>
+    <div className="min-h-screen flex bg-paper">
+      <AppSidebar tier={user.tier} />
 
-      {error && (
-        <div className="mb-4 px-4 py-2.5 bg-alert/10 border border-alert rounded-sm text-alert text-sm">
-          {error}
-        </div>
-      )}
-
-      {!profile ? (
-        <div className="bg-paper-raised border border-border rounded-md p-6">
-          <p className="text-sm text-muted mb-4">
-            Premium members can submit AI articles and tutorials, and earn revenue as they're
-            published.
-          </p>
-          <button
-            onClick={handleApply}
-            className="font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
-          >
-            Apply to Creator Program
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className="flex gap-2 mb-6">
-            <span className="font-mono text-[11px] px-2.5 py-1 rounded-sm bg-creator-bg text-creator border border-creator">
-              CREATOR · {profile.status}
-            </span>
-          </div>
-
-          <div className="bg-paper-raised border border-border rounded-md p-5 mb-8 flex gap-8">
-            <div>
-              <div className="font-mono text-[11px] uppercase text-muted">Total earnings</div>
-              <div className="font-mono text-2xl font-semibold mt-1">
-                {profile.total_earnings} pts
+      <div className="flex-1 min-w-0">
+        {!profile ? (
+          <div className="max-w-xl px-6 md:px-10 py-10">
+            <h1 className="font-display text-3xl mb-6">Creator Program</h1>
+            {error && (
+              <div className="mb-4 px-4 py-2.5 bg-alert/10 border border-alert rounded-sm text-alert text-sm">
+                {error}
               </div>
-            </div>
-            <div>
-              <div className="font-mono text-[11px] uppercase text-muted">Published</div>
-              <div className="font-mono text-2xl font-semibold mt-1">
-                {profile.published_count}
-              </div>
-            </div>
-          </div>
-
-          {profile.status === "APPROVED" && (
-            <div className="bg-paper-raised border border-border rounded-md p-5 mb-8">
-              <h2 className="font-display text-lg mb-4">Submit new content</h2>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <input
-                  placeholder="Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                  required
-                />
-                <input
-                  placeholder="Excerpt"
-                  value={excerpt}
-                  onChange={(e) => setExcerpt(e.target.value)}
-                  className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                />
-                <textarea
-                  placeholder="Body"
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  rows={5}
-                  className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="self-start font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
-                >
-                  Submit for review
-                </button>
-              </form>
-            </div>
-          )}
-
-          <h2 className="font-display text-lg mb-3">Your submissions</h2>
-          {submissions.length === 0 && (
-            <p className="font-mono text-sm text-muted">No submissions yet.</p>
-          )}
-          <div className="bg-paper-raised border border-border rounded-md overflow-hidden">
-            {submissions.map((s) => (
-              <div
-                key={s.id}
-                className="flex justify-between items-center px-5 py-3 border-b border-border last:border-b-0"
+            )}
+            <div className="bg-paper-raised border border-border rounded-md p-6">
+              <p className="text-sm text-muted mb-4">
+                Premium members can submit AI articles and tutorials, and earn revenue as they&apos;re
+                published.
+              </p>
+              <button
+                onClick={handleApply}
+                className="font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
               >
-                <span className="text-sm">{s.title}</span>
-                <span
-                  className={`font-mono text-[10px] px-2 py-0.5 rounded-sm ${
-                    REVIEW_BADGE[s.review_status] ?? REVIEW_BADGE.SUBMITTED
-                  }`}
-                >
-                  {s.review_status}
-                </span>
-              </div>
-            ))}
+                Apply to Creator Program
+              </button>
+            </div>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <div className="bg-[#2A1024] px-6 md:px-7 py-[22px] flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-[38px] h-[38px] rounded-full bg-[#5C2247]" />
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[16px] font-semibold text-creator-bg">
+                      {user.display_name || user.username}
+                    </span>
+                    <span className="bg-[#7A2E5E] text-creator-bg text-[10px] font-semibold tracking-[.06em] px-2 py-[3px] rounded">
+                      ✎ CREATOR
+                    </span>
+                    {user.is_verified_badge && (
+                      <span className="bg-[#F3E3EE] text-[#5C2247] text-[10px] font-semibold px-2 py-[3px] rounded-full">
+                        ✓ VERIFIED
+                      </span>
+                    )}
+                  </div>
+                  <span className="font-mono text-[11.5px] text-[#C9A8BD]">
+                    CREATOR STUDIO · {profile.status}
+                  </span>
+                </div>
+              </div>
+              {profile.status === "APPROVED" && (
+                <button
+                  onClick={() => setShowForm((s) => !s)}
+                  className="bg-vermilion text-white text-[13px] font-semibold px-4 py-2.5 rounded-[6px]"
+                >
+                  New submission
+                </button>
+              )}
+            </div>
+
+            <div className="px-6 md:px-7 py-6 md:py-[30px] pb-24 md:pb-[30px] flex flex-col gap-5">
+              {error && (
+                <div className="px-4 py-2.5 bg-alert/10 border border-alert rounded-sm text-alert text-sm">
+                  {error}
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+                <div className="bg-white border border-border rounded-[9px] p-[18px]">
+                  <div className="font-mono text-[10.5px] tracking-[.14em] text-muted">
+                    TOTAL EARNINGS
+                  </div>
+                  <div className="font-mono text-[30px] font-semibold tabular-nums mt-1.5">
+                    {profile.total_earnings} pts
+                  </div>
+                </div>
+                <div className="bg-white border border-border rounded-[9px] p-[18px]">
+                  <div className="font-mono text-[10.5px] tracking-[.14em] text-muted">PUBLISHED</div>
+                  <div className="font-mono text-[30px] font-semibold tabular-nums mt-1.5">
+                    {profile.published_count}
+                  </div>
+                </div>
+              </div>
+
+              {showForm && profile.status === "APPROVED" && (
+                <div className="bg-white border border-border rounded-[10px] p-5">
+                  <h2 className="font-display text-lg mb-4">Submit new content</h2>
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                    <input
+                      placeholder="Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
+                      required
+                    />
+                    <input
+                      placeholder="Excerpt"
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
+                    />
+                    <textarea
+                      placeholder="Body"
+                      value={body}
+                      onChange={(e) => setBody(e.target.value)}
+                      rows={5}
+                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="self-start font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
+                    >
+                      Submit for review
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              <div className="bg-white border border-border rounded-[10px] overflow-hidden">
+                <div className="px-[18px] py-[15px] border-b border-border flex items-center justify-between">
+                  <span className="font-mono text-[10.5px] font-semibold tracking-[.16em]">
+                    SUBMISSIONS
+                  </span>
+                  <span className="text-[12.5px] text-vermilion-deep font-medium">
+                    All {submissions.length} →
+                  </span>
+                </div>
+                {submissions.length === 0 && (
+                  <p className="font-mono text-sm text-muted px-[18px] py-4">No submissions yet.</p>
+                )}
+                {submissions.map((s, i) => (
+                  <div
+                    key={s.id}
+                    className={`flex items-center gap-3.5 px-[18px] py-3.5 ${
+                      i < submissions.length - 1 ? "border-b border-[#F0EDE7]" : ""
+                    }`}
+                  >
+                    <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                      <span className="text-sm font-semibold truncate">{s.title}</span>
+                      <span className="font-mono text-[11px] text-muted">
+                        {new Date(s.submitted_at).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                        })}
+                        {s.review_notes ? ` · ${s.review_notes}` : ""}
+                      </span>
+                    </div>
+                    <span
+                      className={`font-mono text-[10px] font-semibold px-2 py-[3px] rounded w-[86px] text-center ${
+                        REVIEW_BADGE[s.review_status] ?? REVIEW_BADGE.SUBMITTED
+                      }`}
+                    >
+                      {s.review_status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <MobileTabBar />
     </div>
   );
 }

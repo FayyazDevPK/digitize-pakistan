@@ -3,13 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api-client";
+import { apiFetch, login } from "@/lib/api-client";
 import { storeTokens } from "@/lib/auth";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -18,11 +20,20 @@ export default function LoginPage() {
     setError(null);
     setSubmitting(true);
     try {
+      await apiFetch("/api/register/", {
+        method: "POST",
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          referral_code: referralCode || undefined,
+        }),
+      });
       const data = await login(username, password);
       storeTokens(data.access, data.refresh);
       router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
       setSubmitting(false);
     }
@@ -38,36 +49,63 @@ export default function LoginPage() {
             <path d="M19 13h6a10 10 0 0 1 0 20h-6z" fill="none" stroke="#12151C" strokeWidth="4" />
             <circle cx="33.5" cy="33.5" r="3.5" fill="#E0512B" />
           </svg>
-          <div className="font-display text-[27px] text-paper leading-[1.15]">Welcome back</div>
-          <span className="text-[13.5px] text-[#C9CCD2]">Log in to keep reading and earning.</span>
+          <div className="font-display text-[27px] text-paper leading-[1.15]">
+            Create your account
+          </div>
+          <span className="text-[13.5px] text-[#C9CCD2]">Free to read and earn. No card needed.</span>
         </div>
 
         <div className="px-7 pt-6 pb-7 flex flex-col gap-4">
           <div className="flex bg-[#EDE9E1] rounded-[7px] p-[3px]">
-            <span className="flex-1 text-center text-[13.5px] text-muted py-2">Register</span>
             <span className="flex-1 text-center text-[13.5px] font-semibold bg-white py-2 rounded-[5px] border border-border">
-              Log in
+              Register
             </span>
+            <Link href="/login" className="flex-1 text-center text-[13.5px] text-muted py-2">
+              Log in
+            </Link>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
               <span className="text-[12.5px] font-semibold text-ink">Username</span>
               <input
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm text-ink outline-none focus:border-vermilion transition-colors"
+                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                autoComplete="username"
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[12.5px] font-semibold text-ink">Email</span>
+              <input
+                type="email"
+                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="flex flex-col gap-1.5">
               <span className="text-[12.5px] font-semibold text-ink">Password</span>
               <input
                 type="password"
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm text-ink outline-none focus:border-vermilion transition-colors"
+                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
+                minLength={8}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[12.5px] font-semibold text-ink">
+                Referral code <span className="text-muted font-normal">(optional)</span>
+              </span>
+              <input
+                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm font-mono outline-none focus:border-vermilion transition-colors"
+                placeholder="DGP-XXXXXX"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value)}
               />
             </div>
 
@@ -78,7 +116,7 @@ export default function LoginPage() {
               disabled={submitting}
               className="bg-vermilion text-white text-sm font-semibold py-[13px] rounded-[7px] text-center hover:bg-vermilion-deep transition-colors disabled:opacity-60"
             >
-              {submitting ? "Logging in…" : "Log in"}
+              {submitting ? "Creating account…" : "Create account"}
             </button>
           </form>
 
@@ -93,10 +131,8 @@ export default function LoginPage() {
           </span>
 
           <span className="text-[11.5px] text-muted leading-[1.55] text-center">
-            New here?{" "}
-            <Link href="/register" className="text-vermilion-deep font-medium">
-              Create a free account
-            </Link>
+            Withdrawals require CNIC verification under SBP rules. You can read and earn before
+            verifying.
           </span>
         </div>
       </div>

@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/me/", MeView.as_view(), name="me"),
     path("api/register/", RegisterView.as_view(), name="register"),
+    path("api/kyc/", include("apps.kyc.urls")),
     path("api/content/", include("apps.content.urls")),
     path("api/learning-paths/", include("apps.learning_paths.urls")),
     path("api/rewards/", include("apps.rewards.urls")),
