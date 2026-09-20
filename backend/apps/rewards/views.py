@@ -34,6 +34,7 @@ class BalanceView(APIView):
 
 class TriggerReadView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_scope = "read_engagement"
 
     def post(self, request):
         content_slug = request.data.get("content_slug")
@@ -48,6 +49,7 @@ class TriggerReadView(APIView):
 
 class WithdrawalView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_scope = "withdrawal"
 
     def get(self, request):
         withdrawals = WithdrawalRequest.objects.filter(user=request.user)
