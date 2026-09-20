@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.rewards',
     'apps.referrals',
     'apps.creator',
+    'apps.notifications',
 ]
 
 MIDDLEWARE = [

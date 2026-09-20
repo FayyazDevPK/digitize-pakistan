@@ -1,6 +1,7 @@
 from celery import shared_task
 
 from apps.learning_paths.models import LearningPathProgress
+from apps.notifications.services import notify
 from apps.rewards.services import RewardCapExceeded, award_points
 
 from .models import Referral
@@ -20,9 +21,16 @@ def evaluate_referral_qualifications():
         ref.save(update_fields=["status"])
 
         try:
-            award_points(ref.referrer, "REFERRAL_BONUS")
+            entry = award_points(ref.referrer, "REFERRAL_BONUS")
             ref.status = "REWARDED"
             ref.save(update_fields=["status"])
+            notify(
+                ref.referrer,
+                "REFERRAL",
+                "Referral bonus earned",
+                f"{ref.referred.username} qualified — you earned {entry.amount} pts.",
+                link="/referrals",
+            )
         except (RewardCapExceeded, ValueError):
             pass
 

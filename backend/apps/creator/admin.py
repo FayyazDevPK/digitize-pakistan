@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils import timezone
 
+from apps.notifications.services import notify
 from apps.rewards.services import RewardCapExceeded, award_points
 
 from .models import ContentSubmission, CreatorProfile
@@ -14,6 +15,13 @@ def approve_creator(modeladmin, request, queryset):
         profile.save(update_fields=["status", "approved_at"])
         profile.user.role = "CREATOR"
         profile.user.save(update_fields=["role"])
+        notify(
+            profile.user,
+            "CREATOR",
+            "Creator Program application approved",
+            "You can now submit articles and tutorials for review.",
+            link="/creator",
+        )
 
 
 @admin.register(CreatorProfile)
@@ -42,17 +50,38 @@ def approve_submission(modeladmin, request, queryset):
         try:
             entry = award_points(profile.user, "CREATOR_BOUNTY", source_content=content)
             profile.total_earnings += entry.amount
+            notify(
+                profile.user,
+                "CREATOR",
+                "Your submission was published",
+                f'"{content.title}" is live — you earned {entry.amount} pts.',
+                link="/creator",
+            )
         except (RewardCapExceeded, ValueError):
-            pass
+            notify(
+                profile.user,
+                "CREATOR",
+                "Your submission was published",
+                f'"{content.title}" is now live.',
+                link="/creator",
+            )
 
         profile.save(update_fields=["published_count", "total_earnings"])
 
 
 @admin.action(description="Reject selected submissions")
 def reject_submission(modeladmin, request, queryset):
-    queryset.filter(review_status__in=["SUBMITTED", "IN_REVIEW"]).update(
-        review_status="REJECTED", reviewed_at=timezone.now()
-    )
+    for submission in queryset.filter(review_status__in=["SUBMITTED", "IN_REVIEW"]):
+        submission.review_status = "REJECTED"
+        submission.reviewed_at = timezone.now()
+        submission.save(update_fields=["review_status", "reviewed_at"])
+        notify(
+            submission.creator_profile.user,
+            "CREATOR",
+            "Your submission was not approved",
+            f'"{submission.content.title}" was rejected during review.',
+            link="/creator",
+        )
 
 
 @admin.register(ContentSubmission)
