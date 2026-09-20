@@ -19,6 +19,17 @@ class UserSerializer(serializers.ModelSerializer):
             "avatar_url",
             "referral_code",
         ]
+        read_only_fields = [
+            "id",
+            "username",
+            "email",
+            "role",
+            "tier",
+            "tier_expires_at",
+            "is_verified_badge",
+            "kyc_status",
+            "referral_code",
+        ]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
