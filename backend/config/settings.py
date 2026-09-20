@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'apps.rewards',
     'apps.referrals',
+    'apps.creator',
 ]
 
 MIDDLEWARE = [
