@@ -30,10 +30,32 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 class LearningPathListSerializer(serializers.ModelSerializer):
     milestone_count = serializers.IntegerField(source="milestones.count", read_only=True)
+    completed_count = serializers.SerializerMethodField()
+    is_started = serializers.SerializerMethodField()
 
     class Meta:
         model = LearningPath
-        fields = ["id", "title", "slug", "description", "access_tier", "order", "milestone_count"]
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "description",
+            "access_tier",
+            "order",
+            "milestone_count",
+            "completed_count",
+            "is_started",
+        ]
+
+    def get_completed_count(self, obj):
+        request = self.context.get("request")
+        user = getattr(request, "user", None)
+        if not (user and user.is_authenticated):
+            return 0
+        return LearningPathProgress.objects.filter(user=user, learning_path=obj).count()
+
+    def get_is_started(self, obj):
+        return self.get_completed_count(obj) > 0
 
 
 class LearningPathDetailSerializer(serializers.ModelSerializer):

@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
 
 const NAV_LINKS = [
   { label: "News", href: "/news" },
@@ -6,6 +10,12 @@ const NAV_LINKS = [
 ];
 
 export default function PublicHeader({ active }: { active?: "News" | "AI Tools" }) {
+  const [user, setUser] = useState<CurrentUser | null>(null);
+
+  useEffect(() => {
+    fetchCurrentUser().then(setUser);
+  }, []);
+
   return (
     <div className="bg-ink px-5 md:px-7 h-14 flex items-center justify-between">
       <div className="flex items-center gap-6 md:gap-[26px]">
@@ -40,15 +50,28 @@ export default function PublicHeader({ active }: { active?: "News" | "AI Tools" 
         </div>
       </div>
       <div className="flex items-center gap-3.5">
-        <Link href="/login" className="text-sm text-[#D3D6DC] hidden sm:inline">
-          Log in
-        </Link>
-        <Link
-          href="/register"
-          className="bg-vermilion text-white text-[13px] font-semibold px-3.5 py-2 rounded-[6px]"
-        >
-          Start earning
-        </Link>
+        {user ? (
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <span className="text-sm text-[#D3D6DC] hidden sm:inline">
+              {user.display_name || user.username}
+            </span>
+            <div className="w-8 h-8 rounded-full bg-[#3A404C] flex items-center justify-center text-paper text-xs font-semibold shrink-0">
+              {(user.display_name || user.username).charAt(0).toUpperCase()}
+            </div>
+          </Link>
+        ) : (
+          <>
+            <Link href="/login" className="text-sm text-[#D3D6DC] hidden sm:inline">
+              Log in
+            </Link>
+            <Link
+              href="/register"
+              className="bg-vermilion text-white text-[13px] font-semibold px-3.5 py-2 rounded-[6px]"
+            >
+              Start earning
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

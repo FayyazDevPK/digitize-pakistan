@@ -44,7 +44,12 @@ export default function LoginPage() {
 
         <div className="px-7 pt-6 pb-7 flex flex-col gap-4">
           <div className="flex bg-[#EDE9E1] rounded-[7px] p-[3px]">
-            <span className="flex-1 text-center text-[13.5px] text-muted py-2">Register</span>
+            <Link
+              href="/register"
+              className="flex-1 text-center text-[13.5px] text-muted py-2"
+            >
+              Register
+            </Link>
             <span className="flex-1 text-center text-[13.5px] font-semibold bg-white py-2 rounded-[5px] border border-border">
               Log in
             </span>

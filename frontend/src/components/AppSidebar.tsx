@@ -6,10 +6,9 @@ import { clearTokens } from "@/lib/auth";
 
 const NAV_ITEMS: { label: string; href: string | null }[] = [
   { label: "Overview", href: "/dashboard" },
-  { label: "My learning", href: null },
+  { label: "My learning", href: "/my-learning" },
   { label: "Rewards", href: "/rewards" },
   { label: "Referrals", href: "/referrals" },
-  { label: "Saved tools", href: null },
   { label: "Creator studio", href: "/creator" },
   { label: "Settings", href: "/settings" },
 ];

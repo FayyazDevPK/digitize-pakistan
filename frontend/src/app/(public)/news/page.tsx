@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getContentList } from "@/lib/content";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
+import ReadToEarnCard from "@/components/ReadToEarnCard";
 
 interface AdSlotData {
   id: number;
@@ -116,23 +117,7 @@ export default async function NewsPage() {
         </div>
 
         <div className="flex flex-col gap-5">
-          <div className="bg-ink rounded-[10px] p-[22px] text-paper flex flex-col gap-3">
-            <span className="font-mono text-[10.5px] font-semibold tracking-[.16em] text-[#FF7A52]">
-              READ TO EARN
-            </span>
-            <div className="font-display text-[26px] leading-[1.15]">
-              Earn points for every article you finish.
-            </div>
-            <p className="text-[13.5px] leading-[1.6] text-[#C9CCD2]">
-              1,000 pts = Rs 250. Withdraw from Rs 2,000 once KYC is approved.
-            </p>
-            <Link
-              href="/register"
-              className="bg-vermilion text-white text-[13px] font-semibold py-2.5 px-3.5 rounded-[6px] text-center"
-            >
-              Create free account
-            </Link>
-          </div>
+          <ReadToEarnCard />
 
           <div className="bg-white border border-border rounded-[10px] overflow-hidden">
             <div className="px-[18px] py-3.5 border-b border-border flex items-center justify-between">
