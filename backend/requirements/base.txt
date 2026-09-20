@@ -12,10 +12,15 @@ django-redis==7.0.0
 django_celery_results==2.6.0
 djangorestframework==3.18.1
 djangorestframework_simplejwt==5.5.1
+iniconfig==2.3.0
 kombu==5.6.2
 packaging==26.3
+pluggy==1.6.0
 prompt_toolkit==3.0.53
+Pygments==2.21.0
 PyJWT==2.14.0
+pytest==9.1.1
+pytest-django==4.14.0
 python-dateutil==2.9.0.post0
 redis==8.1.0
 six==1.17.0
