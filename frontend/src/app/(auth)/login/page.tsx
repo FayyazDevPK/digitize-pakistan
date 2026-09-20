@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api-client";
-import { storeTokens } from "@/lib/auth";
+import { storeTokens, fetchCurrentUser } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,6 +12,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    fetchCurrentUser().then((u) => {
+      if (u) {
+        router.replace("/dashboard");
+        return;
+      }
+      setCheckingAuth(false);
+    });
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -27,6 +38,8 @@ export default function LoginPage() {
       setSubmitting(false);
     }
   }
+
+  if (checkingAuth) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
