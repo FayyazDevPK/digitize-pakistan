@@ -1,7 +1,26 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getContentList } from "@/lib/content";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
+import { SITE_NAME } from "@/lib/site";
+
+const TITLE = "AI Tool Directory — Digitize Pakistan";
+const DESCRIPTION =
+  "A curated directory of AI tools reviewed for Pakistani users — writing, speech, documents, dev, and more.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/tools" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/tools",
+  },
+};
 
 export default async function ToolsPage() {
   const items = await getContentList("TOOL_LISTING");

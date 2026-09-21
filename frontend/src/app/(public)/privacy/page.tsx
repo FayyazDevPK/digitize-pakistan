@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
+import { SITE_NAME } from "@/lib/site";
+
+const TITLE = "Privacy Policy — Digitize Pakistan";
+const DESCRIPTION =
+  "How Digitize Pakistan collects, uses, and protects your information, including KYC documents and advertising cookies.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/privacy",
+  },
+};
 
 export default function PrivacyPage() {
   return (

@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
 import { ContentItem } from "@/lib/content";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 interface ContentDetail extends ContentItem {
   body: string;
@@ -15,13 +17,62 @@ async function getContent(slug: string): Promise<ContentDetail | null> {
   return res.json();
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getContent(slug);
+  if (!article) return {};
+
+  const title = `${article.title} — Digitize Pakistan`;
+  const url = `/news/${article.slug}`;
+
+  return {
+    title,
+    description: article.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      siteName: SITE_NAME,
+      type: "article",
+      url,
+      ...(article.cover_image_url ? { images: [article.cover_image_url] } : {}),
+    },
+  };
+}
+
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getContent(slug);
   if (!article) notFound();
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt,
+    ...(article.published_at ? { datePublished: article.published_at } : {}),
+    ...(article.cover_image_url ? { image: [article.cover_image_url] } : {}),
+    author: {
+      "@type": "Organization",
+      name: SITE_NAME,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Digitize Online SMC (Private) Limited",
+    },
+    mainEntityOfPage: `${SITE_URL}/news/${article.slug}`,
+  };
+
   return (
     <div className="min-h-screen bg-paper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <PublicHeader active="News" />
 
       <div className="max-w-[1280px] mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-8">

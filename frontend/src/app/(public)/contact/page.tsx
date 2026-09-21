@@ -1,7 +1,26 @@
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
 import ContactForm from "@/components/ContactForm";
+import { SITE_NAME } from "@/lib/site";
+
+const TITLE = "Contact — Digitize Pakistan";
+const DESCRIPTION =
+  "Get in touch with Digitize Online SMC (Private) Limited, the operator of Digitize Pakistan.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/contact",
+  },
+};
 
 export default function ContactPage() {
   return (

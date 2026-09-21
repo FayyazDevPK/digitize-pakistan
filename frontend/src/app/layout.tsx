@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import ConsentBanner from "@/components/ConsentBanner";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Digitize Pakistan",
   description: "AI news, tools, and learning paths — read, learn, and earn.",
+  openGraph: {
+    siteName: SITE_NAME,
+    type: "website",
+  },
 };
 
 export default function RootLayout({

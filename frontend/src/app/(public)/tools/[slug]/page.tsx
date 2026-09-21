@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
 import { ContentItem } from "@/lib/content";
+import { SITE_NAME } from "@/lib/site";
 
 interface ContentDetail extends ContentItem {
   body: string;
@@ -13,6 +15,33 @@ async function getContent(slug: string): Promise<ContentDetail | null> {
   const res = await fetch(`${API_URL}/api/content/${slug}/`, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const tool = await getContent(slug);
+  if (!tool || tool.type !== "TOOL_LISTING") return {};
+
+  const title = `${tool.title} — AI Tool Directory — Digitize Pakistan`;
+  const url = `/tools/${tool.slug}`;
+
+  return {
+    title,
+    description: tool.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      title: tool.title,
+      description: tool.excerpt,
+      siteName: SITE_NAME,
+      type: "website",
+      url,
+      ...(tool.cover_image_url ? { images: [tool.cover_image_url] } : {}),
+    },
+  };
 }
 
 export default async function ToolDetailPage({ params }: { params: Promise<{ slug: string }> }) {

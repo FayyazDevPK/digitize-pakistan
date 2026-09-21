@@ -1,8 +1,27 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getContentList } from "@/lib/content";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import ReadToEarnCard from "@/components/ReadToEarnCard";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
+
+const TITLE = "News — Digitize Pakistan";
+const DESCRIPTION =
+  "The latest AI news from Pakistan and around the world — policy, funding, tools, and how-tos. Read to earn points.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/news" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/news",
+  },
+};
 
 interface AdSlotData {
   id: number;
@@ -34,8 +53,21 @@ export default async function NewsPage() {
 
   const [lead, ...rest] = items;
 
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Digitize Online SMC (Private) Limited",
+    url: `${SITE_URL}/`,
+    description:
+      "Operator of Digitize Pakistan — AI news, tools, and learning paths, with a read-to-earn rewards system for readers in Pakistan.",
+  };
+
   return (
     <div className="min-h-screen bg-paper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
       <PublicHeader active="News" />
 
       <div className="max-w-[1280px] mx-auto p-4 md:p-7 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-7">

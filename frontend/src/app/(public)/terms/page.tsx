@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
+import { SITE_NAME } from "@/lib/site";
+
+const TITLE = "Terms of Service — Digitize Pakistan";
+const DESCRIPTION =
+  "The terms that govern using Digitize Pakistan, including the rewards system, withdrawals, the Creator Program, and prohibited conduct.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/terms" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/terms",
+  },
+};
 
 export default function TermsPage() {
   return (

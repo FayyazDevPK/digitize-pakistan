@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
+import { SITE_NAME } from "@/lib/site";
+
+const TITLE = "About — Digitize Pakistan";
+const DESCRIPTION =
+  "Digitize Pakistan is a platform for AI news, tools, and learning paths with a read-to-earn rewards system, operated by Digitize Online SMC (Private) Limited.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    url: "/about",
+  },
+};
 
 export default function AboutPage() {
   return (
