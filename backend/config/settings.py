@@ -175,7 +175,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = [
-    "rest_framework.throttling.ScopedRateThrottle",
+    "apps.accounts.throttles.AtomicScopedRateThrottle",
 ]
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "read_engagement": "20/min",
