@@ -5,6 +5,7 @@ import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import ReadToEarnCard from "@/components/ReadToEarnCard";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 
 const TITLE = "News — Digitize Pakistan";
 const DESCRIPTION =
@@ -66,7 +67,7 @@ export default async function NewsPage() {
     <div className="min-h-screen bg-paper">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }}
       />
       <PublicHeader active="News" />
 

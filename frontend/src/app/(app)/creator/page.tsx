@@ -45,6 +45,7 @@ export default function CreatorPage() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [body, setBody] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   async function load() {
     const u = await fetchCurrentUser();
@@ -84,21 +85,27 @@ export default function CreatorPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) return;
     setError(null);
-    const res = await authFetch("/api/creator/submissions/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, excerpt, body, category_id: 1, type: "TUTORIAL" }),
-    });
-    if (res.ok) {
-      setTitle("");
-      setExcerpt("");
-      setBody("");
-      setShowForm(false);
-      load();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data.detail || "Submission failed.");
+    setSubmitting(true);
+    try {
+      const res = await authFetch("/api/creator/submissions/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, excerpt, body, category_id: 1, type: "TUTORIAL" }),
+      });
+      if (res.ok) {
+        setTitle("");
+        setExcerpt("");
+        setBody("");
+        setShowForm(false);
+        load();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.detail || "Submission failed.");
+      }
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -216,9 +223,10 @@ export default function CreatorPage() {
                     />
                     <button
                       type="submit"
-                      className="self-start font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
+                      disabled={submitting}
+                      className="self-start font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors disabled:opacity-60"
                     >
-                      Submit for review
+                      {submitting ? "Submitting…" : "Submit for review"}
                     </button>
                   </form>
                 </div>

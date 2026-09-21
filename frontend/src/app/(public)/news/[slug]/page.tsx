@@ -5,6 +5,7 @@ import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
 import { ContentItem } from "@/lib/content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { safeJsonLd } from "@/lib/json-ld";
 
 interface ContentDetail extends ContentItem {
   body: string;
@@ -71,7 +72,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <div className="min-h-screen bg-paper">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(articleJsonLd) }}
       />
       <PublicHeader active="News" />
 
