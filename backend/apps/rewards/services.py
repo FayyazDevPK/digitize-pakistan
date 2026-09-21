@@ -1,7 +1,9 @@
 from datetime import date
 from decimal import Decimal
 
+from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.db import transaction
 from django.db.models import Sum
 
 from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
@@ -13,6 +15,8 @@ MIN_WITHDRAWAL_RS = Decimal("2000")
 # places (see RewardRule.rate), so we scale to an integer for the atomic
 # counter and scale back down when comparing against the cap.
 _CAP_SCALE = 10000
+
+User = get_user_model()
 
 
 class RewardCapExceeded(Exception):
@@ -97,6 +101,21 @@ def request_withdrawal(user, points, method, account_ref):
     KYC status is APPROVED. This check lives here, in the service layer,
     not in the view or the frontend -- this is the one place that must
     never be bypassed.
+
+    CONCURRENCY: the balance check and the deduction are wrapped in a
+    transaction that locks the user's row (select_for_update) for the
+    duration. Without this, two concurrent withdrawal requests could
+    both read the same balance before either deducts, both pass the
+    "sufficient balance" check, and both succeed -- an overdraft / double
+    -withdrawal. Same class of bug already found and fixed for the daily
+    reward cap, but that fix used an atomic Redis counter since the cap
+    is cache-backed; the balance here is a database aggregate, so the
+    fix is a row lock instead.
+
+    NOTE: SQLite (the dev database) does not enforce row-level locking,
+    so this cannot be fully proven under local development the same way
+    it was for the Redis-based fix -- this must be re-verified under
+    PostgreSQL (the production database) before launch.
     """
     if user.kyc_status != "APPROVED":
         raise KYCNotApproved("KYC approval is required before withdrawal.")
@@ -109,27 +128,36 @@ def request_withdrawal(user, points, method, account_ref):
             f"Minimum withdrawal is Rs {MIN_WITHDRAWAL_RS} ({MIN_WITHDRAWAL_RS / POINTS_TO_RS:.0f} pts)."
         )
 
-    balance = get_balance(user)
-    if points > balance:
-        raise InsufficientBalance(f"Insufficient balance: have {balance}, requested {points}.")
+    with transaction.atomic():
+        # Lock this user's row so a concurrent withdrawal request for the
+        # same user has to wait for this transaction to commit or roll
+        # back before it can proceed -- serializing the check-then-deduct
+        # sequence per user.
+        User.objects.select_for_update().get(pk=user.pk)
 
-    new_balance = balance - points
+        balance = get_balance(user)
+        if points > balance:
+            raise InsufficientBalance(
+                f"Insufficient balance: have {balance}, requested {points}."
+            )
 
-    RewardsLedgerEntry.objects.create(
-        user=user,
-        type="WITHDRAWAL",
-        amount=-points,
-        balance_after=new_balance,
-        status="CONFIRMED",
-    )
+        new_balance = balance - points
 
-    withdrawal = WithdrawalRequest.objects.create(
-        user=user,
-        points_requested=points,
-        amount_rs=amount_rs,
-        method=method,
-        account_ref=account_ref,
-        status="REQUESTED",
-    )
+        RewardsLedgerEntry.objects.create(
+            user=user,
+            type="WITHDRAWAL",
+            amount=-points,
+            balance_after=new_balance,
+            status="CONFIRMED",
+        )
+
+        withdrawal = WithdrawalRequest.objects.create(
+            user=user,
+            points_requested=points,
+            amount_rs=amount_rs,
+            method=method,
+            account_ref=account_ref,
+            status="REQUESTED",
+        )
 
     return withdrawal
