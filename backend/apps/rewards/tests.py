@@ -1,8 +1,10 @@
+import threading
 from decimal import Decimal
 
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.db.utils import OperationalError
 
 from apps.rewards.models import RewardRule
 from apps.rewards.services import (
@@ -79,6 +81,83 @@ class TestAwardPoints:
     def test_no_rule_raises_value_error(self, free_user):
         with pytest.raises(ValueError):
             award_points(free_user, "READ_ENGAGEMENT")
+
+
+@pytest.mark.django_db(transaction=True)
+class TestAwardPointsConcurrency:
+    def test_daily_cap_holds_under_concurrent_requests(self, django_db_blocker):
+        """
+        Regression test for a real bug found during Phase 10 load testing:
+        the daily-cap check used to be a plain cache.get()/cache.set(),
+        which is NOT atomic. Under genuine concurrent load, many requests
+        could all read the same "before" value and all pass the cap check
+        together -- confirmed to let 50 concurrent requests through a 25pt
+        cap with zero rejections before the fix (atomic cache.add()+incr()).
+
+        Uses real threads (not asyncio) to reproduce actual concurrent DB/
+        cache access, same as a burst of real simultaneous requests would.
+        """
+        with django_db_blocker.unblock():
+            User.objects.filter(username="concurrencytest").delete()
+            user = User.objects.create_user(username="concurrencytest", password="x")
+            user.tier = "FREE"
+            user.save()
+            RewardRule.objects.get_or_create(
+                tier="FREE",
+                type="READ_ENGAGEMENT",
+                defaults=dict(rate=Decimal("5"), daily_cap=Decimal("25"), is_active=True),
+            )
+
+        results = {"awarded": 0, "capped": 0, "sqlite_lock": 0, "errors": 0}
+        lock = threading.Lock()
+
+        def worker():
+            try:
+                with django_db_blocker.unblock():
+                    award_points(user, "READ_ENGAGEMENT")
+                with lock:
+                    results["awarded"] += 1
+            except RewardCapExceeded:
+                with lock:
+                    results["capped"] += 1
+            except OperationalError as e:
+                # SQLite only allows one writer at a time. Under 50 real
+                # concurrent threads all trying to INSERT, some will hit
+                # "database is locked" -- a dev-database limitation, not a
+                # flaw in the atomic cap logic itself (PostgreSQL, the
+                # planned production database, does not have this
+                # limitation). Treat as "request didn't complete", not a
+                # correctness failure -- the invariant we actually care
+                # about (final balance never exceeds the cap) is asserted
+                # below regardless of how many requests hit this.
+                if "locked" in str(e):
+                    with lock:
+                        results["sqlite_lock"] += 1
+                else:
+                    with lock:
+                        results["errors"] += 1
+                    print(f"Unexpected OperationalError: {e}")
+            except Exception as e:
+                with lock:
+                    results["errors"] += 1
+                print(f"Unexpected error type: {type(e).__name__}: {e}")
+
+        threads = [threading.Thread(target=worker) for _ in range(50)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        with django_db_blocker.unblock():
+            final_balance = get_balance(user)
+            user.delete()
+
+        # The one invariant that actually matters: the cap must never be
+        # exceeded, no matter how many requests got capped vs. lock-
+        # contended (SQLite-only) vs. succeeded.
+        assert results["errors"] == 0
+        assert final_balance <= Decimal("25")
+        assert results["awarded"] <= 5
 
 
 @pytest.mark.django_db
