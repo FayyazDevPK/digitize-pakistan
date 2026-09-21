@@ -32,7 +32,7 @@ export default function PrivacyPage() {
         <h1 className="font-display text-4xl mt-4 mb-2">Privacy Policy</h1>
         <p className="font-mono text-[11px] text-muted mb-8">Last updated: September 2026</p>
 
-        <div className="prose text-sm text-ink/90 leading-relaxed space-y-5">
+        <div className="prose text-sm text-graphite leading-relaxed space-y-5">
           <section>
             <h2 className="font-display text-xl mb-2">Who we are</h2>
             <p>

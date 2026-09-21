@@ -92,7 +92,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </div>
           <h1 className="font-display text-3xl md:text-[46px] leading-[1.06]">{article.title}</h1>
           {article.excerpt && (
-            <p className="font-display italic text-lg md:text-xl leading-[1.45] text-ink/85">
+            <p className="font-display italic text-lg md:text-xl leading-[1.45] text-graphite">
               {article.excerpt}
             </p>
           )}
@@ -102,7 +102,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </div>
 
           <div
-            className="text-[16px] md:text-[17px] leading-[1.68] text-ink/85 flex flex-col gap-4 whitespace-pre-wrap"
+            className="text-[16px] md:text-[17px] leading-[1.68] text-graphite flex flex-col gap-4 whitespace-pre-wrap"
           >
             {article.body}
           </div>

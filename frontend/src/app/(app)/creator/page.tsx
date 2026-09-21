@@ -30,7 +30,7 @@ const REVIEW_BADGE: Record<string, string> = {
   APPROVED: "bg-success-bg text-success border border-success",
   REJECTED: "bg-alert/10 text-alert border border-alert",
   SUBMITTED: "bg-white border border-dashed border-border-strong text-muted",
-  IN_REVIEW: "bg-premium-bg text-premium border border-premium",
+  IN_REVIEW: "bg-warning-bg text-warning border border-warning",
 };
 
 export default function CreatorPage() {

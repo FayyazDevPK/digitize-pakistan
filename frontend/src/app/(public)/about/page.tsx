@@ -31,7 +31,7 @@ export default function AboutPage() {
 
         <h1 className="font-display text-4xl mt-4 mb-8">About Digitize Pakistan</h1>
 
-        <div className="prose text-sm text-ink/90 leading-relaxed space-y-5">
+        <div className="prose text-sm text-graphite leading-relaxed space-y-5">
           <section>
             <h2 className="font-display text-xl mb-2">What we are</h2>
             <p>

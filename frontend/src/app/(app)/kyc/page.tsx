@@ -104,7 +104,7 @@ export default function KYCPage() {
                     ? "bg-success-bg border border-success"
                     : record.status === "REJECTED"
                       ? "bg-alert/10 border border-alert"
-                      : "bg-premium-bg border border-[#E3D3A8]"
+                      : "bg-warning-bg border border-warning"
                 }`}
               >
                 <span className="text-[13.5px] font-semibold">
@@ -122,7 +122,7 @@ export default function KYCPage() {
                   <span className="text-[12.5px] text-alert">{record.rejection_reason}</span>
                 )}
                 {record.status === "PENDING" && (
-                  <span className="text-[12.5px] text-[#5C4A1E]">
+                  <span className="text-[12.5px] text-warning">
                     With the compliance desk. Points keep accruing while you wait.
                   </span>
                 )}

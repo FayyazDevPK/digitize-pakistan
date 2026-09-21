@@ -41,7 +41,7 @@ const METHODS = [
 const STATUS_STYLE: Record<string, string> = {
   PAID: "bg-success-bg text-success border border-success",
   APPROVED: "bg-success-bg text-success border border-success",
-  PENDING: "bg-premium-bg text-premium border border-premium",
+  PENDING: "bg-warning-bg text-warning border border-warning",
   REJECTED: "bg-alert/10 text-alert border border-alert",
 };
 
@@ -138,8 +138,8 @@ export default function RewardsPage() {
 
           <div className="px-6 py-6 flex flex-col gap-[18px]">
             {!kycApproved && (
-              <div className="bg-premium-bg border border-[#E3D3A8] rounded-[9px] p-4 flex gap-3 items-start">
-                <span className="text-[17px] text-premium">⏳</span>
+              <div className="bg-warning-bg border border-warning rounded-[9px] p-4 flex gap-3 items-start">
+                <span className="text-[17px] text-warning">⏳</span>
                 <div className="flex flex-col gap-1.5 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <strong className="text-[14.5px] text-[#3E3110]">
@@ -154,7 +154,7 @@ export default function RewardsPage() {
                   </span>
                   <button
                     onClick={() => router.push("/kyc")}
-                    className="text-[12.5px] font-semibold text-premium text-left"
+                    className="text-[12.5px] font-semibold text-warning text-left"
                   >
                     {user.kyc_status === "NONE" ? "Start verification →" : "View submission →"}
                   </button>

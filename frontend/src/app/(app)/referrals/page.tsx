@@ -20,7 +20,7 @@ interface ReferralsData {
 
 const STATUS_STYLE: Record<string, string> = {
   REWARDED: "bg-success-bg text-success border border-success",
-  QUALIFIED: "bg-premium-bg text-premium border border-premium",
+  QUALIFIED: "bg-warning-bg text-warning border border-warning",
   PENDING: "bg-white border border-dashed border-border-strong text-muted",
 };
 

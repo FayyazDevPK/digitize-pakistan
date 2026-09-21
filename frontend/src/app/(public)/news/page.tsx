@@ -93,7 +93,7 @@ export default async function NewsPage() {
                     {lead.title}
                   </h1>
                 </Link>
-                <p className="text-[15px] leading-[1.6] text-ink/85">{lead.excerpt}</p>
+                <p className="text-[15px] leading-[1.6] text-graphite">{lead.excerpt}</p>
               </div>
             </article>
           )}

@@ -78,7 +78,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                     </span>
                   )}
                 </div>
-                <span className="text-sm text-ink/85">{tool.excerpt}</span>
+                <span className="text-sm text-graphite">{tool.excerpt}</span>
                 <div className="flex gap-3.5 font-mono text-[11.5px] text-muted mt-0.5">
                   <span>{tool.category?.name?.toUpperCase()}</span>
                 </div>
@@ -101,7 +101,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
               <span className="font-mono text-[11px] font-semibold tracking-[.16em] border-b border-border pb-1.5">
                 OUR TAKE
               </span>
-              <p className="text-[15px] leading-[1.65] text-ink/85 whitespace-pre-wrap">
+              <p className="text-[15px] leading-[1.65] text-graphite whitespace-pre-wrap">
                 {tool.body}
               </p>
             </div>

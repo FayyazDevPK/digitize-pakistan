@@ -6,6 +6,7 @@
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
   --color-ink: #12151C;
+  --color-graphite: #2A2F3A;
   --color-paper: #F2EEE7;
   --color-paper-raised: #FAF7F2;
   --color-border: #E3DED5;
@@ -23,6 +24,8 @@
   --color-creator-bg: #FBEEF6;
   --color-success: #1B7A57;
   --color-success-bg: #E6F3ED;
+  --color-warning: #B5810A;
+  --color-warning-bg: #FFF6E0;
   --color-alert: #B92D2D;
 }
 

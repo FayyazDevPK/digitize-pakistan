@@ -92,7 +92,7 @@ export default function DashboardPage() {
                 {user.tier}
               </span>
               {user.kyc_status !== "APPROVED" && (
-                <span className="inline-flex items-center gap-1 bg-[#FFF6E0] text-[#7A5B0F] border border-[#E3D3A8] text-[10.5px] font-semibold px-2 py-[3px] rounded">
+                <span className="inline-flex items-center gap-1 bg-warning-bg text-warning border border-warning text-[10.5px] font-semibold px-2 py-[3px] rounded">
                   ⏳ KYC {user.kyc_status}
                 </span>
               )}
