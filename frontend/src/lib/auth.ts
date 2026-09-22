@@ -19,6 +19,29 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_KEY);
 }
 
+// User-initiated logout: revokes the refresh token server-side (so it can't
+// be replayed against /api/token/refresh/ even if it leaked before logout)
+// before clearing local storage. If the revoke call fails for any reason
+// (network error, already expired/blacklisted, etc.) we still clear local
+// storage and complete the logout — a failed revocation shouldn't trap the
+// user in a logged-in state client-side.
+export async function logout(): Promise<void> {
+  const refresh = getRefreshToken();
+  if (refresh) {
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      await fetch(`${API_URL}/api/logout/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh }),
+      });
+    } catch {
+      // ignore — still proceed to clear local tokens below
+    }
+  }
+  clearTokens();
+}
+
 export function isLoggedIn(): boolean {
   return !!getAccessToken();
 }

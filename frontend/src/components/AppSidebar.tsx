@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { clearTokens } from "@/lib/auth";
+import { logout } from "@/lib/auth";
 
 const NAV_ITEMS: { label: string; href: string | null }[] = [
   { label: "Overview", href: "/dashboard" },
@@ -17,8 +17,8 @@ export default function AppSidebar({ tier }: { tier?: string }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  function handleLogout() {
-    clearTokens();
+  async function handleLogout() {
+    await logout();
     router.replace("/login");
   }
 
