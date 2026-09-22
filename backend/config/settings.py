@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.creator',
     'apps.notifications',
     'apps.ads',
+    'apps.subscriptions',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
@@ -183,6 +184,7 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "withdrawal": "5/hour",
     "register": "10/hour",
     "login": "10/min",
+    "subscription": "5/hour",
 }
 
 SIMPLE_JWT = {

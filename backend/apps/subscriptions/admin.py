@@ -1,0 +1,57 @@
+from datetime import timedelta
+
+from django.contrib import admin
+from django.utils import timezone
+
+from apps.notifications.services import notify
+
+from .models import SubscriptionRequest
+
+PREMIUM_DURATION_DAYS = 30
+
+
+@admin.action(description="Approve selected requests (upgrades user to Premium for 30 days)")
+def approve_subscription(modeladmin, request, queryset):
+    for sub in queryset.filter(status="PENDING"):
+        sub.status = "APPROVED"
+        sub.reviewed_at = timezone.now()
+        sub.reviewer = request.user
+        sub.save(update_fields=["status", "reviewed_at", "reviewer"])
+
+        user = sub.user
+        user.tier = "PREMIUM"
+        user.tier_expires_at = timezone.now() + timedelta(days=PREMIUM_DURATION_DAYS)
+        user.save(update_fields=["tier", "tier_expires_at"])
+
+        notify(
+            user,
+            "SUBSCRIPTION",
+            "You're now Premium",
+            f"Your payment was confirmed — Premium is active until "
+            f"{user.tier_expires_at.strftime('%d %b %Y')}.",
+            link="/premium",
+        )
+
+
+@admin.action(description="Reject selected requests")
+def reject_subscription(modeladmin, request, queryset):
+    for sub in queryset.filter(status="PENDING"):
+        sub.status = "REJECTED"
+        sub.reviewed_at = timezone.now()
+        sub.reviewer = request.user
+        sub.save(update_fields=["status", "reviewed_at", "reviewer"])
+
+        notify(
+            sub.user,
+            "SUBSCRIPTION",
+            "Your Premium payment could not be confirmed",
+            sub.rejection_reason or "Please check the details and submit again.",
+            link="/premium",
+        )
+
+
+@admin.register(SubscriptionRequest)
+class SubscriptionRequestAdmin(admin.ModelAdmin):
+    list_display = ("user", "method", "amount_paid", "status", "requested_at", "reviewer")
+    list_filter = ("status", "method")
+    actions = [approve_subscription, reject_subscription]

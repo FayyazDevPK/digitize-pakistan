@@ -10,6 +10,7 @@ class Notification(models.Model):
         ("REFERRAL", "Referral"),
         ("CREATOR", "Creator"),
         ("CONTENT", "Content"),
+        ("SUBSCRIPTION", "Subscription"),
     ]
 
     user = models.ForeignKey(
