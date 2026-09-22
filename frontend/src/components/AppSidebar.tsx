@@ -1,14 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { logout } from "@/lib/auth";
+import { authFetch, logout } from "@/lib/auth";
 
 const NAV_ITEMS: { label: string; href: string | null }[] = [
   { label: "Overview", href: "/dashboard" },
   { label: "My learning", href: "/my-learning" },
   { label: "Rewards", href: "/rewards" },
   { label: "Referrals", href: "/referrals" },
+  { label: "Notifications", href: "/notifications" },
   { label: "Creator studio", href: "/creator" },
   { label: "Settings", href: "/settings" },
 ];
@@ -16,11 +18,23 @@ const NAV_ITEMS: { label: string; href: string | null }[] = [
 export default function AppSidebar({ tier }: { tier?: string }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    authFetch("/api/notifications/")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) setUnreadCount(data.unread_count);
+      })
+      .catch(() => {});
+  }, [pathname]);
 
   async function handleLogout() {
     await logout();
     router.replace("/login");
   }
+
+  const onPremium = pathname?.startsWith("/premium");
 
   return (
     <div className="hidden md:flex w-[214px] shrink-0 bg-ink px-4 py-[22px] flex-col gap-[22px] min-h-screen">
@@ -55,11 +69,14 @@ export default function AppSidebar({ tier }: { tier?: string }) {
               href={item.href}
               className={
                 active
-                  ? "bg-[#242935] text-paper px-[11px] py-[9px] rounded-[6px] font-medium border-l-2 border-vermilion"
-                  : "text-[#B4B9C3] px-[11px] py-[9px] rounded-[6px] hover:bg-[#1C212B] transition-colors"
+                  ? "flex items-center gap-1.5 bg-[#242935] text-paper px-[11px] py-[9px] rounded-[6px] font-medium border-l-2 border-vermilion"
+                  : "flex items-center gap-1.5 text-[#B4B9C3] px-[11px] py-[9px] rounded-[6px] hover:bg-[#1C212B] transition-colors"
               }
             >
               {item.label}
+              {item.label === "Notifications" && unreadCount > 0 && (
+                <span className="w-1.5 h-1.5 rounded-full bg-vermilion shrink-0" />
+              )}
             </Link>
           );
         })}
@@ -67,16 +84,23 @@ export default function AppSidebar({ tier }: { tier?: string }) {
 
       <div className="mt-auto flex flex-col gap-2">
         {tier !== "PREMIUM" && (
-          <div className="bg-[#1C212B] border border-[#2E3441] rounded-[8px] p-3.5 flex flex-col gap-2">
+          <div
+            className={`bg-[#1C212B] border rounded-[8px] p-3.5 flex flex-col gap-2 ${
+              onPremium ? "border-vermilion" : "border-[#2E3441]"
+            }`}
+          >
             <span className="self-start border border-[#6A7180] text-[#C9CCD2] text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
               FREE PLAN
             </span>
             <span className="text-[12.5px] text-[#D3D6DC] leading-[1.5]">
               Premium unlocks 7 paths and 2× read points.
             </span>
-            <span className="bg-[#C48A1F] text-[#1A1403] text-xs font-bold py-2 rounded-[6px] text-center cursor-pointer">
+            <Link
+              href="/premium"
+              className="bg-[#C48A1F] text-[#1A1403] text-xs font-bold py-2 rounded-[6px] text-center"
+            >
               See Premium
-            </span>
+            </Link>
           </div>
         )}
         <button

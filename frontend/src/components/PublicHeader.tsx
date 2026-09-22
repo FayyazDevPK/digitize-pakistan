@@ -10,7 +10,7 @@ const NAV_LINKS = [
 ];
 
 export default function PublicHeader({ active }: { active?: "News" | "AI Tools" }) {
-  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [user, setUser] = useState<CurrentUser | null | undefined>(undefined);
 
   useEffect(() => {
     fetchCurrentUser().then(setUser);
@@ -50,7 +50,9 @@ export default function PublicHeader({ active }: { active?: "News" | "AI Tools" 
         </div>
       </div>
       <div className="flex items-center gap-3.5">
-        {user ? (
+        {user === undefined ? (
+          <div className="w-8 h-8 rounded-full bg-white/10" aria-hidden="true" />
+        ) : user ? (
           <Link href="/dashboard" className="flex items-center gap-2.5">
             <span className="text-sm text-[#D3D6DC] hidden sm:inline">
               {user.display_name || user.username}

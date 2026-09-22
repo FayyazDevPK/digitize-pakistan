@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authFetch, fetchCurrentUser } from "@/lib/auth";
+import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import AppSidebar from "@/components/AppSidebar";
+import MobileTabBar from "@/components/MobileTabBar";
 
 interface NotificationItem {
   id: number;
@@ -16,6 +18,7 @@ interface NotificationItem {
 
 export default function NotificationsPage() {
   const router = useRouter();
+  const [user, setUser] = useState<CurrentUser | null>(null);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +28,7 @@ export default function NotificationsPage() {
       router.replace("/login");
       return;
     }
+    setUser(u);
     const res = await authFetch("/api/notifications/");
     if (res.ok) {
       const data = await res.json();
@@ -44,42 +48,50 @@ export default function NotificationsPage() {
   }
 
   if (loading) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
+  if (!user) return null;
 
   return (
-    <div className="max-w-lg mx-auto mt-16 px-4 pb-16">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-3xl">Notifications</h1>
-        <button
-          onClick={markAllRead}
-          className="font-mono text-xs border border-border-strong rounded-sm px-3 py-1.5 hover:bg-paper-raised transition-colors"
-        >
-          Mark all read
-        </button>
-      </div>
+    <div className="min-h-screen flex bg-paper">
+      <AppSidebar tier={user.tier} />
 
-      {notifications.length === 0 && (
-        <p className="font-mono text-sm text-muted">No notifications yet.</p>
-      )}
-
-      <div className="bg-paper-raised border border-border rounded-md overflow-hidden">
-        {notifications.map((n) => (
-          <div
-            key={n.id}
-            className={`px-5 py-3 border-b border-border last:border-b-0 ${
-              !n.is_read ? "bg-white" : ""
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-sm bg-verified-bg text-verified border border-verified">
-                {n.type}
-              </span>
-              {!n.is_read && <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />}
-            </div>
-            <div className="text-sm font-medium mt-1">{n.title}</div>
-            {n.message && <div className="text-xs text-muted mt-0.5">{n.message}</div>}
+      <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:py-10 pb-24 md:pb-10">
+        <div className="max-w-lg flex flex-col gap-5">
+          <div className="flex items-center justify-between">
+            <h1 className="font-display text-3xl">Notifications</h1>
+            <button
+              onClick={markAllRead}
+              className="font-mono text-xs border border-border-strong rounded-sm px-3 py-1.5 hover:bg-paper-raised transition-colors"
+            >
+              Mark all read
+            </button>
           </div>
-        ))}
+
+          {notifications.length === 0 && (
+            <p className="font-mono text-sm text-muted">No notifications yet.</p>
+          )}
+
+          <div className="bg-paper-raised border border-border-strong rounded-[10px] overflow-hidden">
+            {notifications.map((n) => (
+              <div
+                key={n.id}
+                className={`px-5 py-3 border-b border-border last:border-b-0 ${
+                  !n.is_read ? "bg-white" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-sm bg-verified-bg text-verified border border-verified">
+                    {n.type}
+                  </span>
+                  {!n.is_read && <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />}
+                </div>
+                <div className="text-sm font-medium mt-1">{n.title}</div>
+                {n.message && <div className="text-xs text-muted mt-0.5">{n.message}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+      <MobileTabBar />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
@@ -111,10 +112,18 @@ export default function SettingsPage() {
                 <li>• Priority KYC review</li>
               </ul>
             ) : (
-              <p className="text-sm text-muted">
-                Upgrade to Premium for accelerated rewards, full learning-path access, and Creator
-                Program eligibility.
-              </p>
+              <div className="flex flex-col gap-3">
+                <p className="text-sm text-muted">
+                  Upgrade to Premium for accelerated rewards, full learning-path access, and
+                  Creator Program eligibility.
+                </p>
+                <Link
+                  href="/premium"
+                  className="self-start bg-premium text-white text-sm font-semibold rounded-[7px] px-4 py-2.5 hover:opacity-90 transition-opacity"
+                >
+                  See Premium
+                </Link>
+              </div>
             )}
           </div>
         </div>

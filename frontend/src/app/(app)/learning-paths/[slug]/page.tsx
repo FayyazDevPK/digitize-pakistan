@@ -229,7 +229,7 @@ export default function LearningPathDetailPage() {
                           Unlock the remaining milestones
                         </span>
                         <button
-                          onClick={() => router.push("/settings")}
+                          onClick={() => router.push("/premium")}
                           className="bg-premium text-white text-[13.5px] font-semibold py-3 rounded-[7px] text-center"
                         >
                           Upgrade to Premium

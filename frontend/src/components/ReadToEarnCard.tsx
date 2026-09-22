@@ -5,11 +5,26 @@ import Link from "next/link";
 import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
 
 export default function ReadToEarnCard() {
-  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [user, setUser] = useState<CurrentUser | null | undefined>(undefined);
 
   useEffect(() => {
     fetchCurrentUser().then(setUser);
   }, []);
+
+  if (user === undefined) {
+    return (
+      <div
+        className="bg-ink rounded-[10px] p-[22px] flex flex-col gap-3"
+        aria-hidden="true"
+      >
+        <div className="h-[10.5px] w-24 rounded-full bg-white/10" />
+        <div className="h-[26px] w-4/5 rounded-md bg-white/10" />
+        <div className="h-[13.5px] w-full rounded-full bg-white/10" />
+        <div className="h-[13.5px] w-2/3 rounded-full bg-white/10" />
+        <div className="h-9 w-full rounded-[6px] bg-white/10 mt-1" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-ink rounded-[10px] p-[22px] text-paper flex flex-col gap-3">
