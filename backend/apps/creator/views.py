@@ -61,6 +61,19 @@ class SubmissionsView(APIView):
                 {"detail": "title, body, and category_id are required."}, status=400
             )
 
+        # Security audit finding: `type` was accepted as free-form input and
+        # passed straight into Content.objects.create(), with no check
+        # against the model's actual TYPE_CHOICES. Validate it explicitly
+        # rather than relying on the DB to reject an invalid value at
+        # save-time (CharField with choices doesn't enforce choices at the
+        # database level by default).
+        valid_types = {choice[0] for choice in Content.TYPE_CHOICES}
+        if content_type not in valid_types:
+            return Response(
+                {"detail": f"Invalid type. Must be one of: {', '.join(sorted(valid_types))}."},
+                status=400,
+            )
+
         category = Category.objects.filter(id=category_id).first()
         if not category:
             return Response({"detail": "Invalid category_id."}, status=400)
