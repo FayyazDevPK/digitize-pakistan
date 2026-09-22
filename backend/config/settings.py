@@ -181,4 +181,5 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "read_engagement": "20/min",
     "withdrawal": "5/hour",
     "register": "10/hour",
+    "login": "10/min",
 }
