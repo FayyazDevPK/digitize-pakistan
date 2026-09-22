@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.creator',
     'apps.notifications',
     'apps.ads',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -182,4 +183,9 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "withdrawal": "5/hour",
     "register": "10/hour",
     "login": "10/min",
+}
+
+SIMPLE_JWT = {
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
