@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#DAD9D1;font-family:'Schibsted Grotesk',sans-serif;color:#0B1426;-webkit-font-smoothing:antialiased}a{color:#087A54;text-decoration:none}a:hover{color:#0B1426;text-decoration:underline}*{box-sizing:border-box}</style>
+</helmet>
+<div style="padding:80px;display:flex;flex-direction:column;gap:120px">
+
+<!-- KIT HEADER -->
+<section data-screen-label="00 Kit overview" style="width:1600px;background:#0B1426;color:#FFFFFF;border-radius:8px;padding:72px;display:grid;grid-template-columns:1.1fr 1fr;gap:72px">
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <svg width="40" height="40" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+      <div style="display:flex;align-items:baseline;gap:7px;line-height:1"><span style="font-weight:700;font-size:26px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:29px;color:#C9CFDC">Pakistan</span></div>
+    </div>
+    <span style="font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">SOCIAL KIT &amp; CAMPAIGN BANNERS · V1 · SEPTEMBER 2026</span>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:96px;line-height:.94;letter-spacing:-0.02em">Every post is<br><span style="font-style:italic;color:#F2B233">a receipt.</span></h1>
+    <p style="margin:0;font-size:18px;line-height:1.55;color:#C9CFDC;max-width:600px;text-wrap:pretty">The Ledger &amp; the Leaf, applied to paid and owned media. Serif carries the promise, monospace carries the money, and the Pixel D anchors every frame. All artboards below are at true pixel size — each has an id for clean export.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span style="font:500 12px/1 'JetBrains Mono',monospace;border:1px solid #24304A;padding:8px 10px;border-radius:6px;color:#C9CFDC">7 sections</span>
+      <span style="font:500 12px/1 'JetBrains Mono',monospace;border:1px solid #24304A;padding:8px 10px;border-radius:6px;color:#C9CFDC">44 artboards</span>
+      <span style="font:500 12px/1 'JetBrains Mono',monospace;border:1px solid #24304A;padding:8px 10px;border-radius:6px;color:#C9CFDC">Guides toggle in Tweaks</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:0">
+    <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6E7890;padding-bottom:16px">MESSAGING PILLARS · ROTATE, DON'T REPEAT</span>
+    <div style="border-top:1px solid #24304A;padding:16px 0;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline"><span style="font:600 12px/1 'JetBrains Mono',monospace;color:#1FBF84">P1</span><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:600">Read AI news, get paid for it</span><span style="font-size:14px;color:#9AA3B8">Core hook · general readers</span></div><span style="width:14px;height:14px;border-radius:3px;background:#0B1426;border:1px solid #6E7890"></span></div>
+    <div style="border-top:1px solid #24304A;padding:16px 0;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline"><span style="font:600 12px/1 'JetBrains Mono',monospace;color:#1FBF84">P2</span><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:600">Learn AI, get paid to learn it</span><span style="font-size:14px;color:#9AA3B8">Learning paths · students &amp; upskillers</span></div><span style="width:14px;height:14px;border-radius:3px;background:#087A54"></span></div>
+    <div style="border-top:1px solid #24304A;padding:16px 0;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline"><span style="font:600 12px/1 'JetBrains Mono',monospace;color:#1FBF84">P3</span><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:600">Invite friends, earn together</span><span style="font-size:14px;color:#9AA3B8">Referrals · always iris</span></div><span style="width:14px;height:14px;border-radius:3px;background:#5A5BD5"></span></div>
+    <div style="border-top:1px solid #24304A;padding:16px 0;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline"><span style="font:600 12px/1 'JetBrains Mono',monospace;color:#1FBF84">P4</span><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:600">Get paid to write about AI</span><span style="font-size:14px;color:#9AA3B8">Creator Program · writers, LinkedIn-first</span></div><span style="width:14px;height:14px;border-radius:3px;background:#F2B233"></span></div>
+    <div style="border-top:1px solid #24304A;border-bottom:1px solid #24304A;padding:16px 0;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline"><span style="font:600 12px/1 'JetBrains Mono',monospace;color:#1FBF84">P5</span><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:600">Real cash, verified accounts</span><span style="font-size:14px;color:#9AA3B8">Trust · where credibility is the objection</span></div><span style="width:14px;height:14px;border-radius:3px;background:#F4F3EE"></span></div>
+    <p style="margin:20px 0 0;font-size:14px;line-height:1.55;color:#9AA3B8;text-wrap:pretty">Rules: one pillar per asset. Money always in JetBrains Mono. No exclamation marks, no “guaranteed”, no income claims — only the published rate (1,000 pts = Rs 250) and the 2× Premium multiplier. Guides in <span style="color:#F08A84">rose dashes</span> are not part of the artwork.</p>
+  </div>
+</section>
+
+<!-- 01 FACEBOOK -->
+<section data-screen-label="01 Facebook" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">01</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Facebook Page</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">5 assets</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">FB-01</span><span style="font-size:15px;font-weight:600">Cover photo · P1</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">820 × 312 · mobile safe 400 × 150</span></div>
+      <div id="fb-cover" style="width:820px;height:312px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF">
+        <svg style="position:absolute;left:-60px;top:-40px" width="300" height="300" viewBox="0 0 30 30"><g fill="#141F36"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="position:absolute;left:210px;top:81px;width:400px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center">
+          <span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;color:#1FBF84">AI NEWS · TOOLS · LEARNING</span>
+          <div style="font-family:'Instrument Serif',serif;font-size:50px;line-height:.95;letter-spacing:-0.01em">Read AI news.<br><span style="font-style:italic;color:#F2B233">Get paid for it.</span></div>
+        </div>
+        <div style="position:absolute;right:28px;top:28px;bottom:28px;width:150px;border-left:1px solid #24304A;padding-left:18px;display:flex;flex-direction:column;justify-content:space-between">
+          <span style="font:500 9px/1.4 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6E7890">PUBLISHED RATE</span>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#F2B233">1,000 pts</span><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#6E7890">= = = = = = =</span><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#FFFFFF">Rs 250.00</span></div>
+          <span style="font:500 9px/1.4 'JetBrains Mono',monospace;color:#6E7890">digitize.com.pk</span>
+        </div>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:210px;top:81px;width:400px;height:150px;border:1.5px dashed #F08A84;pointer-events:none"><span style="position:absolute;top:-16px;left:0;font:500 9px/1 'JetBrains Mono',monospace;color:#F08A84">MOBILE SAFE 400×150</span></div>
+          <div style="position:absolute;left:16px;bottom:0;width:176px;height:88px;border:1.5px dashed #F08A84;border-bottom:none;border-radius:88px 88px 0 0;pointer-events:none"></div>
+        </sc-if>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">FB-02</span><span style="font-size:15px;font-weight:600">Profile</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">170 × 170 · circle</span></div>
+      <div id="fb-profile" style="width:170px;height:170px;position:relative;overflow:hidden;background:#0B1426;display:flex;align-items:center;justify-content:center">
+        <svg width="78" height="78" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 200px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">FB-03</span><span style="font-size:15px;font-weight:600">Feed post A · P1 Read</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1200 × 1200</span></div>
+      <div id="fb-post-read" style="width:1200px;height:1200px;position:relative;overflow:hidden;background:#F4F3EE;padding:96px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#087A54">READ-TO-EARN</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:168px;line-height:.9;letter-spacing:-0.025em">Read AI news.<br><span style="font-style:italic;color:#087A54">Get paid for it.</span></div>
+        <div style="background:#0B1426;color:#FFFFFF;border-radius:28px;padding:40px 48px;display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:28px;color:#C9CFDC">Finish an article</span><span style="flex:1;border-bottom:3px dotted #24304A;transform:translateY(-8px)"></span><span style="font:600 32px/1 'JetBrains Mono',monospace;color:#1FBF84">+ pts</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font:600 56px/1 'JetBrains Mono',monospace;color:#F2B233">1,000 pts</span><span style="flex:1;border-bottom:3px dotted #24304A;transform:translateY(-14px)"></span><span style="font:600 56px/1 'JetBrains Mono',monospace">Rs 250.00</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:18px"><svg width="52" height="52" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:10px;line-height:1"><span style="font-weight:700;font-size:38px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:42px;color:#5A6173">Pakistan</span></div></div>
+          <span style="font:500 24px/1 'JetBrains Mono',monospace;color:#5A6173">digitize.com.pk</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">FB-04</span><span style="font-size:15px;font-weight:600">Feed post B · P2 Learn</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1200 × 1200</span></div>
+      <div id="fb-post-learn" style="width:1200px;height:1200px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:96px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">LEARNING PATHS</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:168px;line-height:.9;letter-spacing:-0.025em">Learn AI.<br><span style="font-style:italic;color:#F2B233">Get paid to<br>learn it.</span></div>
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;gap:14px"><span style="flex:1;height:44px;border-radius:9px;background:#1FBF84"></span><span style="flex:1;height:44px;border-radius:9px;background:#1FBF84"></span><span style="flex:1;height:44px;border-radius:9px;background:#1FBF84"></span><span style="flex:1;height:44px;border-radius:9px;background:#141F36;border:2px solid #24304A"></span><span style="flex:1;height:44px;border-radius:9px;background:#141F36;border:2px solid #24304A"></span><span style="width:44px;height:44px;border-radius:50%;background:#F2B233"></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:28px;color:#C9CFDC"><span>Every lesson you finish adds points.</span><span style="font:600 28px/1.2 'JetBrains Mono',monospace;color:#F2B233">Premium · 2×</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:18px"><svg width="52" height="52" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:10px;line-height:1"><span style="font-weight:700;font-size:38px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:42px;color:#C9CFDC">Pakistan</span></div></div>
+          <span style="font:500 24px/1 'JetBrains Mono',monospace;color:#9AA3B8">digitize.com.pk</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">FB-05</span><span style="font-size:15px;font-weight:600">Feed post C · P3 Refer</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1200 × 1200</span></div>
+      <div id="fb-post-refer" style="width:1200px;height:1200px;position:relative;overflow:hidden;background:#5A5BD5;color:#FFFFFF;padding:96px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.14em">REFERRALS</span>
+        <div style="display:flex;align-items:center;gap:0">
+          <div style="width:210px;height:210px;border-radius:44px;background:#0B1426;display:flex;align-items:center;justify-content:center;font:700 72px/1 'Schibsted Grotesk',sans-serif">You</div>
+          <div style="flex:1;height:0;border-top:6px dashed #FFFFFF;position:relative"><span style="position:absolute;left:50%;top:-34px;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:#F2B233"></span></div>
+          <div style="width:210px;height:210px;border-radius:44px;background:#FFFFFF;color:#5A5BD5;display:flex;align-items:center;justify-content:center;font:700 64px/1 'Schibsted Grotesk',sans-serif">Friend</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-size:168px;line-height:.9;letter-spacing:-0.025em">Invite friends.<br><span style="font-style:italic">Earn together.</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:18px;border:2px dashed #FFFFFF;border-radius:18px;padding:18px 24px"><span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.1em">YOUR CODE</span><span style="font:600 34px/1 'JetBrains Mono',monospace">AYESHA24</span></div>
+          <div style="display:flex;align-items:center;gap:16px"><svg width="52" height="52" viewBox="0 0 30 30"><g fill="#FFFFFF"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:38px;letter-spacing:-0.02em">Digitize</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 INSTAGRAM -->
+<section data-screen-label="02 Instagram" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">02</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Instagram</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">9 assets</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-01</span><span style="font-size:15px;font-weight:600">Profile</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">320 × 320 · circle</span></div>
+      <div id="ig-profile" style="width:320px;height:320px;position:relative;overflow:hidden;background:#0B1426;display:flex;align-items:center;justify-content:center">
+        <svg width="146" height="146" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 300px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-02–05</span><span style="font-size:15px;font-weight:600">Highlight covers</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">161 × 161 · circle</span></div>
+      <div style="display:flex;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+          <div id="ig-hl-news" style="width:161px;height:161px;position:relative;overflow:hidden;background:#0B1426;display:flex;align-items:center;justify-content:center">
+            <svg width="64" height="64" viewBox="0 0 30 30"><rect width="30" height="7" rx="2" fill="#FFFFFF"></rect><rect y="11.5" width="22" height="7" rx="2" fill="#1FBF84"></rect><rect y="23" width="14" height="7" rx="2" fill="#1FBF84"></rect><circle cx="26" cy="26.5" r="3.5" fill="#F2B233"></circle></svg>
+            <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 160px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+          </div>
+          <span style="font-size:14px;font-weight:600">News</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+          <div id="ig-hl-rewards" style="width:161px;height:161px;position:relative;overflow:hidden;background:#F2B233;display:flex;align-items:center;justify-content:center">
+            <svg width="64" height="64" viewBox="0 0 30 30"><circle cx="15" cy="15" r="14" fill="#0B1426"></circle><circle cx="15" cy="15" r="9" fill="none" stroke="#F2B233" stroke-width="2.4"></circle><rect x="12.5" y="10" width="5" height="10" rx="1.2" fill="#F2B233"></rect></svg>
+            <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #D6453D;box-shadow:0 0 0 160px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+          </div>
+          <span style="font-size:14px;font-weight:600">Rewards</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+          <div id="ig-hl-learn" style="width:161px;height:161px;position:relative;overflow:hidden;background:#087A54;display:flex;align-items:center;justify-content:center">
+            <svg width="64" height="64" viewBox="0 0 30 30"><g fill="#FFFFFF"><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect><rect x="22" y="22" width="8" height="8" rx="2"></rect><rect x="11" y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+            <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 160px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+          </div>
+          <span style="font-size:14px;font-weight:600">Learn</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+          <div id="ig-hl-refer" style="width:161px;height:161px;position:relative;overflow:hidden;background:#5A5BD5;display:flex;align-items:center;justify-content:center">
+            <svg width="64" height="64" viewBox="0 0 30 30"><rect y="11" width="10" height="10" rx="2.5" fill="#0B1426"></rect><rect x="20" y="11" width="10" height="10" rx="2.5" fill="#FFFFFF"></rect><rect x="11" y="14.5" width="8" height="3" rx="1.5" fill="#FFFFFF"></rect><circle cx="15" cy="5" r="3.5" fill="#F2B233"></circle></svg>
+            <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 160px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+          </div>
+          <span style="font-size:14px;font-weight:600">Refer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-06</span><span style="font-size:15px;font-weight:600">Square post A · P1 Read</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1080 × 1080</span></div>
+      <div id="ig-square-read" style="width:1080px;height:1080px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:88px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="font-family:'Instrument Serif',serif;font-size:140px;line-height:.9;letter-spacing:-0.025em">Your feed,<br><span style="font-style:italic;color:#F2B233">now it pays.</span></div>
+        <div style="background:#FFFFFF;color:#0B1426;border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:22px;transform:rotate(-2deg)">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 18px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">POLICY · 6 MIN READ</span><span style="font:600 22px/1 'JetBrains Mono',monospace;background:#0B1426;color:#F2B233;padding:12px 16px;border-radius:10px">+ pts on finish</span></div>
+          <div style="font-family:'Instrument Serif',serif;font-size:58px;line-height:1.02">What Pakistan’s new AI policy means for freelancers</div>
+          <div style="height:10px;border-radius:5px;background:#E3E2DA;position:relative;overflow:hidden"><span style="position:absolute;left:0;top:0;bottom:0;width:72%;background:#087A54"></span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:16px"><svg width="46" height="46" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:9px;line-height:1"><span style="font-weight:700;font-size:34px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:38px;color:#C9CFDC">Pakistan</span></div></div>
+          <span style="font:500 22px/1 'JetBrains Mono',monospace;color:#9AA3B8">Link in bio</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-07</span><span style="font-size:15px;font-weight:600">Square post B · P5 Trust</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1080 × 1080</span></div>
+      <div id="ig-square-trust" style="width:1080px;height:1080px;position:relative;overflow:hidden;background:#F4F3EE;padding:88px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 20px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#087A54">HOW PAYOUTS WORK</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:140px;line-height:.9;letter-spacing:-0.025em">Real cash.<br><span style="font-style:italic;color:#087A54">Real verification.</span></div>
+        <div style="display:flex;flex-direction:column;border-top:3px solid #0B1426">
+          <div style="display:grid;grid-template-columns:80px 1fr auto;align-items:center;padding:26px 0;border-bottom:2px solid #E3E2DA"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#5A6173">01</span><span style="font-size:34px;font-weight:600">Earn points reading &amp; learning</span><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#087A54">✓</span></div>
+          <div style="display:grid;grid-template-columns:80px 1fr auto;align-items:center;padding:26px 0;border-bottom:2px solid #E3E2DA"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#5A6173">02</span><span style="font-size:34px;font-weight:600">Verify your identity once (KYC)</span><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#087A54">✓</span></div>
+          <div style="display:grid;grid-template-columns:80px 1fr auto;align-items:center;padding:26px 0;border-bottom:2px solid #E3E2DA"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#5A6173">03</span><span style="font-size:34px;font-weight:600">Withdraw to your bank or wallet</span><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#0B1426">1,000 pts = Rs 250</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:16px"><svg width="46" height="46" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:9px;line-height:1"><span style="font-weight:700;font-size:34px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:38px;color:#5A6173">Pakistan</span></div></div>
+          <span style="font:500 22px/1 'JetBrains Mono',monospace;color:#5A6173">Link in bio</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-08</span><span style="font-size:15px;font-weight:600">Portrait post · P2 Learn</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1080 × 1350</span></div>
+      <div id="ig-portrait-learn" style="width:1080px;height:1350px;position:relative;overflow:hidden;background:#087A54;color:#FFFFFF;padding:88px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 20px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#DDF3E8">LEARNING PATH · SAMPLE</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:140px;line-height:.9;letter-spacing:-0.025em">Learn AI.<br><span style="font-style:italic;color:#F2B233">Earn as you go.</span></div>
+        <div style="background:#0B1426;border-radius:28px;padding:44px;display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:24px"><span style="font-size:36px;font-weight:700">AI for Marketers</span><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#9AA3B8">3 / 5</span></div>
+          <div style="display:grid;grid-template-columns:48px 1fr auto;align-items:center;padding:20px 0;border-top:2px solid #24304A"><span style="width:26px;height:26px;border-radius:6px;background:#1FBF84"></span><span style="font-size:28px;color:#C9CFDC">Prompting fundamentals</span><span style="font:600 20px/1 'JetBrains Mono',monospace;color:#1FBF84">DONE</span></div>
+          <div style="display:grid;grid-template-columns:48px 1fr auto;align-items:center;padding:20px 0;border-top:2px solid #24304A"><span style="width:26px;height:26px;border-radius:6px;background:#1FBF84"></span><span style="font-size:28px;color:#C9CFDC">Writing briefs with AI</span><span style="font:600 20px/1 'JetBrains Mono',monospace;color:#1FBF84">DONE</span></div>
+          <div style="display:grid;grid-template-columns:48px 1fr auto;align-items:center;padding:20px 0;border-top:2px solid #24304A"><span style="width:26px;height:26px;border-radius:6px;background:#1FBF84"></span><span style="font-size:28px;color:#C9CFDC">Image tools for campaigns</span><span style="font:600 20px/1 'JetBrains Mono',monospace;color:#1FBF84">DONE</span></div>
+          <div style="display:grid;grid-template-columns:48px 1fr auto;align-items:center;padding:20px 0;border-top:2px solid #24304A"><span style="width:26px;height:26px;border-radius:6px;border:3px solid #F2B233"></span><span style="font-size:28px;font-weight:600">Automating reports</span><span style="font:600 20px/1 'JetBrains Mono',monospace;color:#F2B233">+ pts</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:16px"><svg width="46" height="46" viewBox="0 0 30 30"><g fill="#FFFFFF"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:9px;line-height:1"><span style="font-weight:700;font-size:34px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:38px;color:#DDF3E8">Pakistan</span></div></div>
+          <span style="font:600 22px/1 'JetBrains Mono',monospace;color:#F2B233">Premium earns 2×</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">IG-09</span><span style="font-size:15px;font-weight:600">Story · P1 Read</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1080 × 1920 · UI zones top/bottom 250</span></div>
+      <div id="ig-story" style="width:1080px;height:1920px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF">
+        <svg style="position:absolute;right:-220px;top:760px" width="760" height="760" viewBox="0 0 30 30"><g fill="#141F36"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="position:absolute;left:88px;right:88px;top:300px;bottom:300px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;flex-direction:column;gap:40px">
+            <span style="font:500 24px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">READ-TO-EARN</span>
+            <div style="font-family:'Instrument Serif',serif;font-size:190px;line-height:.88;letter-spacing:-0.03em">Read.<br>Earn.<br><span style="font-style:italic;color:#F2B233">Cash out.</span></div>
+          </div>
+          <div style="background:#141F36;border:2px solid #24304A;border-radius:36px;padding:44px;display:flex;flex-direction:column;gap:18px;width:640px">
+            <span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">BALANCE</span>
+            <span style="font:600 88px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480<span style="font-size:36px;color:#9AA3B8;margin-left:12px">pts</span></span>
+            <span style="font-size:32px;color:#C9CFDC">≈ Rs 3,120.00 · ready to withdraw</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="background:#1FBF84;color:#0B1426;font-size:38px;font-weight:700;padding:30px 44px;border-radius:24px">Tap the link · start earning</div>
+            <svg width="72" height="72" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+          </div>
+        </div>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:0;right:0;top:0;height:250px;background:rgba(214,69,61,.16);border-bottom:2px dashed #F08A84;pointer-events:none;display:flex;align-items:flex-end;padding:0 24px 14px"><span style="font:500 22px/1 'JetBrains Mono',monospace;color:#F08A84">IG UI · KEEP CLEAR · 250px</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:250px;background:rgba(214,69,61,.16);border-top:2px dashed #F08A84;pointer-events:none;padding:14px 24px"><span style="font:500 22px/1 'JetBrains Mono',monospace;color:#F08A84">IG UI · REPLY BAR · 250px</span></div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 YOUTUBE -->
+<section data-screen-label="03 YouTube" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">03</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">YouTube</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">4 assets · thumbnail system</span></div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">YT-01</span><span style="font-size:15px;font-weight:600">Channel banner</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">2560 × 1440 · safe area 1546 × 423 centered</span></div>
+    <div id="yt-banner" style="width:2560px;height:1440px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF">
+      <svg style="position:absolute;left:-200px;top:-260px" width="1100" height="1100" viewBox="0 0 30 30"><g fill="#111B31"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#111B31"></circle></svg>
+      <svg style="position:absolute;right:-240px;bottom:-300px" width="1100" height="1100" viewBox="0 0 30 30"><g fill="#111B31"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+      <div style="position:absolute;left:0;right:0;top:508px;height:423px;background:#0B1426"></div>
+      <div style="position:absolute;left:507px;top:508px;width:1546px;height:423px;display:grid;grid-template-columns:auto 1fr;gap:80px;align-items:center;padding:0 40px">
+        <div style="display:flex;flex-direction:column;gap:26px;border-right:2px solid #24304A;padding-right:80px">
+          <svg width="150" height="150" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+          <div style="display:flex;align-items:baseline;gap:12px;line-height:1"><span style="font-weight:700;font-size:56px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:62px;color:#C9CFDC">Pakistan</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <span style="font:500 24px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">AI NEWS · EXPLAINERS · LEARNING PATHS</span>
+          <div style="font-family:'Instrument Serif',serif;font-size:104px;line-height:.95;letter-spacing:-0.02em">Keep up with AI —<br><span style="font-style:italic;color:#F2B233">and get paid to.</span></div>
+        </div>
+      </div>
+      <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;left:0;right:0;top:508px;height:423px;border-top:2px dashed rgba(240,138,132,.55);border-bottom:2px dashed rgba(240,138,132,.55);pointer-events:none"><span style="position:absolute;left:24px;top:14px;font:500 22px/1 'JetBrains Mono',monospace;color:#F08A84">DESKTOP MAX · 2560 × 423</span></div>
+        <div style="position:absolute;left:507px;top:508px;width:1546px;height:423px;border:3px dashed #F08A84;pointer-events:none"><span style="position:absolute;left:0;top:-36px;font:500 24px/1 'JetBrains Mono',monospace;color:#F08A84">SAFE AREA · 1546 × 423 · ALL DEVICES</span></div>
+        <span style="position:absolute;left:24px;top:24px;font:500 24px/1 'JetBrains Mono',monospace;color:#F08A84">TV · FULL 2560 × 1440</span>
+      </sc-if>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">YT-02</span><span style="font-size:15px;font-weight:600">Channel icon</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">800 × 800 · circle</span></div>
+      <div id="yt-icon" style="width:800px;height:800px;position:relative;overflow:hidden;background:#0B1426;display:flex;align-items:center;justify-content:center">
+        <svg width="360" height="360" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:3px dashed #F08A84;box-shadow:0 0 0 600px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:56px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">YT-03</span><span style="font-size:15px;font-weight:600">Thumbnail · News / explainer</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1280 × 720</span></div>
+        <div id="yt-thumb-news" style="width:1280px;height:720px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;display:grid;grid-template-columns:56% 44%">
+          <div style="padding:56px 0 56px 60px;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:1">
+            <span style="align-self:flex-start;font:700 26px/1 'JetBrains Mono',monospace;letter-spacing:.08em;background:#1FBF84;color:#0B1426;padding:14px 18px;border-radius:10px">AI NEWS</span>
+            <div style="font-family:'Instrument Serif',serif;font-size:118px;line-height:.9;letter-spacing:-0.025em;margin-right:-60px">ChatGPT in Urdu?<br><span style="font-style:italic;color:#F2B233">We tested it.</span></div>
+            <div style="display:flex;align-items:center;gap:14px"><svg width="48" height="48" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:30px;letter-spacing:-0.02em">Digitize</span></div>
+          </div>
+          <div style="position:relative;background:repeating-linear-gradient(135deg,#141F36 0 16px,#19253F 16px 32px);display:flex;align-items:center;justify-content:center">
+            <span style="font:500 20px/1.5 'JetBrains Mono',monospace;color:#6E7890;text-align:center">PRESENTER CUT-OUT<br>face ≥ 40% of height</span>
+            <span style="position:absolute;right:28px;bottom:28px;width:64px;height:64px;border-radius:50%;background:#F2B233"></span>
+          </div>
+          <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;right:12px;bottom:12px;width:170px;height:52px;border:2px dashed #F08A84;pointer-events:none;display:flex;align-items:center;justify-content:center"><span style="font:500 14px/1 'JetBrains Mono',monospace;color:#F08A84">TIMESTAMP</span></div></sc-if>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">YT-04</span><span style="font-size:15px;font-weight:600">Thumbnail · Tutorial / learning path</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1280 × 720</span></div>
+        <div id="yt-thumb-learn" style="width:1280px;height:720px;position:relative;overflow:hidden;background:#F4F3EE;display:grid;grid-template-columns:56% 44%">
+          <div style="padding:56px 0 56px 60px;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:1">
+            <div style="display:flex;gap:10px;align-items:center"><span style="font:700 26px/1 'JetBrains Mono',monospace;letter-spacing:.08em;background:#F2B233;color:#0B1426;padding:14px 18px;border-radius:10px">TUTORIAL</span><span style="font:600 24px/1 'JetBrains Mono',monospace;color:#5A6173">EP 03 / 08</span></div>
+            <div style="font-family:'Instrument Serif',serif;font-size:118px;line-height:.9;letter-spacing:-0.025em;margin-right:-60px">Build your first<br><span style="font-style:italic;color:#087A54">AI workflow.</span></div>
+            <div style="display:flex;align-items:center;gap:14px"><svg width="48" height="48" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:30px;letter-spacing:-0.02em">Digitize</span><span style="display:flex;gap:6px;margin-left:10px"><span style="width:22px;height:22px;border-radius:5px;background:#087A54"></span><span style="width:22px;height:22px;border-radius:5px;background:#087A54"></span><span style="width:22px;height:22px;border-radius:5px;background:#087A54"></span><span style="width:22px;height:22px;border-radius:5px;border:3px solid #B9B8AF"></span><span style="width:22px;height:22px;border-radius:5px;border:3px solid #B9B8AF"></span></span></div>
+          </div>
+          <div style="position:relative;padding:56px 0 56px 20px;display:flex;align-items:center">
+            <div style="width:640px;height:440px;background:#0B1426;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;gap:8px"><span style="width:14px;height:14px;border-radius:50%;background:#24304A"></span><span style="width:14px;height:14px;border-radius:50%;background:#24304A"></span><span style="width:14px;height:14px;border-radius:50%;background:#24304A"></span></div>
+              <div style="flex:1;border-radius:12px;background:repeating-linear-gradient(135deg,#141F36 0 16px,#19253F 16px 32px);display:flex;align-items:center;justify-content:center"><span style="font:500 20px/1.5 'JetBrains Mono',monospace;color:#6E7890;text-align:center">SCREEN RECORDING<br>crop to the key step</span></div>
+            </div>
+          </div>
+          <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;right:12px;bottom:12px;width:170px;height:52px;border:2px dashed #D6453D;pointer-events:none;display:flex;align-items:center;justify-content:center"><span style="font:500 14px/1 'JetBrains Mono',monospace;color:#D6453D">TIMESTAMP</span></div></sc-if>
+        </div>
+      </div>
+    </div>
+    <div style="width:420px;display:flex;flex-direction:column;gap:14px;padding-top:28px">
+      <span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">THUMBNAIL SYSTEM</span>
+      <div style="display:flex;flex-direction:column;border-top:1px solid #B9B8AF">
+        <div style="padding:14px 0;border-bottom:1px solid #B9B8AF;font-size:14px;line-height:1.5"><b>56 / 44 split.</b> Headline left, image right; headline may overhang the seam by 60px.</div>
+        <div style="padding:14px 0;border-bottom:1px solid #B9B8AF;font-size:14px;line-height:1.5"><b>Tag colour = format.</b> Emerald on midnight for news, marigold on porcelain for tutorials.</div>
+        <div style="padding:14px 0;border-bottom:1px solid #B9B8AF;font-size:14px;line-height:1.5"><b>Max 5 words</b> in the headline; the italic line carries the payoff.</div>
+        <div style="padding:14px 0;border-bottom:1px solid #B9B8AF;font-size:14px;line-height:1.5"><b>Mark bottom-left,</b> timestamp zone bottom-right stays empty.</div>
+        <div style="padding:14px 0;border-bottom:1px solid #B9B8AF;font-size:14px;line-height:1.5"><b>Tutorials</b> show path progress as pixel squares next to the mark.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 TIKTOK -->
+<section data-screen-label="04 TikTok" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">04</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">TikTok</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">2 assets</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">TT-01</span><span style="font-size:15px;font-weight:600">Profile</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">200 × 200 · circle</span></div>
+      <div id="tt-profile" style="width:200px;height:200px;position:relative;overflow:hidden;background:#0B1426;display:flex;align-items:center;justify-content:center">
+        <svg width="92" height="92" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed #F08A84;box-shadow:0 0 0 200px rgba(214,69,61,.16);pointer-events:none"></div></sc-if>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">TT-02</span><span style="font-size:15px;font-weight:600">Video cover · news system, vertical</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1080 × 1920 · grid crop 3:4</span></div>
+      <div id="tt-cover" style="width:1080px;height:1920px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF">
+        <div style="position:absolute;left:0;right:0;top:0;height:1040px;background:repeating-linear-gradient(135deg,#141F36 0 20px,#19253F 20px 40px);display:flex;align-items:center;justify-content:center"><span style="font:500 28px/1.5 'JetBrains Mono',monospace;color:#6E7890;text-align:center">PRESENTER / SCREEN<br>full-bleed, face in upper third</span></div>
+        <div style="position:absolute;left:0;right:0;top:880px;height:160px;background:linear-gradient(180deg,rgba(11,20,38,0),#0B1426)"></div>
+        <div style="position:absolute;left:72px;right:180px;top:960px;display:flex;flex-direction:column;gap:36px">
+          <span style="align-self:flex-start;font:700 34px/1 'JetBrains Mono',monospace;letter-spacing:.08em;background:#1FBF84;color:#0B1426;padding:18px 22px;border-radius:12px">AI NEWS</span>
+          <div style="font-family:'Instrument Serif',serif;font-size:150px;line-height:.9;letter-spacing:-0.025em">ChatGPT in Urdu?<br><span style="font-style:italic;color:#F2B233">We tested it.</span></div>
+        </div>
+        <div style="position:absolute;left:72px;top:160px;display:flex;align-items:center;gap:16px;background:#0B1426;padding:14px 20px 14px 14px;border-radius:16px"><svg width="52" height="52" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:34px;letter-spacing:-0.02em">Digitize</span></div>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:0;right:0;top:240px;height:1440px;border-top:3px dashed #F08A84;border-bottom:3px dashed #F08A84;pointer-events:none"><span style="position:absolute;right:24px;top:14px;font:500 22px/1 'JetBrains Mono',monospace;color:#F08A84">PROFILE GRID CROP · 1080 × 1440</span></div>
+          <div style="position:absolute;right:0;top:700px;width:150px;height:820px;background:rgba(214,69,61,.16);border-left:2px dashed #F08A84;pointer-events:none"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:400px;background:rgba(214,69,61,.16);border-top:2px dashed #F08A84;pointer-events:none;padding:14px 24px"><span style="font:500 22px/1 'JetBrains Mono',monospace;color:#F08A84">CAPTION + NAV · KEEP CLEAR</span></div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 LINKEDIN -->
+<section data-screen-label="05 LinkedIn" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">05</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">LinkedIn</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">4 assets · Creator + trust pillars</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">LI-01</span><span style="font-size:15px;font-weight:600">Company cover · P4</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1128 × 191</span></div>
+      <div id="li-cover" style="width:1128px;height:191px;position:relative;overflow:hidden;background:#F4F3EE;display:flex;align-items:center;justify-content:flex-end;padding:0 56px;gap:40px">
+        <svg style="position:absolute;left:-30px;top:-70px" width="330" height="330" viewBox="0 0 30 30"><g fill="#E9E7DE"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="font-family:'Instrument Serif',serif;font-size:46px;line-height:1;letter-spacing:-0.01em;text-align:right;position:relative">Pakistan’s AI newsroom,<br><span style="font-style:italic;color:#087A54">written by paid creators.</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-left:2px solid #0B1426;padding-left:24px;position:relative"><span style="font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">CREATOR PROGRAM</span><span style="font-size:18px;font-weight:700">Apply to write →</span></div>
+        <sc-if value="{{ guides }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:24px;top:40px;width:190px;height:151px;border:1.5px dashed #D6453D;border-bottom:none;pointer-events:none;padding:8px"><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#D6453D">LOGO OVERLAP</span></div></sc-if>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">LI-02</span><span style="font-size:15px;font-weight:600">Company logo</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">300 × 300</span></div>
+      <div id="li-logo" style="width:300px;height:300px;background:#0B1426;display:flex;align-items:center;justify-content:center">
+        <svg width="140" height="140" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">LI-03</span><span style="font-size:15px;font-weight:600">Square post · P4 Creator</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1200 × 1200</span></div>
+      <div id="li-square-creator" style="width:1200px;height:1200px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:96px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 22px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#F2B233">CREATOR PROGRAM · APPLICATIONS OPEN</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:168px;line-height:.9;letter-spacing:-0.025em">Write about AI.<br><span style="font-style:italic;color:#F2B233">Get paid for it.</span></div>
+        <div style="display:flex;flex-direction:column;border-top:2px solid #24304A">
+          <div style="display:grid;grid-template-columns:200px 1fr;padding:24px 0;border-bottom:2px solid #24304A;align-items:baseline"><span style="font:600 24px/1 'JetBrains Mono',monospace;color:#1FBF84">APPLY</span><span style="font-size:32px;color:#C9CFDC">Share samples; our editors review every writer.</span></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;padding:24px 0;border-bottom:2px solid #24304A;align-items:baseline"><span style="font:600 24px/1 'JetBrains Mono',monospace;color:#1FBF84">PUBLISH</span><span style="font-size:32px;color:#C9CFDC">Reach readers across Pakistan on your beat.</span></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;padding:24px 0;border-bottom:2px solid #24304A;align-items:baseline"><span style="font:600 24px/1 'JetBrains Mono',monospace;color:#F2B233">EARN</span><span style="font-size:32px;color:#FFFFFF">A revenue share on what you publish.</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:18px"><svg width="52" height="52" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:10px;line-height:1"><span style="font-weight:700;font-size:38px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:42px;color:#C9CFDC">Pakistan</span></div></div>
+          <span style="font-size:28px;font-weight:700;background:#F2B233;color:#0B1426;padding:20px 28px;border-radius:16px">Apply to write</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">LI-04</span><span style="font-size:15px;font-weight:600">Landscape post · P5 Trust</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1200 × 627</span></div>
+      <div id="li-landscape-trust" style="width:1200px;height:627px;position:relative;overflow:hidden;background:#F4F3EE;display:grid;grid-template-columns:1.15fr 1fr">
+        <div style="padding:64px;display:flex;flex-direction:column;justify-content:space-between">
+          <span style="font:500 16px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#087A54">READ-TO-EARN · HOW IT’S PAID</span>
+          <div style="font-family:'Instrument Serif',serif;font-size:88px;line-height:.92;letter-spacing:-0.02em">Real payouts.<br><span style="font-style:italic;color:#087A54">Verified accounts.</span></div>
+          <div style="display:flex;align-items:center;gap:14px"><svg width="40" height="40" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:8px;line-height:1"><span style="font-weight:700;font-size:28px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:31px;color:#5A6173">Pakistan</span></div></div>
+        </div>
+        <div style="background:#0B1426;color:#FFFFFF;padding:56px 52px;display:flex;flex-direction:column;justify-content:center;gap:26px">
+          <span style="font:500 14px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">PUBLISHED RATE</span>
+          <div style="display:flex;align-items:baseline;gap:12px"><span style="font:600 44px/1 'JetBrains Mono',monospace;color:#F2B233">1,000</span><span style="font:500 20px/1 'JetBrains Mono',monospace;color:#9AA3B8">pts</span><span style="flex:1;border-bottom:2px dotted #24304A"></span><span style="font:600 44px/1 'JetBrains Mono',monospace">Rs 250</span></div>
+          <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid #24304A;padding-top:22px">
+            <span style="font-size:19px;color:#C9CFDC;display:flex;gap:12px"><span style="color:#1FBF84;font-weight:700">✓</span>Identity checked before first withdrawal</span>
+            <span style="font-size:19px;color:#C9CFDC;display:flex;gap:12px"><span style="color:#1FBF84;font-weight:700">✓</span>Paid out via SBP-regulated banks &amp; wallets</span>
+            <span style="font-size:19px;color:#C9CFDC;display:flex;gap:12px"><span style="color:#1FBF84;font-weight:700">✓</span>Every point logged in your ledger</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 IAB DISPLAY ADS -->
+<section data-screen-label="06 Display ads" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">06</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Display ads</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">IAB · 5 sizes × 3 variants · A Read / B Learn / C Trust</span></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#5A6173">MEDIUM RECTANGLE · 300 × 250</span>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+      <div id="ad-300x250-a" style="width:300px;height:250px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:20px;display:flex;flex-direction:column;justify-content:space-between">
+        <svg width="26" height="26" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="font-family:'Instrument Serif',serif;font-size:44px;line-height:.92;letter-spacing:-0.02em">Read AI news.<br><span style="font-style:italic;color:#F2B233">Get paid.</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:500 11px/1.3 'JetBrains Mono',monospace;color:#9AA3B8">1,000 pts<br>= Rs 250</span><span style="background:#1FBF84;color:#0B1426;font-size:14px;font-weight:700;padding:10px 14px;border-radius:9px">Start earning</span></div>
+      </div>
+      <div id="ad-300x250-b" style="width:300px;height:250px;position:relative;overflow:hidden;background:#F4F3EE;padding:20px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid #E3E2DA">
+        <div style="display:flex;justify-content:space-between;align-items:center"><svg width="26" height="26" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="display:flex;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:#087A54"></span><span style="width:12px;height:12px;border-radius:3px;background:#087A54"></span><span style="width:12px;height:12px;border-radius:3px;border:2px solid #B9B8AF"></span></span></div>
+        <div style="font-family:'Instrument Serif',serif;font-size:44px;line-height:.92;letter-spacing:-0.02em">Learn AI.<br><span style="font-style:italic;color:#087A54">Earn as you go.</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#5A6173;line-height:1.3">Free learning<br>paths</span><span style="background:#087A54;color:#FFFFFF;font-size:14px;font-weight:700;padding:10px 14px;border-radius:9px">Browse paths</span></div>
+      </div>
+      <div id="ad-300x250-c" style="width:300px;height:250px;position:relative;overflow:hidden;background:#087A54;color:#FFFFFF;padding:20px;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#DDF3E8">PUBLISHED RATE</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 34px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">1,000 pts</span><span style="font:600 34px/1 'JetBrains Mono',monospace;letter-spacing:-0.03em">= Rs 250</span></div>
+        <span style="font-size:14px;line-height:1.35">Real cash payouts to KYC-verified accounts.</span>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;font-size:15px">Digitize</span><span style="background:#0B1426;color:#FFFFFF;font-size:14px;font-weight:700;padding:10px 14px;border-radius:9px">Join free</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#5A6173">LEADERBOARD · 728 × 90</span>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div id="ad-728x90-a" style="width:728px;height:90px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:0 20px;display:flex;align-items:center;gap:20px">
+        <svg width="34" height="34" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1;letter-spacing:-0.01em;flex:1">Read AI news. <span style="font-style:italic;color:#F2B233">Get paid for it.</span></div>
+        <span style="font:500 11px/1.3 'JetBrains Mono',monospace;color:#9AA3B8;text-align:right">1,000 pts<br>= Rs 250</span>
+        <span style="background:#1FBF84;color:#0B1426;font-size:15px;font-weight:700;padding:12px 16px;border-radius:9px">Start earning</span>
+      </div>
+      <div id="ad-728x90-b" style="width:728px;height:90px;position:relative;overflow:hidden;background:#F4F3EE;border:1px solid #E3E2DA;padding:0 20px;display:flex;align-items:center;gap:20px">
+        <svg width="34" height="34" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1;letter-spacing:-0.01em;flex:1">Learn AI. <span style="font-style:italic;color:#087A54">Earn as you go.</span></div>
+        <span style="display:flex;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:#087A54"></span><span style="width:14px;height:14px;border-radius:3px;background:#087A54"></span><span style="width:14px;height:14px;border-radius:3px;border:2px solid #B9B8AF"></span></span>
+        <span style="background:#087A54;color:#FFFFFF;font-size:15px;font-weight:700;padding:12px 16px;border-radius:9px">Browse paths</span>
+      </div>
+      <div id="ad-728x90-c" style="width:728px;height:90px;position:relative;overflow:hidden;background:#087A54;color:#FFFFFF;padding:0 20px;display:flex;align-items:center;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">1,000 pts = Rs 250</span><span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#DDF3E8">PUBLISHED RATE</span></div>
+        <span style="flex:1;font-size:17px;line-height:1.3;border-left:1px solid rgba(255,255,255,.35);padding-left:20px">Real cash payouts to<br>KYC-verified accounts.</span>
+        <span style="font-weight:700;font-size:17px">Digitize</span>
+        <span style="background:#0B1426;color:#FFFFFF;font-size:15px;font-weight:700;padding:12px 16px;border-radius:9px">Join free</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:80px;flex-wrap:wrap;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#5A6173">HALF PAGE · 300 × 600</span>
+      <div style="display:flex;gap:40px">
+        <div id="ad-300x600-a" style="width:300px;height:600px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:26px;display:flex;flex-direction:column;justify-content:space-between">
+          <svg style="position:absolute;right:-70px;top:170px" width="260" height="260" viewBox="0 0 30 30"><g fill="#141F36"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+          <div style="display:flex;align-items:center;gap:10px;position:relative"><svg width="28" height="28" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:18px">Digitize</span></div>
+          <div style="font-family:'Instrument Serif',serif;font-size:62px;line-height:.9;letter-spacing:-0.02em;position:relative">Read AI news.<br><span style="font-style:italic;color:#F2B233">Get paid for it.</span></div>
+          <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #24304A;padding-top:18px;position:relative">
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:600 20px/1 'JetBrains Mono',monospace;color:#F2B233">1,000 pts</span><span style="flex:1;border-bottom:2px dotted #24304A"></span><span style="font:600 20px/1 'JetBrains Mono',monospace">Rs 250</span></div>
+            <span style="font-size:14px;color:#C9CFDC;line-height:1.4">Earn points for every article you finish. Cash out once verified.</span>
+          </div>
+          <span style="background:#1FBF84;color:#0B1426;font-size:16px;font-weight:700;padding:14px;border-radius:10px;text-align:center;position:relative">Start earning — free</span>
+        </div>
+        <div id="ad-300x600-b" style="width:300px;height:600px;position:relative;overflow:hidden;background:#F4F3EE;border:1px solid #E3E2DA;padding:26px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px"><svg width="28" height="28" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="font-weight:700;font-size:18px">Digitize</span></div>
+          <div style="font-family:'Instrument Serif',serif;font-size:62px;line-height:.9;letter-spacing:-0.02em">Learn AI.<br><span style="font-style:italic;color:#087A54">Get paid to learn it.</span></div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700"><span>AI for Marketers</span><span style="font:600 12px/1.3 'JetBrains Mono',monospace;color:#5A6173">3/5</span></div>
+            <div style="display:flex;gap:5px"><span style="flex:1;height:12px;border-radius:3px;background:#087A54"></span><span style="flex:1;height:12px;border-radius:3px;background:#087A54"></span><span style="flex:1;height:12px;border-radius:3px;background:#087A54"></span><span style="flex:1;height:12px;border-radius:3px;background:#E3E2DA"></span><span style="flex:1;height:12px;border-radius:3px;background:#E3E2DA"></span></div>
+            <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#087A54">Premium earns 2×</span>
+          </div>
+          <span style="background:#087A54;color:#FFFFFF;font-size:16px;font-weight:700;padding:14px;border-radius:10px;text-align:center">Browse learning paths</span>
+        </div>
+        <div id="ad-300x600-c" style="width:300px;height:600px;position:relative;overflow:hidden;background:#087A54;color:#FFFFFF;padding:26px;display:flex;flex-direction:column;justify-content:space-between">
+          <span style="font-weight:700;font-size:18px">Digitize <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:20px;color:#DDF3E8">Pakistan</span></span>
+          <div style="font-family:'Instrument Serif',serif;font-size:58px;line-height:.92;letter-spacing:-0.02em">Real cash.<br><span style="font-style:italic;color:#F2B233">Really verified.</span></div>
+          <div style="background:#0B1426;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">PUBLISHED RATE</span>
+            <span style="font:600 26px/1 'JetBrains Mono',monospace;color:#F2B233">1,000 pts</span>
+            <span style="font:600 26px/1 'JetBrains Mono',monospace">= Rs 250.00</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:14px"><span>✓ KYC-verified accounts</span><span>✓ Bank &amp; mobile wallet payouts</span></div>
+          <span style="background:#FFFFFF;color:#0B1426;font-size:16px;font-weight:700;padding:14px;border-radius:10px;text-align:center">Join free</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#5A6173">MOBILE BANNER · 320 × 50</span>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div id="ad-320x50-a" style="width:320px;height:50px;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:0 8px 0 12px;display:flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="flex:1;font-family:'Instrument Serif',serif;font-size:21px;line-height:1">Read AI news. <span style="font-style:italic;color:#F2B233">Get paid.</span></span><span style="background:#1FBF84;color:#0B1426;font-size:12px;font-weight:700;padding:8px 10px;border-radius:7px">Start</span></div>
+          <div id="ad-320x50-b" style="width:320px;height:50px;overflow:hidden;background:#F4F3EE;border:1px solid #E3E2DA;padding:0 8px 0 12px;display:flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><span style="flex:1;font-family:'Instrument Serif',serif;font-size:21px;line-height:1">Learn AI. <span style="font-style:italic;color:#087A54">Earn as you go.</span></span><span style="background:#087A54;color:#FFFFFF;font-size:12px;font-weight:700;padding:8px 10px;border-radius:7px">Learn</span></div>
+          <div id="ad-320x50-c" style="width:320px;height:50px;overflow:hidden;background:#087A54;color:#FFFFFF;padding:0 8px 0 12px;display:flex;align-items:center;gap:10px"><span style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font:600 15px/1 'JetBrains Mono',monospace;color:#F2B233">1,000 pts = Rs 250</span><span style="font-size:10px;color:#DDF3E8">KYC-verified cash payouts</span></span><span style="background:#0B1426;color:#FFFFFF;font-size:12px;font-weight:700;padding:8px 10px;border-radius:7px">Join free</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:600 12px/1 'JetBrains Mono',monospace;color:#5A6173">LARGE MOBILE BANNER · 320 × 100</span>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div id="ad-320x100-a" style="width:320px;height:100px;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:14px;display:flex;flex-direction:column;justify-content:space-between"><div style="display:flex;justify-content:space-between;align-items:flex-start"><span style="font-family:'Instrument Serif',serif;font-size:28px;line-height:.92">Read AI news.<br><span style="font-style:italic;color:#F2B233">Get paid for it.</span></span><svg width="22" height="22" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#9AA3B8">1,000 pts = Rs 250</span><span style="background:#1FBF84;color:#0B1426;font-size:12px;font-weight:700;padding:6px 10px;border-radius:7px">Start earning</span></div></div>
+          <div id="ad-320x100-b" style="width:320px;height:100px;overflow:hidden;background:#F4F3EE;border:1px solid #E3E2DA;padding:14px;display:flex;flex-direction:column;justify-content:space-between"><div style="display:flex;justify-content:space-between;align-items:flex-start"><span style="font-family:'Instrument Serif',serif;font-size:28px;line-height:.92">Learn AI.<br><span style="font-style:italic;color:#087A54">Earn as you go.</span></span><svg width="22" height="22" viewBox="0 0 30 30"><g fill="#087A54"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="display:flex;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:#087A54"></span><span style="width:10px;height:10px;border-radius:2px;background:#087A54"></span><span style="width:10px;height:10px;border-radius:2px;border:2px solid #B9B8AF"></span></span><span style="background:#087A54;color:#FFFFFF;font-size:12px;font-weight:700;padding:6px 10px;border-radius:7px">Browse paths</span></div></div>
+          <div id="ad-320x100-c" style="width:320px;height:100px;overflow:hidden;background:#087A54;color:#FFFFFF;padding:14px;display:flex;flex-direction:column;justify-content:space-between"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">1,000 pts = Rs 250</span><span style="font-weight:700;font-size:13px">Digitize</span></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;line-height:1.3">Real cash payouts to<br>KYC-verified accounts</span><span style="background:#0B1426;color:#FFFFFF;font-size:12px;font-weight:700;padding:6px 10px;border-radius:7px">Join free</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 PROMO BANNERS -->
+<section data-screen-label="07 Promo banners" style="display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #B9B8AF;padding-bottom:18px;width:1600px"><span style="font:600 13px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:6px 9px;border-radius:5px">07</span><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">On-site &amp; email promos</h2><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#5A6173">5 assets · evergreen + campaign template</span></div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">PR-01</span><span style="font-size:15px;font-weight:600">Homepage hero · Evergreen “join and earn”</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1600 × 500</span></div>
+    <div id="promo-hero-evergreen" style="width:1600px;height:500px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;display:grid;grid-template-columns:1fr 620px;gap:40px;padding:0 80px">
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:28px">
+        <span style="font:500 14px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">READ · LEARN · EARN</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:96px;line-height:.92;letter-spacing:-0.02em">Stay ahead on AI.<br><span style="font-style:italic;color:#F2B233">Get paid to.</span></div>
+        <div style="display:flex;gap:14px;align-items:center"><span style="background:#1FBF84;color:#0B1426;font-size:17px;font-weight:700;padding:16px 22px;border-radius:12px">Create free account</span><span style="font-size:17px;font-weight:600;border-bottom:2px solid #1FBF84;padding-bottom:3px">How payouts work</span></div>
+      </div>
+      <div style="position:relative">
+        <div style="position:absolute;left:0;top:70px;width:380px;background:#FFFFFF;color:#0B1426;border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:14px;transform:rotate(-3deg)">
+          <span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">TOOLS · 4 MIN READ</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.04">Five AI tools Pakistani freelancers actually use</span>
+          <div style="height:6px;border-radius:3px;background:#E3E2DA;position:relative;overflow:hidden"><span style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#087A54"></span></div>
+          <span style="align-self:flex-start;font:600 13px/1 'JetBrains Mono',monospace;background:#DDF3E8;color:#087A54;padding:8px 10px;border-radius:7px">Finished · pts added</span>
+        </div>
+        <div style="position:absolute;right:0;top:190px;width:320px;background:#141F36;border:1px solid #24304A;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:10px;transform:rotate(2deg)">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#9AA3B8">BALANCE</span>
+          <span style="font:600 40px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480<span style="font-size:16px;color:#9AA3B8;margin-left:8px">pts</span></span>
+          <span style="font-size:15px;color:#C9CFDC">≈ Rs 3,120.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">PR-02</span><span style="font-size:15px;font-weight:600">Homepage hero · Campaign template (referral drive)</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">1600 × 500 · swap [slots]</span></div>
+    <div id="promo-hero-referral" style="width:1600px;height:500px;position:relative;overflow:hidden;background:#5A5BD5;color:#FFFFFF;display:grid;grid-template-columns:1fr 640px;gap:40px;padding:0 80px">
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:26px">
+        <div style="display:flex;gap:12px;align-items:center"><span style="font:600 14px/1 'JetBrains Mono',monospace;letter-spacing:.12em;background:#0B1426;padding:10px 12px;border-radius:8px">REFERRAL WEEK</span><span style="font:600 14px/1 'JetBrains Mono',monospace;letter-spacing:.08em;border:1.5px dashed #FFFFFF;padding:9px 12px;border-radius:8px">[CAMPAIGN DATES]</span></div>
+        <div style="font-family:'Instrument Serif',serif;font-size:96px;line-height:.92;letter-spacing:-0.02em">Bring a friend.<br><span style="font-style:italic">You both earn.</span></div>
+        <div style="display:flex;gap:14px;align-items:center"><span style="background:#FFFFFF;color:#0B1426;font-size:17px;font-weight:700;padding:16px 22px;border-radius:12px">Copy my invite link</span><span style="font-size:17px;font-weight:600;border-bottom:2px solid #F2B233;padding-bottom:3px">[Bonus terms]</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:14px">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div style="background:rgba(11,20,38,.28);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px"><span style="font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.1em">01 · PENDING</span><span style="font-size:17px;line-height:1.35">Friend signs up with your link</span></div>
+          <div style="background:rgba(11,20,38,.5);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px"><span style="font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.1em">02 · QUALIFIED</span><span style="font-size:17px;line-height:1.35">They verify &amp; start reading</span></div>
+          <div style="background:#0B1426;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px"><span style="font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#F2B233">03 · REWARDED</span><span style="font-size:17px;line-height:1.35">Bonus points land for both</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#0B1426;border-radius:18px;padding:18px 22px"><span style="width:34px;height:34px;border-radius:50%;background:#F2B233;flex:none"></span><span style="flex:1;font-size:17px">Referral bonus this week</span><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#F2B233">[+ ___ pts]</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">PR-03</span><span style="font-size:15px;font-weight:600">Mobile hero · Evergreen</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">800 × 600</span></div>
+      <div id="promo-mobile-evergreen" style="width:800px;height:600px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:56px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="position:absolute;right:-60px;top:40px;width:290px;background:#141F36;border:1px solid #24304A;border-radius:24px;padding:26px;display:flex;flex-direction:column;gap:10px;transform:rotate(4deg)">
+          <span style="font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#9AA3B8">BALANCE</span>
+          <span style="font:600 44px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480</span>
+          <span style="font-size:17px;color:#C9CFDC">≈ Rs 3,120.00</span>
+        </div>
+        <span style="font:500 18px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84;position:relative">READ · LEARN · EARN</span>
+        <div style="font-family:'Instrument Serif',serif;font-size:104px;line-height:.9;letter-spacing:-0.025em;position:relative">Stay ahead<br>on AI.<br><span style="font-style:italic;color:#F2B233">Get paid to.</span></div>
+        <span style="align-self:stretch;text-align:center;background:#1FBF84;color:#0B1426;font-size:26px;font-weight:700;padding:24px;border-radius:16px">Create free account</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">PR-04</span><span style="font-size:15px;font-weight:600">Mobile hero · Campaign template</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">800 × 600</span></div>
+      <div id="promo-mobile-referral" style="width:800px;height:600px;position:relative;overflow:hidden;background:#5A5BD5;color:#FFFFFF;padding:56px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;gap:12px;align-items:center"><span style="font:600 18px/1 'JetBrains Mono',monospace;letter-spacing:.12em;background:#0B1426;padding:12px 14px;border-radius:10px">REFERRAL WEEK</span><span style="font:600 18px/1 'JetBrains Mono',monospace;border:2px dashed #FFFFFF;padding:10px 14px;border-radius:10px">[DATES]</span></div>
+        <div style="font-family:'Instrument Serif',serif;font-size:104px;line-height:.9;letter-spacing:-0.025em">Bring a friend.<br><span style="font-style:italic">You both earn.</span></div>
+        <div style="display:flex;align-items:center;gap:16px;background:#0B1426;border-radius:18px;padding:20px 24px"><span style="width:38px;height:38px;border-radius:50%;background:#F2B233;flex:none"></span><span style="flex:1;font-size:22px">Bonus per qualified friend</span><span style="font:600 30px/1 'JetBrains Mono',monospace;color:#F2B233">[+ ___ pts]</span></div>
+        <span style="text-align:center;background:#FFFFFF;color:#0B1426;font-size:26px;font-weight:700;padding:24px;border-radius:16px">Copy my invite link</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="font:600 11px/1 'JetBrains Mono',monospace;color:#5A6173">PR-05</span><span style="font-size:15px;font-weight:600">Email header</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">600 × 200</span></div>
+      <div id="email-header" style="width:600px;height:200px;position:relative;overflow:hidden;background:#0B1426;color:#FFFFFF;padding:28px 32px;display:flex;flex-direction:column;justify-content:space-between">
+        <svg style="position:absolute;right:-40px;top:-50px" width="220" height="220" viewBox="0 0 30 30"><g fill="#141F36"><rect width="8" height="8" rx="1.5"></rect><rect x="11" width="8" height="8" rx="1.5"></rect><rect y="11" width="8" height="8" rx="1.5"></rect><rect x="22" y="11" width="8" height="8" rx="1.5"></rect><rect y="22" width="8" height="8" rx="1.5"></rect><rect x="11" y="22" width="8" height="8" rx="1.5"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg>
+        <div style="display:flex;justify-content:space-between;align-items:center;position:relative">
+          <div style="display:flex;align-items:center;gap:10px"><svg width="24" height="24" viewBox="0 0 30 30"><g fill="#1FBF84"><rect width="8" height="8" rx="2"></rect><rect x="11" width="8" height="8" rx="2"></rect><rect y="11" width="8" height="8" rx="2"></rect><rect x="22" y="11" width="8" height="8" rx="2"></rect><rect y="22" width="8" height="8" rx="2"></rect><rect x="11" y="22" width="8" height="8" rx="2"></rect></g><circle cx="26" cy="4" r="4" fill="#F2B233"></circle></svg><div style="display:flex;align-items:baseline;gap:5px;line-height:1"><span style="font-weight:700;font-size:17px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;color:#C9CFDC">Pakistan</span></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;position:relative">
+          <div style="font-family:'Instrument Serif',serif;font-size:46px;line-height:.95;letter-spacing:-0.01em">Your weekly<br><span style="font-style:italic;color:#F2B233">AI briefing.</span></div>
+          <span style="font:500 12px/1.5 'JetBrains Mono',monospace;color:#9AA3B8;text-align:right">[ISSUE No.]<br>[DATE]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuides&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Export&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { guides: this.props.showGuides ?? true };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="width:272px;height:100%;box-sizing:border-box;padding:12px;font-family:'Schibsted Grotesk',sans-serif;display:flex;flex-direction:column">
+<div style="background:#0B1426;border-radius:22px;flex:1;box-sizing:border-box;padding:22px 16px 16px;display:flex;flex-direction:column;gap:22px;color:#FFFFFF">
+  <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+    <div style="display:grid;grid-template-columns:repeat(3,7px);gap:2px">
+      <div style="height:7px;background:#1FBF84;border-radius:1.5px"></div><div style="height:7px;background:#1FBF84;border-radius:1.5px"></div><div style="height:7px;background:#F2B233;border-radius:50%"></div>
+      <div style="height:7px;background:#1FBF84;border-radius:1.5px"></div><div style="height:7px"></div><div style="height:7px;background:#1FBF84;border-radius:1.5px"></div>
+      <div style="height:7px;background:#1FBF84;border-radius:1.5px"></div><div style="height:7px;background:#1FBF84;border-radius:1.5px"></div><div style="height:7px"></div>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:5px;line-height:1">
+      <span style="font-weight:700;font-size:17px;letter-spacing:-0.02em">Digitize</span>
+      <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;color:#C9CFDC">Pakistan</span>
+    </div>
+  </div>
+  <div style="background:#141F36;border:1px solid #24304A;border-radius:16px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#9AA3B8">Balance</span>
+      <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#1FBF84">+1,240 this wk</span>
+    </div>
+    <div style="font:600 24px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.02em">12,480<span style="font-size:12px;color:#9AA3B8;margin-left:5px">pts</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;color:#C9CFDC">≈ Rs 3,120.00</span>
+      <span style="font-size:12px;font-weight:600;color:#FFFFFF;border-bottom:1px solid #1FBF84">Withdraw</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:18px">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#6E7890;padding:0 10px 8px">{{ g.title }}</div>
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+          <sc-if value="{{ it.active }}">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 10px;border-radius:11px;background:#FFFFFF;color:#0B1426">
+              <span style="font:600 10px/1 'JetBrains Mono',monospace;color:#087A54;width:16px">{{ it.idx }}</span>
+              <span style="font-size:14px;font-weight:600;flex:1">{{ it.label }}</span>
+              <span style="width:6px;height:6px;border-radius:50%;background:#1FBF84"></span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ it.inactive }}">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 10px;border-radius:11px;color:#C9CFDC" style-hover="background:#141F36;color:#FFFFFF">
+              <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#6E7890;width:16px">{{ it.idx }}</span>
+              <span style="font-size:14px;font-weight:500;flex:1">{{ it.label }}</span>
+              <sc-if value="{{ it.badge }}"><span style="font:600 10px/1 'JetBrains Mono',monospace;background:#F2B233;color:#0B1426;padding:4px 6px;border-radius:6px">{{ it.badge }}</span></sc-if>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+  <div style="flex:1"></div>
+  <div style="border-radius:16px;padding:16px;background:#F2B233;color:#0B1426;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden">
+    <div style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase">Premium</div>
+    <div style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.05">Earn more on every read.</div>
+    <div style="font-size:12px;line-height:1.4">Unlock every learning path and higher point rates.</div>
+    <div style="margin-top:4px;align-self:flex-start;background:#0B1426;color:#FFFFFF;font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px">Upgrade · Rs 999/mo</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 6px 2px;border-top:1px solid #24304A">
+    <div style="width:36px;height:36px;border-radius:11px;background:#1FBF84;color:#0B1426;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">AR</div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+      <span style="font-size:13px;font-weight:600">Ayesha Rahman</span>
+      <span style="font-size:11px;color:#9AA3B8">Free tier · <span style="color:#1FBF84">KYC verified</span></span>
+    </div>
+    <span style="font:500 14px/1 'JetBrains Mono',monospace;color:#6E7890">⋯</span>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:272,&quot;height&quot;:1000},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Overview&quot;,&quot;My learning&quot;,&quot;Rewards&quot;,&quot;Referrals&quot;,&quot;Creator studio&quot;,&quot;Notifications&quot;,&quot;Identity (KYC)&quot;,&quot;Premium&quot;,&quot;Settings&quot;],&quot;default&quot;:&quot;Overview&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const a = this.props.active ?? 'Overview';
+    const mk = (idx, label, badge) => ({ idx, label, badge, active: label === a, inactive: label !== a });
+    return { groups: [
+      { title: 'Earn', items: [mk('01','Overview'), mk('02','My learning'), mk('03','Rewards'), mk('04','Referrals')] },
+      { title: 'Create', items: [mk('05','Creator studio')] },
+      { title: 'Account', items: [mk('06','Notifications','3'), mk('07','Identity (KYC)'), mk('08','Premium'), mk('09','Settings')] }
+    ]};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#DAD9D1;font-family:'Schibsted Grotesk',sans-serif;color:#0B1426;-webkit-font-smoothing:antialiased}a{color:#087A54;text-decoration:none}a:hover{color:#0B1426;text-decoration:underline}*{box-sizing:border-box}</style>
+</helmet>
+<div style="padding:64px;display:flex;flex-direction:column;gap:96px">
+
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:baseline;gap:14px"><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:5px 8px;border-radius:5px">00</span><span style="font-size:15px;font-weight:600">Brand system</span></div>
+  <div data-screen-label="Brand system · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <div style="background:#0B1426;color:#FFFFFF;padding:72px 72px 64px;display:grid;grid-template-columns:1.3fr 1fr;gap:64px">
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#1FBF84">BRAND SYSTEM · V2 · SEPTEMBER 2026</span>
+        <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:112px;line-height:.92;letter-spacing:-0.02em">The Ledger<br><span style="font-style:italic;color:#F2B233">&amp; the Leaf.</span></h1>
+        <p style="margin:0;font-size:18px;line-height:1.55;color:#C9CFDC;max-width:560px">A fresh identity for Digitize Pakistan: the clarity of a bank statement married to the warmth of a good newspaper. Money is always shown precisely, in monospace. Stories are always set in serif. Everything else stays out of the way.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;justify-content:flex-end">
+        <sc-for list="{{ principles }}" as="p" hint-placeholder-count="3">
+          <div style="border-top:1px solid #24304A;padding-top:14px;display:grid;grid-template-columns:36px 1fr;gap:12px">
+            <span style="font:500 12px/1.4 'JetBrains Mono',monospace;color:#6E7890">{{ p.n }}</span>
+            <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:600">{{ p.t }}</span><span style="font-size:14px;line-height:1.5;color:#9AA3B8">{{ p.d }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding:64px 72px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid #E3E2DA">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Logo — the Pixel D</h2><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;letter-spacing:.1em">01 / IDENTITY</span></div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:20px">
+        <div style="background:#0B1426;border-radius:20px;padding:40px;display:flex;flex-direction:column;justify-content:space-between;min-height:340px">
+          <div style="display:grid;grid-template-columns:repeat(3,48px);gap:8px">
+            <div style="height:48px;background:#1FBF84;border-radius:10px"></div><div style="height:48px;background:#1FBF84;border-radius:10px"></div><div style="height:48px;background:#F2B233;border-radius:50%"></div>
+            <div style="height:48px;background:#1FBF84;border-radius:10px"></div><div style="height:48px;border:1.5px dashed #24304A;border-radius:10px"></div><div style="height:48px;background:#1FBF84;border-radius:10px"></div>
+            <div style="height:48px;background:#1FBF84;border-radius:10px"></div><div style="height:48px;background:#1FBF84;border-radius:10px"></div><div style="height:48px;border:1.5px dashed #24304A;border-radius:10px"></div>
+          </div>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:#C9CFDC;max-width:360px">Seven emerald pixels draw a “D”. The eighth cell becomes a marigold dot — a coin, and a quiet nod to the star on the flag. Built from a 3×3 grid, so it renders crisply as a Tailwind grid, favicon or app icon.</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:28px;justify-content:center">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="display:grid;grid-template-columns:repeat(3,11px);gap:3px">
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#F2B233;border-radius:50%"></div>
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div>
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px"></div>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:7px;line-height:1"><span style="font-weight:700;font-size:28px;letter-spacing:-0.02em">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:31px;color:#5A6173">Pakistan</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;direction:rtl">
+            <div style="display:grid;grid-template-columns:repeat(3,11px);gap:3px;direction:ltr">
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#F2B233;border-radius:50%"></div>
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div>
+              <div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px;background:#087A54;border-radius:2.5px"></div><div style="height:11px"></div>
+            </div>
+            <span style="font-family:'Noto Nastaliq Urdu',serif;font-size:24px;line-height:1.9">ڈیجیٹائز پاکستان</span>
+          </div>
+          <div style="font-size:13px;line-height:1.5;color:#5A6173">Wordmark pairs a tight grotesk “Digitize” (the tech) with an italic serif “Pakistan” (the people). Urdu lockup mirrors for right-to-left.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div style="background:#087A54;border-radius:20px;display:flex;align-items:center;justify-content:center">
+            <div style="width:88px;height:88px;border-radius:22px;background:#0B1426;display:flex;align-items:center;justify-content:center"><div style="display:grid;grid-template-columns:repeat(3,12px);gap:3px"><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px;background:#F2B233;border-radius:50%"></div><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px"></div><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px;background:#1FBF84;border-radius:3px"></div><div style="height:12px"></div></div></div>
+          </div>
+          <div style="background:#F2B233;border-radius:20px;display:flex;align-items:center;justify-content:center">
+            <div style="width:88px;height:88px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center"><div style="display:grid;grid-template-columns:repeat(3,12px);gap:3px"><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px;background:#F2B233;border-radius:50%"></div><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px"></div><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px;background:#087A54;border-radius:3px"></div><div style="height:12px"></div></div></div>
+          </div>
+          <div style="grid-column:span 2;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:20px;font-size:13px;line-height:1.5;color:#5A6173"><b style="color:#0B1426">App icon &amp; avatar.</b> Midnight tile for the app; round white chip on marigold for social avatars and the favicon at 16px (the dot drops out below 20px).</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:64px 72px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid #E3E2DA">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Palette</h2><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;letter-spacing:.1em">02 / COLOR</span></div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:14px">
+        <sc-for list="{{ palette }}" as="c" hint-placeholder-count="12">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;overflow:hidden;display:flex;flex-direction:column">
+            <div style="height:96px;background:{{ c.hex }};border-bottom:1px solid #E3E2DA"></div>
+            <div style="padding:12px 14px;display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:14px;font-weight:600">{{ c.name }}</span>
+              <span style="font:500 12px/1 'JetBrains Mono',monospace;color:#0B1426">{{ c.hex }}</span>
+              <span style="font-size:12px;line-height:1.4;color:#5A6173">{{ c.role }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173">LEDGER TYPE COLORS — USED IN EVERY CHART &amp; TAG</span>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:flex;align-items:center;gap:7px;font:500 11px/1 'JetBrains Mono',monospace;background:#DDF3E8;color:#065C40;padding:7px 10px;border-radius:7px"><span style="width:8px;height:8px;border-radius:2px;background:#1FBF84"></span>READ_ENGAGEMENT</span>
+            <span style="display:flex;align-items:center;gap:7px;font:500 11px/1 'JetBrains Mono',monospace;background:#E7E7FB;color:#3A3BA8;padding:7px 10px;border-radius:7px"><span style="width:8px;height:8px;border-radius:2px;background:#5A5BD5"></span>REFERRAL_BONUS</span>
+            <span style="display:flex;align-items:center;gap:7px;font:500 11px/1 'JetBrains Mono',monospace;background:#FCEFCC;color:#7A5300;padding:7px 10px;border-radius:7px"><span style="width:8px;height:8px;border-radius:2px;background:#F2B233"></span>CREATOR_BOUNTY</span>
+            <span style="display:flex;align-items:center;gap:7px;font:500 11px/1 'JetBrains Mono',monospace;background:#FBE3E0;color:#A12E27;padding:7px 10px;border-radius:7px"><span style="width:8px;height:8px;border-radius:2px;background:#D6453D"></span>WITHDRAWAL</span>
+            <span style="display:flex;align-items:center;gap:7px;font:500 11px/1 'JetBrains Mono',monospace;background:#ECECE6;color:#454B5C;padding:7px 10px;border-radius:7px"><span style="width:8px;height:8px;border-radius:2px;background:#8A8F9C"></span>ADJUSTMENT</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173">SURFACES — DARK FOR NAVIGATION &amp; MONEY, LIGHT FOR READING</span>
+          <div style="display:flex;gap:10px;font-size:13px">
+            <div style="flex:1;background:#0B1426;color:#FFFFFF;border-radius:10px;padding:14px">Nav, footer, balance</div>
+            <div style="flex:1;background:#F4F3EE;border:1px solid #E3E2DA;border-radius:10px;padding:14px">Page canvas</div>
+            <div style="flex:1;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:10px;padding:14px">Cards &amp; forms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:64px 72px;display:grid;grid-template-columns:1fr 1fr;gap:48px;border-bottom:1px solid #E3E2DA">
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Typography</h2><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;letter-spacing:.1em">03 / TYPE</span></div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="border-top:1px solid #E3E2DA;padding:18px 0;display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:56px;line-height:1">Instrument Serif</span><span style="font-size:12px;line-height:1.5;color:#5A6173">Headlines, display, editorial moments. 400 + italic.</span></div>
+          <div style="border-top:1px solid #E3E2DA;padding:18px 0;display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center"><span style="font-size:40px;font-weight:600;letter-spacing:-0.02em;line-height:1">Schibsted Grotesk</span><span style="font-size:12px;line-height:1.5;color:#5A6173">UI, body, labels. 400–800.</span></div>
+          <div style="border-top:1px solid #E3E2DA;padding:18px 0;display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center"><span style="font:500 34px/1 'JetBrains Mono',monospace;color:#087A54">+1,240 pts</span><span style="font-size:12px;line-height:1.5;color:#5A6173">Every number: points, rupees, dates, codes.</span></div>
+          <div style="border-top:1px solid #E3E2DA;border-bottom:1px solid #E3E2DA;padding:14px 0;display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center"><span style="font-family:'Noto Nastaliq Urdu',serif;font-size:32px;line-height:2;direction:rtl;text-align:right">السلام علیکم، عائشہ</span><span style="font-size:12px;line-height:1.5;color:#5A6173">Noto Nastaliq Urdu for greetings &amp; taglines.</span></div>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:0">
+        <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173;margin-bottom:14px">SCALE (DESKTOP → MOBILE)</span>
+        <sc-for list="{{ scale }}" as="s" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:110px 1fr 90px;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid #EFEEE8">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;color:#087A54">{{ s.token }}</span>
+            <span style="font-size:14px">{{ s.use }}</span>
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;text-align:right">{{ s.size }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding:64px 72px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Core components</h2><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;letter-spacing:.1em">04 / UI</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173">BUTTONS · RADIUS 11 · H 42/48</span>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <span style="background:#087A54;color:#FFFFFF;font-size:14px;font-weight:600;padding:12px 18px;border-radius:11px">Primary</span>
+            <span style="background:#0B1426;color:#FFFFFF;font-size:14px;font-weight:600;padding:12px 18px;border-radius:11px">Money action</span>
+            <span style="background:#FFFFFF;border:1px solid #D4D3CA;color:#0B1426;font-size:14px;font-weight:600;padding:11px 17px;border-radius:11px">Secondary</span>
+            <span style="color:#087A54;font-size:14px;font-weight:600;padding:12px 4px">Text link →</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173">STATUS PILLS</span>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600">
+            <span style="background:#FCEFCC;color:#7A5300;padding:6px 10px;border-radius:999px">● Pending</span>
+            <span style="background:#E7E7FB;color:#3A3BA8;padding:6px 10px;border-radius:999px">● Qualified</span>
+            <span style="background:#DDF3E8;color:#065C40;padding:6px 10px;border-radius:999px">● Rewarded</span>
+            <span style="background:#DDF3E8;color:#065C40;padding:6px 10px;border-radius:999px">● Paid</span>
+            <span style="background:#FBE3E0;color:#A12E27;padding:6px 10px;border-radius:999px">● Rejected</span>
+            <span style="background:#ECECE6;color:#454B5C;padding:6px 10px;border-radius:999px">● In review</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173">INPUT · H 46 · RADIUS 11</span>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Referral code <span style="font-weight:400;color:#8A8F9C">— optional</span></span><div style="height:46px;border:1.5px solid #087A54;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 14px/1 'JetBrains Mono',monospace;box-shadow:0 0 0 4px #DDF3E8">AYESHA-7K2</div><span style="font-size:12px;color:#087A54">✓ You’ll both get +100 pts once you’re active</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:baseline;gap:14px"><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:5px 8px;border-radius:5px">01</span><span style="font-size:15px;font-weight:600">Public · desktop</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+  <div data-screen-label="Home / News feed · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <dc-import name="PublicHeader" active="News" hint-size="100%,112px"></dc-import>
+    <div style="padding:40px 48px 72px;display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #0B1426;padding-bottom:18px">
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">TUESDAY · 23 SEPTEMBER 2026 · KARACHI</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:64px;line-height:1">Today in AI</h1></div>
+        <div style="display:flex;gap:8px;font-size:13px;font-weight:500">
+          <span style="background:#0B1426;color:#FFFFFF;padding:8px 14px;border-radius:999px">All</span><span style="border:1px solid #D4D3CA;padding:7px 13px;border-radius:999px">Policy</span><span style="border:1px solid #D4D3CA;padding:7px 13px;border-radius:999px">Research</span><span style="border:1px solid #D4D3CA;padding:7px 13px;border-radius:999px">Products</span><span style="border:1px solid #D4D3CA;padding:7px 13px;border-radius:999px">Pakistan</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:40px">
+        <article style="display:flex;flex-direction:column;gap:20px">
+          <div style="aspect-ratio:16/9;border-radius:18px;background:repeating-linear-gradient(135deg,#E6E5DE 0 12px,#EDECE6 12px 24px);display:flex;align-items:flex-end;padding:18px"><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;background:#FFFFFF;padding:6px 9px;border-radius:6px">lead image · 16:9</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">POLICY</span><span style="color:#D4D3CA">·</span><span style="font-size:13px;color:#5A6173">7 min read</span><span style="flex:1"></span><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#FCEFCC;color:#7A5300;padding:6px 9px;border-radius:6px">READ TO EARN · +40 PTS</span></div>
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1.02;letter-spacing:-0.01em;text-wrap:balance">Pakistan’s first national AI policy is here. What it means for your job, your data and your startup.</h2>
+          <p style="margin:0;font-size:19px;line-height:1.55;color:#454B5C;max-width:760px">The framework sets up a national AI fund, data-residency rules and a skills target of a million trained professionals. We read all 60 pages so you don’t have to.</p>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#5A6173"><span style="width:28px;height:28px;border-radius:50%;background:#D4D3CA"></span><span style="color:#0B1426;font-weight:600">Hamza Qureshi</span><span>· 2 hours ago</span></div>
+        </article>
+        <aside style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#0B1426;color:#FFFFFF;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:20px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">THE DIGITIZE ECONOMY</span>
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:38px;line-height:1.02">Your time is worth something. <span style="font-style:italic;color:#F2B233">We pay it.</span></h3>
+            <div style="background:#141F36;border:1px solid #24304A;border-radius:14px;padding:16px;display:flex;align-items:baseline;justify-content:space-between">
+              <span style="font:600 26px/1 'JetBrains Mono',monospace">1,000<span style="font-size:12px;color:#9AA3B8"> pts</span></span><span style="color:#6E7890">→</span><span style="font:600 26px/1 'JetBrains Mono',monospace;color:#F2B233">Rs 250</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0">
+              <div style="display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid #24304A;font-size:14px"><span>Read an article</span><span style="font-family:'JetBrains Mono',monospace;color:#1FBF84">+20–40</span></div>
+              <div style="display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid #24304A;font-size:14px"><span>Finish a learning path</span><span style="font-family:'JetBrains Mono',monospace;color:#1FBF84">+500</span></div>
+              <div style="display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid #24304A;font-size:14px"><span>Refer an active friend</span><span style="font-family:'JetBrains Mono',monospace;color:#1FBF84">+100</span></div>
+            </div>
+            <div style="background:#1FBF84;color:#0B1426;font-weight:700;font-size:15px;text-align:center;padding:14px;border-radius:12px">Start earning — it’s free</div>
+            <span style="font-size:12px;color:#9AA3B8;line-height:1.5">Cash withdrawals after identity verification, in line with State Bank of Pakistan rules.</span>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">AI Tool Directory</h3><span style="font-size:13px;font-weight:600;color:#087A54">Browse →</span></div>
+            <sc-for list="{{ toolsTeaser }}" as="t" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #EFEEE8">
+                <div style="width:38px;height:38px;border-radius:10px;background:{{ t.bg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">{{ t.ini }}</div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ t.name }}</span><span style="font-size:12px;color:#5A6173">{{ t.cat }}</span></div>
+                <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#5A6173;border:1px solid #E3E2DA;padding:5px 7px;border-radius:6px">{{ t.price }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </aside>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:40px">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid #0B1426"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px">Latest</h3><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173">UPDATED 4 MIN AGO</span></div>
+          <sc-for list="{{ articles }}" as="a" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:90px minmax(0,1fr) 180px;gap:24px;padding:22px 0;border-bottom:1px solid #E3E2DA;align-items:start">
+              <span style="font:500 12px/1.6 'JetBrains Mono',monospace;color:#5A6173">{{ a.time }}</span>
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">{{ a.cat }}</span><span style="font-family:'Instrument Serif',serif;font-size:28px;line-height:1.1">{{ a.title }}</span><span style="font-size:15px;line-height:1.5;color:#5A6173">{{ a.dek }}</span></div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px"><div style="width:180px;aspect-ratio:4/3;border-radius:12px;background:repeating-linear-gradient(135deg,#E6E5DE 0 10px,#EDECE6 10px 20px)"></div><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#7A5300">{{ a.mins }} · +{{ a.pts }} pts</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">MOST READ THIS WEEK</span>
+            <sc-for list="{{ mostRead }}" as="m" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;padding:10px 0;border-top:1px solid #EFEEE8"><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1;color:#087A54">{{ m.n }}</span><span style="font-size:15px;font-weight:500;line-height:1.35">{{ m.t }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dc-import name="PublicFooter" hint-size="100%,380px"></dc-import>
+  </div>
+
+  <div data-screen-label="Article detail · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <dc-import name="PublicHeader" active="News" hint-size="100%,112px"></dc-import>
+    <div style="height:3px;background:#E3E2DA"><div style="width:62%;height:3px;background:#087A54"></div></div>
+    <div style="padding:48px 48px 80px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:64px">
+      <article style="display:flex;flex-direction:column;gap:24px;max-width:780px;margin-left:80px">
+        <div style="display:flex;gap:8px;font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173"><span>NEWS</span><span>/</span><span style="color:#087A54">POLICY</span></div>
+        <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:64px;line-height:1;letter-spacing:-0.01em;text-wrap:balance">Pakistan’s first national AI policy is here. What it means for you.</h1>
+        <p style="margin:0;font-size:21px;line-height:1.5;color:#454B5C">A national AI fund, data-residency rules and a target of a million trained professionals — we read all 60 pages.</p>
+        <div style="display:flex;align-items:center;gap:12px;padding:16px 0;border-top:1px solid #E3E2DA;border-bottom:1px solid #E3E2DA;font-size:14px;color:#5A6173"><span style="width:36px;height:36px;border-radius:50%;background:#D4D3CA"></span><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#0B1426;font-weight:600">Hamza Qureshi</span><span style="font-size:12px">Policy editor · 23 Sep 2026 · 7 min read</span></div><span style="flex:1"></span><span style="border:1px solid #D4D3CA;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:600;color:#0B1426">Share</span><span style="border:1px solid #D4D3CA;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:600;color:#0B1426">Save</span></div>
+        <div style="aspect-ratio:16/9;border-radius:18px;background:repeating-linear-gradient(135deg,#E6E5DE 0 12px,#EDECE6 12px 24px);display:flex;align-items:flex-end;padding:18px"><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;background:#FFFFFF;padding:6px 9px;border-radius:6px">article image · 16:9</span></div>
+        <div style="font-size:19px;line-height:1.75;color:#1E2638;display:flex;flex-direction:column;gap:22px">
+          <p style="margin:0"><span style="font-family:'Instrument Serif',serif;font-size:72px;line-height:.8;float:left;padding:6px 10px 0 0;color:#087A54">T</span>he Ministry of IT &amp; Telecom published the long-awaited framework on Monday evening. It is the first time the government has set out, in one place, how it expects artificial intelligence to be built, bought and regulated across the country.</p>
+          <p style="margin:0">Three things stand out. First, a national AI fund to back local research and startups. Second, rules on where Pakistanis’ data can be stored and processed. Third, a skills target that would, if met, make AI literacy as common as spreadsheet skills in the workforce.</p>
+          <h2 style="margin:8px 0 0;font-family:'Instrument Serif',serif;font-weight:400;font-size:34px;line-height:1.1">What changes for working professionals</h2>
+          <p style="margin:0">For most readers the immediate impact is on training. Employers in the public sector are expected to fund certified courses, and several private banks have already said they will follow.</p>
+          <blockquote style="margin:6px 0;padding:4px 0 4px 24px;border-left:3px solid #F2B233;font-family:'Instrument Serif',serif;font-style:italic;font-size:30px;line-height:1.25;color:#0B1426">“The policy is ambitious. The question, as always, is funding and follow-through.”</blockquote>
+        </div>
+      </article>
+      <aside style="display:flex;flex-direction:column;gap:16px;padding-top:44px">
+        <div style="background:#0B1426;color:#FFFFFF;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">READ TO EARN</span><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#F2B233;color:#0B1426;padding:5px 7px;border-radius:6px">+40 PTS</span></div>
+          <div style="display:flex;align-items:center;gap:18px">
+            <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#24304A" stroke-width="8"></circle><circle cx="42" cy="42" r="36" fill="none" stroke="#1FBF84" stroke-width="8" stroke-linecap="round" stroke-dasharray="140 226" transform="rotate(-90 42 42)"></circle><text x="42" y="47" text-anchor="middle" fill="#FFFFFF" font-family="JetBrains Mono" font-size="16" font-weight="600">62%</text></svg>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.1">Keep reading to earn 40 points.</span><span style="font-size:12px;color:#9AA3B8">≈ Rs 10 · credited when you finish</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;font-size:13px">
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #24304A"><span style="color:#9AA3B8">Time on page</span><span style="font-family:'JetBrains Mono',monospace">3:12 / ~5:00</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #24304A"><span style="color:#9AA3B8">Today’s reads</span><span style="font-family:'JetBrains Mono',monospace">3 of 10</span></div>
+          </div>
+          <div style="background:#141F36;border:1px solid #24304A;border-radius:12px;padding:12px;font-size:12px;line-height:1.5;color:#C9CFDC">Not signed in? <span style="color:#FFFFFF;font-weight:600;border-bottom:1px solid #1FBF84">Create a free account</span> and this read counts.</div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:12px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">IN THIS ARTICLE</span>
+          <span style="font-size:14px;font-weight:600;color:#087A54">— The three big changes</span><span style="font-size:14px;color:#5A6173">What changes for professionals</span><span style="font-size:14px;color:#5A6173">What startups should do now</span><span style="font-size:14px;color:#5A6173">Our take</span>
+        </div>
+      </aside>
+    </div>
+    <dc-import name="PublicFooter" hint-size="100%,380px"></dc-import>
+  </div>
+
+  <div data-screen-label="AI Tool directory · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <dc-import name="PublicHeader" active="AI Tools" hint-size="100%,112px"></dc-import>
+    <div style="padding:48px 48px 80px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:grid;grid-template-columns:1fr 480px;gap:40px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:12px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">CURATED · TESTED · PRICED IN PKR</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:72px;line-height:.95">The AI Tool Directory</h1><p style="margin:0;font-size:18px;color:#454B5C;max-width:620px;line-height:1.5">Every tool reviewed by our editors, with notes on Urdu support, local payment options and what it’s actually good for.</p></div>
+        <div style="height:56px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:14px;display:flex;align-items:center;gap:12px;padding:0 8px 0 18px;font-size:15px;color:#8A8F9C"><span style="width:13px;height:13px;border:2px solid #8A8F9C;border-radius:50%"></span><span style="flex:1">Search tools, e.g. “Urdu voice”</span><span style="background:#0B1426;color:#FFFFFF;font-size:13px;font-weight:600;padding:10px 14px;border-radius:10px">Search</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:500">
+        <span style="background:#0B1426;color:#FFFFFF;padding:9px 14px;border-radius:999px">All tools</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Assistant</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Writing</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Image</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Video</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Voice</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Code</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Research</span>
+        <span style="flex:1"></span>
+        <span style="color:#5A6173">Pricing</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:10px">Any ▾</span><span style="color:#5A6173;margin-left:8px">Sort</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:10px">Editor’s picks ▾</span>
+        <span style="display:flex;background:#E9E8E1;border-radius:10px;padding:3px;margin-left:8px"><span style="background:#FFFFFF;padding:6px 10px;border-radius:8px;font-weight:600">Grid</span><span style="padding:6px 10px;color:#5A6173">List</span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px">
+        <sc-for list="{{ tools }}" as="t" hint-placeholder-count="9">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px" style-hover="border-color:#0B1426">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="width:48px;height:48px;border-radius:13px;background:{{ t.bg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">{{ t.ini }}</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:17px;font-weight:700">{{ t.name }}</span><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5A6173;text-transform:uppercase">{{ t.cat }}</span></div>
+              <span style="font-size:12px;font-weight:600;color:#087A54;background:#DDF3E8;padding:5px 9px;border-radius:999px">{{ t.price }}</span>
+            </div>
+            <p style="margin:0;font-size:14px;line-height:1.5;color:#454B5C;min-height:42px">{{ t.desc }}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #EFEEE8;padding-top:14px;font-size:13px"><span style="color:#5A6173">Editor-reviewed</span><span style="font-weight:600;color:#0B1426">View tool →</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <dc-import name="PublicFooter" hint-size="100%,380px"></dc-import>
+  </div>
+
+  <div data-screen-label="Tool detail · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <dc-import name="PublicHeader" active="AI Tools" hint-size="100%,112px"></dc-import>
+    <div style="padding:40px 48px 80px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;gap:8px;font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173"><span>AI TOOLS</span><span>/</span><span>VOICE</span><span>/</span><span style="color:#0B1426">ELEVENLABS</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:24px;padding:36px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center">
+        <div style="width:96px;height:96px;border-radius:24px;background:#5A5BD5;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:32px">Eb</div>
+        <div style="display:flex;flex-direction:column;gap:10px"><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">ElevenLabs</h1><span style="font-size:18px;color:#454B5C">Realistic text-to-speech and voice cloning — including natural Urdu voices.</span>
+          <div style="display:flex;gap:8px;margin-top:4px;font-size:12px;font-weight:600"><span style="background:#DDF3E8;color:#065C40;padding:6px 10px;border-radius:999px">Freemium</span><span style="background:#F4F3EE;padding:6px 10px;border-radius:999px">Voice</span><span style="background:#F4F3EE;padding:6px 10px;border-radius:999px">Urdu supported</span><span style="background:#F4F3EE;padding:6px 10px;border-radius:999px">Card payments</span></div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:stretch;width:220px"><span style="background:#087A54;color:#FFFFFF;font-weight:600;font-size:15px;text-align:center;padding:14px;border-radius:12px">Visit website ↗</span><span style="border:1px solid #D4D3CA;font-weight:600;font-size:15px;text-align:center;padding:13px;border-radius:12px">Save to my list</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div style="aspect-ratio:16/8;border-radius:20px;background:repeating-linear-gradient(135deg,#E6E5DE 0 12px,#EDECE6 12px 24px);display:flex;align-items:flex-end;padding:18px"><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173;background:#FFFFFF;padding:6px 9px;border-radius:6px">product screenshot</span></div>
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:36px">Our review</h2>
+          <p style="margin:0;font-size:17px;line-height:1.7;color:#1E2638;max-width:720px">ElevenLabs produces the most natural-sounding Urdu narration we have tested. It’s a strong pick for YouTubers, e-learning creators and anyone producing voice-overs at volume. The free tier is generous enough to evaluate it properly.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">GOOD FOR</span><span style="font-size:15px;line-height:1.5">Narration &amp; voice-overs</span><span style="font-size:15px;line-height:1.5">Dubbing English → Urdu</span><span style="font-size:15px;line-height:1.5">Accessible audio articles</span></div>
+            <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#A12E27">WATCH OUT FOR</span><span style="font-size:15px;line-height:1.5">Punjabi &amp; Sindhi not yet supported</span><span style="font-size:15px;line-height:1.5">Voice cloning needs consent</span><span style="font-size:15px;line-height:1.5">USD billing only</span></div>
+          </div>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:22px;display:flex;flex-direction:column">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173;margin-bottom:10px">PRICING</span>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #EFEEE8;font-size:14px"><span>Free</span><span style="font-family:'JetBrains Mono',monospace">Rs 0</span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #EFEEE8;font-size:14px"><span>Starter</span><span style="font-family:'JetBrains Mono',monospace">≈ Rs 1,400/mo</span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #EFEEE8;font-size:14px"><span>Creator</span><span style="font-family:'JetBrains Mono',monospace">≈ Rs 6,200/mo</span></div>
+            <span style="font-size:12px;color:#8A8F9C;margin-top:6px">PKR estimates at today’s rate.</span>
+          </div>
+          <div style="background:#0B1426;color:#FFFFFF;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">LEARN IT</span><span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.15">Covered in “AI for Freelancers”, module 4.</span><span style="font-size:13px;color:#F2B233;font-family:'JetBrains Mono',monospace">+120 pts on completion</span></div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:6px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173;margin-bottom:6px">ALTERNATIVES</span>
+            <sc-for list="{{ toolsTeaser }}" as="t" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #EFEEE8"><div style="width:32px;height:32px;border-radius:9px;background:{{ t.bg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">{{ t.ini }}</div><span style="font-size:14px;font-weight:600;flex:1">{{ t.name }}</span><span style="font-size:12px;color:#5A6173">{{ t.cat }}</span></div></sc-for>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <dc-import name="PublicFooter" hint-size="100%,380px"></dc-import>
+  </div>
+
+  <div data-screen-label="Login · desktop" style="flex:none;width:1440px;height:900px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:1fr 1fr">
+    <div style="background:#0B1426;color:#FFFFFF;padding:48px 64px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:11px"><div style="display:grid;grid-template-columns:repeat(3,8px);gap:2px"><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#F2B233;border-radius:50%"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px"></div></div><div style="display:flex;align-items:baseline;gap:6px;line-height:1"><span style="font-weight:700;font-size:20px">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:#C9CFDC">Pakistan</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div style="font-family:'Noto Nastaliq Urdu',serif;font-size:30px;line-height:2;color:#1FBF84">خوش آمدید</div>
+        <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:80px;line-height:.95">Welcome back.<br><span style="font-style:italic;color:#F2B233">Your points missed you.</span></h1>
+        <div style="display:flex;gap:28px;margin-top:12px">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 22px/1 'JetBrains Mono',monospace">1,000 pts</span><span style="font-size:13px;color:#9AA3B8">= Rs 250, withdrawable</span></div>
+          <div style="width:1px;background:#24304A"></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 22px/1 'JetBrains Mono',monospace">KYC</span><span style="font-size:13px;color:#9AA3B8">SBP-aligned verification</span></div>
+        </div>
+      </div>
+      <span style="font-size:12px;color:#6E7890">© 2026 Digitize Online SMC (Private) Limited</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:48px">
+      <div style="width:420px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Log in</h2><span style="font-size:15px;color:#5A6173">New here? <a href="#">Create an account</a></span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Email or username</span><div style="height:48px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">ayesha.rahman@gmail.com</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span style="font-size:13px;font-weight:600">Password</span><a href="#" style="font-size:13px">Forgot?</a></div><div style="height:48px;background:#FFFFFF;border:1.5px solid #087A54;box-shadow:0 0 0 4px #DDF3E8;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px;letter-spacing:.2em">••••••••••<span style="flex:1"></span><span style="font-size:12px;letter-spacing:0;color:#5A6173;font-weight:600">Show</span></div></div>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:#454B5C"><span style="width:18px;height:18px;border-radius:5px;background:#087A54;color:#FFFFFF;font-size:12px;display:flex;align-items:center;justify-content:center">✓</span>Keep me signed in on this device</label>
+        <div style="height:50px;background:#087A54;color:#FFFFFF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px">Log in</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#8A8F9C"><div style="flex:1;height:1px;background:#E3E2DA"></div>or<div style="flex:1;height:1px;background:#E3E2DA"></div></div>
+        <div style="height:50px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px">Continue with Google</div>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="Register · desktop" style="flex:none;width:1440px;height:900px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:1fr 1fr">
+    <div style="background:#0B1426;color:#FFFFFF;padding:48px 64px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:11px"><div style="display:grid;grid-template-columns:repeat(3,8px);gap:2px"><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#F2B233;border-radius:50%"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px;background:#1FBF84;border-radius:2px"></div><div style="height:8px"></div></div><div style="display:flex;align-items:baseline;gap:6px;line-height:1"><span style="font-weight:700;font-size:20px">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:#C9CFDC">Pakistan</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:76px;line-height:.95">Read. Learn.<br><span style="font-style:italic;color:#F2B233">Get paid.</span></h1>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px 1fr auto;gap:12px;padding:16px 0;border-top:1px solid #24304A;align-items:center"><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#6E7890">01</span><span style="font-size:16px">Create your free account</span><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#F2B233">+100 pts</span></div>
+          <div style="display:grid;grid-template-columns:40px 1fr auto;gap:12px;padding:16px 0;border-top:1px solid #24304A;align-items:center"><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#6E7890">02</span><span style="font-size:16px">Read articles and finish learning paths</span><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#1FBF84">+20–500</span></div>
+          <div style="display:grid;grid-template-columns:40px 1fr auto;gap:12px;padding:16px 0;border-top:1px solid #24304A;border-bottom:1px solid #24304A;align-items:center"><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#6E7890">03</span><span style="font-size:16px">Verify your CNIC and withdraw</span><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#FFFFFF">Rs 250 / 1k</span></div>
+        </div>
+      </div>
+      <span style="font-size:12px;color:#6E7890">© 2026 Digitize Online SMC (Private) Limited</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:48px">
+      <div style="width:440px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:44px">Create your account</h2><span style="font-size:15px;color:#5A6173">Already a member? <a href="#">Log in</a></span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Username</span><div style="height:48px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">ayesha_r<span style="flex:1"></span><span style="font-size:12px;color:#087A54;font-weight:600">✓ Available</span></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Email</span><div style="height:48px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px;color:#8A8F9C">you@example.com</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Password</span><div style="height:48px;background:#FFFFFF;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px;letter-spacing:.2em">••••••••</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:2px"><div style="height:4px;border-radius:2px;background:#087A54"></div><div style="height:4px;border-radius:2px;background:#087A54"></div><div style="height:4px;border-radius:2px;background:#087A54"></div><div style="height:4px;border-radius:2px;background:#E3E2DA"></div></div><span style="font-size:12px;color:#5A6173">Good — add a symbol to make it strong.</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border:1px dashed #D4D3CA;border-radius:14px;padding:14px"><span style="font-size:13px;font-weight:600">Referral code <span style="font-weight:400;color:#8A8F9C">— optional</span></span><div style="height:44px;border:1px solid #D4D3CA;border-radius:10px;display:flex;align-items:center;padding:0 12px;font:500 14px/1 'JetBrains Mono',monospace;color:#8A8F9C">e.g. AYESHA-7K2</div><span style="font-size:12px;color:#5A6173">Got a code from a friend? You both earn +100 pts once you’re active.</span></div>
+        <div style="height:50px;background:#087A54;color:#FFFFFF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px">Create account &amp; claim 100 pts</div>
+        <span style="font-size:12px;color:#8A8F9C;line-height:1.5">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="Info pages (About / Contact / Terms / Privacy) · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1)">
+    <dc-import name="PublicHeader" active="None" hint-size="100%,112px"></dc-import>
+    <div style="padding:56px 48px 88px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:64px">
+      <nav style="display:flex;flex-direction:column;gap:4px;padding-top:8px">
+        <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173;padding:0 12px 12px">COMPANY</span>
+        <span style="font-size:15px;color:#5A6173;padding:10px 12px">About</span>
+        <span style="font-size:15px;font-weight:600;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:10px">Contact</span>
+        <span style="font-size:15px;color:#5A6173;padding:10px 12px">Terms of Service</span>
+        <span style="font-size:15px;color:#5A6173;padding:10px 12px">Privacy Policy</span>
+        <span style="font-size:15px;color:#5A6173;padding:10px 12px">Payout policy</span>
+        <span style="font-size:12px;color:#8A8F9C;padding:20px 12px 0;line-height:1.5">Legal pages use this template with a “Last updated” stamp and numbered sections.</span>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:36px;max-width:900px">
+        <div style="display:flex;flex-direction:column;gap:12px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">CONTACT</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:64px;line-height:1">We read every message.</h1><p style="margin:0;font-size:18px;color:#454B5C;line-height:1.5">Questions about payouts, verification or partnerships — we usually reply within one working day.</p></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Name</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px"></div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Email</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Topic</span><div style="display:flex;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:500"><span style="background:#0B1426;color:#FFFFFF;padding:9px 13px;border-radius:9px">Payouts</span><span style="border:1px solid #D4D3CA;padding:8px 12px;border-radius:9px">KYC</span><span style="border:1px solid #D4D3CA;padding:8px 12px;border-radius:9px">Creator program</span><span style="border:1px solid #D4D3CA;padding:8px 12px;border-radius:9px">Partnerships</span><span style="border:1px solid #D4D3CA;padding:8px 12px;border-radius:9px">Other</span></div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Message</span><div style="height:150px;border:1px solid #D4D3CA;border-radius:11px"></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#8A8F9C">Never include your full CNIC or passwords.</span><span style="background:#087A54;color:#FFFFFF;font-weight:600;font-size:15px;padding:13px 22px;border-radius:12px">Send message</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="background:#0B1426;color:#FFFFFF;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">REGISTERED OFFICE</span><span style="font-size:15px;line-height:1.55">Digitize Online SMC (Private) Limited<br>Karachi, Sindh, Pakistan</span><span style="font:500 13px/1 'JetBrains Mono',monospace;color:#C9CFDC">support@digitize.com.pk</span></div>
+            <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">HOURS</span><span style="font-size:15px">Mon–Fri · 10:00–18:00 PKT</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dc-import name="PublicFooter" hint-size="100%,380px"></dc-import>
+  </div>
+
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:baseline;gap:14px"><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:5px 8px;border-radius:5px">02</span><span style="font-size:15px;font-weight:600">Authenticated app · desktop</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+  <div data-screen-label="Dashboard · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Overview" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:32px 40px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:flex-end;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:4px;flex:1"><span style="font-family:'Noto Nastaliq Urdu',serif;font-size:17px;line-height:1.9;color:#087A54">السلام علیکم</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Assalam-o-alaikum, Ayesha.</h1></div>
+        <div style="height:42px;width:240px;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:11px;display:flex;align-items:center;gap:10px;padding:0 12px;font-size:13px;color:#8A8F9C"><span style="width:11px;height:11px;border:1.6px solid #8A8F9C;border-radius:50%"></span>Search articles, paths…</div>
+        <div style="width:42px;height:42px;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:11px;position:relative;display:flex;align-items:center;justify-content:center"><span style="width:14px;height:14px;border:1.8px solid #0B1426;border-radius:7px 7px 3px 3px"></span><span style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#D6453D;border:2px solid #FFFFFF"></span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:18px">
+        <div style="background:#0B1426;color:#FFFFFF;border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">POINTS BALANCE</span><span style="font-size:12px;color:#1FBF84">● KYC verified</span></div>
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font:600 56px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480</span><span style="font-size:15px;color:#9AA3B8">pts</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#C9CFDC"><span>≈ <span style="font-family:'JetBrains Mono',monospace;color:#FFFFFF">Rs 3,120.00</span> at Rs 250 / 1,000</span></div>
+          <div style="display:flex;gap:10px"><span style="flex:1;background:#1FBF84;color:#0B1426;font-weight:700;font-size:14px;text-align:center;padding:13px;border-radius:12px">Withdraw</span><span style="background:#141F36;border:1px solid #24304A;font-weight:600;font-size:14px;padding:12px 16px;border-radius:12px">Ledger</span></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">THIS WEEK</span>
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font:600 34px/1 'JetBrains Mono',monospace">+1,240</span><span style="font-size:13px;color:#5A6173">pts</span><span style="margin-left:auto;font-size:12px;font-weight:600;color:#065C40;background:#DDF3E8;padding:4px 8px;border-radius:999px">↑ 18% vs last wk</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-end;height:92px;margin-top:auto">
+            <sc-for list="{{ week }}" as="w" hint-placeholder-count="7"><div style="flex:1;display:flex;flex-direction:column;gap:6px;align-items:center;height:100%;justify-content:flex-end"><div style="width:100%;height:{{ w.h }};background:#1FBF84;border-radius:5px 5px 2px 2px"></div><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C">{{ w.d }}</span></div></sc-for>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">REFERRALS</span>
+          <div style="display:flex;gap:18px;align-items:baseline"><div><span style="font:600 34px/1 'JetBrains Mono',monospace">12</span><span style="font-size:13px;color:#5A6173"> invited</span></div><div><span style="font:600 34px/1 'JetBrains Mono',monospace;color:#5A5BD5">6</span><span style="font-size:13px;color:#5A6173"> rewarded</span></div></div>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;border:1px dashed #5A5BD5;background:#F4F4FD;border-radius:11px;padding:4px 4px 4px 12px"><span style="font:600 15px/1 'JetBrains Mono',monospace;flex:1;letter-spacing:.04em">AYESHA-7K2</span><span style="background:#5A5BD5;color:#FFFFFF;font-size:12px;font-weight:600;padding:9px 12px;border-radius:8px">Copy link</span></div>
+            <span style="font-size:12px;color:#5A6173">+100 pts for each friend who becomes active</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Keep learning</h3><a href="#" style="font-size:13px;font-weight:600">All paths →</a></div>
+          <sc-for list="{{ paths }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid #EFEEE8">
+              <div style="display:flex;justify-content:space-between;font-size:14px"><span style="font-weight:600">{{ p.title }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5A6173">{{ p.done }}/{{ p.total }}</span></div>
+              <div style="height:6px;background:#EFEEE8;border-radius:3px;overflow:hidden"><div style="height:6px;width:{{ p.pct }};background:#087A54;border-radius:3px"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Recent activity</h3><a href="#" style="font-size:13px;font-weight:600">Full ledger →</a></div>
+          <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 150px 80px;gap:14px;align-items:center;padding:12px 0;border-top:1px solid #EFEEE8">
+              <span style="font:500 11px/1.3 'JetBrains Mono',monospace;color:#8A8F9C">{{ l.date }}</span>
+              <span style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.desc }}</span>
+              <span style="justify-self:start;font:500 10px/1 'JetBrains Mono',monospace;background:{{ l.tb }};color:{{ l.tc }};padding:5px 7px;border-radius:6px">{{ l.type }}</span>
+              <sc-if value="{{ l.pos }}"><span style="font:600 14px/1 'JetBrains Mono',monospace;color:#087A54;text-align:right">{{ l.amt }}</span></sc-if>
+              <sc-if value="{{ l.neg }}"><span style="font:600 14px/1 'JetBrains Mono',monospace;color:#A12E27;text-align:right">{{ l.amt }}</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="My learning · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="My learning" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:40px 40px 48px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">MY LEARNING</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Structured paths, paid in points.</h1></div>
+        <div style="display:flex;gap:28px;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:14px 22px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 22px/1 'JetBrains Mono',monospace">3</span><span style="font-size:12px;color:#5A6173">In progress</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 22px/1 'JetBrains Mono',monospace">1</span><span style="font-size:12px;color:#5A6173">Completed</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#087A54">+2,340</span><span style="font-size:12px;color:#5A6173">Pts from learning</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;font-size:13px;font-weight:500"><span style="background:#0B1426;color:#FFFFFF;padding:9px 14px;border-radius:999px">All · 6</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">In progress · 3</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Completed · 1</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Not started · 2</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px">
+        <sc-for list="{{ paths }}" as="p" hint-placeholder-count="6">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:20px;overflow:hidden;display:flex;flex-direction:column">
+            <div style="height:120px;background:repeating-linear-gradient(135deg,#E6E5DE 0 10px,#EDECE6 10px 20px);padding:14px;display:flex;justify-content:space-between;align-items:flex-start"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.08em;background:#FFFFFF;padding:6px 8px;border-radius:6px">{{ p.lvl }}</span><span style="font:600 10px/1 'JetBrains Mono',monospace;background:#0B1426;color:#F2B233;padding:6px 8px;border-radius:6px">+{{ p.pts }} PTS</span></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:10px;flex:1">
+              <span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.05">{{ p.title }}</span>
+              <span style="font-size:14px;color:#5A6173;line-height:1.45;min-height:40px">{{ p.sub }}</span>
+              <div style="height:6px;background:#EFEEE8;border-radius:3px;overflow:hidden;margin-top:6px"><div style="height:6px;width:{{ p.pct }};background:#087A54;border-radius:3px"></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px"><span style="font-family:'JetBrains Mono',monospace;color:#5A6173">{{ p.done }} / {{ p.total }} milestones</span><span style="font-weight:600;color:#0B1426">{{ p.status }}</span></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Learning path detail · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="My learning" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:32px 40px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;gap:8px;font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5A6173"><span>MY LEARNING</span><span>/</span><span style="color:#0B1426">AI FOUNDATIONS</span></div>
+      <div style="background:#0B1426;color:#FFFFFF;border-radius:24px;padding:32px 36px;display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:12px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">BEGINNER · 8 MILESTONES · ~2 HRS</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">AI Foundations</h1><p style="margin:0;font-size:16px;color:#C9CFDC;line-height:1.5;max-width:560px">What models are, how they work and where they fail — a plain-language grounding for everything else.</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 40px/1 'JetBrains Mono',monospace">62%</span><span style="font-size:13px;color:#9AA3B8">5 of 8 complete</span></div>
+          <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:4px"><div style="height:8px;border-radius:2px;background:#1FBF84"></div><div style="height:8px;border-radius:2px;background:#1FBF84"></div><div style="height:8px;border-radius:2px;background:#1FBF84"></div><div style="height:8px;border-radius:2px;background:#1FBF84"></div><div style="height:8px;border-radius:2px;background:#1FBF84"></div><div style="height:8px;border-radius:2px;background:#F2B233"></div><div style="height:8px;border-radius:2px;background:#24304A"></div><div style="height:8px;border-radius:2px;background:#24304A"></div></div>
+          <span style="font-size:13px;color:#C9CFDC">Finish the path: <span style="font-family:'JetBrains Mono',monospace;color:#F2B233">+500 pts</span> and a certificate</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:12px 28px">
+          <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="8">
+            <sc-if value="{{ m.done }}">
+              <div style="display:grid;grid-template-columns:40px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid #EFEEE8">
+                <div style="width:36px;height:36px;border-radius:50%;background:#087A54;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">✓</div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:600;color:#5A6173">{{ m.t }}</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#8A8F9C">{{ m.n }} · {{ m.m }}</span></div>
+                <span style="font-size:12px;font-weight:600;color:#065C40;background:#DDF3E8;padding:5px 10px;border-radius:999px">Complete</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ m.current }}">
+              <div style="display:grid;grid-template-columns:40px 1fr auto;gap:18px;align-items:center;padding:20px 20px;margin:8px -20px;background:#FCEFCC;border-radius:16px">
+                <div style="width:36px;height:36px;border-radius:50%;border:3px solid #F2B233;background:#FFFFFF;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:50%;background:#0B1426"></span></div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#7A5300">UP NEXT</span><span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1">{{ m.t }}</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#7A5300">{{ m.n }} · {{ m.m }}</span></div>
+                <span style="background:#0B1426;color:#FFFFFF;font-weight:600;font-size:14px;padding:12px 18px;border-radius:11px">Continue →</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ m.locked }}">
+              <div style="display:grid;grid-template-columns:40px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid #EFEEE8;opacity:.6">
+                <div style="width:36px;height:36px;border-radius:50%;border:1.5px dashed #8A8F9C;display:flex;align-items:center;justify-content:center"><span style="width:11px;height:9px;border-radius:2px;background:#8A8F9C;position:relative;top:2px;box-shadow:0 -6px 0 -2px #FFFFFF,0 -6px 0 0 #8A8F9C"></span></div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:600">{{ m.t }}</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#8A8F9C">{{ m.n }} · {{ m.m }}</span></div>
+                <span style="font-size:12px;font-weight:600;color:#5A6173">Locked</span>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:12px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">CERTIFICATE</span><div style="aspect-ratio:4/3;border-radius:12px;background:repeating-linear-gradient(135deg,#E6E5DE 0 10px,#EDECE6 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173">certificate preview</div><span style="font-size:13px;color:#5A6173;line-height:1.5">Unlocks after the final check. Shareable to LinkedIn.</span></div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:0"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173;margin-bottom:8px">EARNED ON THIS PATH</span>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8;font-size:14px"><span>Milestones</span><span style="font-family:'JetBrains Mono',monospace;color:#087A54">+340</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8;font-size:14px"><span>Remaining</span><span style="font-family:'JetBrains Mono',monospace;color:#5A6173">+660</span></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Rewards · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Rewards" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:32px 40px 48px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">REWARDS</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Your ledger</h1></div><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173;background:#FFFFFF;border:1px solid #E3E2DA;padding:10px 12px;border-radius:10px">Rate · 1,000 pts = Rs 250</span></div>
+      <div style="background:#0B1426;color:#FFFFFF;border-radius:22px;padding:24px 28px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">AVAILABLE</span><span style="font:600 48px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480<span style="font-size:14px;color:#9AA3B8"> pts</span></span><span style="font-size:14px;color:#C9CFDC">≈ Rs 3,120.00</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-left:1px solid #24304A;padding-left:20px"><span style="font-size:12px;color:#9AA3B8">Lifetime earned</span><span style="font:600 22px/1 'JetBrains Mono',monospace">24,540</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-left:1px solid #24304A;padding-left:20px"><span style="font-size:12px;color:#9AA3B8">Withdrawn</span><span style="font:600 22px/1 'JetBrains Mono',monospace">Rs 3,000</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-left:1px solid #24304A;padding-left:20px"><span style="font-size:12px;color:#9AA3B8">Pending request</span><span style="font:600 22px/1 'JetBrains Mono',monospace;color:#F2B233">Rs 1,000</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:18px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Balance over time</h3><span style="font-size:13px;color:#5A6173">Every ledger entry, plotted. Drops are withdrawals.</span></div><div style="display:flex;background:#F4F3EE;border-radius:10px;padding:3px;font:500 12px/1 'JetBrains Mono',monospace"><span style="padding:8px 10px;color:#5A6173">1M</span><span style="padding:8px 10px;color:#5A6173">3M</span><span style="padding:8px 10px;background:#FFFFFF;border-radius:8px;font-weight:600;box-shadow:0 1px 2px rgba(11,20,38,.08)">ALL</span></div></div>
+          <svg viewBox="0 0 860 270" style="width:100%;height:auto;display:block">
+            <g font-family="JetBrains Mono" font-size="10" fill="#8A8F9C">
+              <line x1="48" x2="848" y1="20" y2="20" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="72.5" y2="72.5" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="125" y2="125" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="177.5" y2="177.5" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="230" y2="230" stroke="#D4D3CA"></line>
+              <text x="40" y="24" text-anchor="end">20k</text><text x="40" y="76" text-anchor="end">15k</text><text x="40" y="129" text-anchor="end">10k</text><text x="40" y="181" text-anchor="end">5k</text><text x="40" y="234" text-anchor="end">0</text>
+              <text x="48" y="252">Aug 9</text><text x="244" y="252" text-anchor="middle">Aug 20</text><text x="457" y="252" text-anchor="middle">Sep 1</text><text x="652" y="252" text-anchor="middle">Sep 12</text><text x="848" y="252" text-anchor="end">Today</text>
+            </g>
+            <g transform="translate(48,0)">
+              <path d="M0,167 L80,152 L160,140 L240,122 L320,103 L400,85 L427,81 L429,123 L500,108 L560,88 L620,66 L680,45 L747,25 L749,109 L775,104 L800,99 L800,230 L0,230 Z" fill="#1FBF84" fill-opacity=".12"></path>
+              <path d="M0,167 L80,152 L160,140 L240,122 L320,103 L400,85 L427,81 L429,123 L500,108 L560,88 L620,66 L680,45 L747,25 L749,109 L775,104 L800,99" fill="none" stroke="#087A54" stroke-width="2.5" stroke-linejoin="round"></path>
+              <circle cx="429" cy="123" r="5" fill="#FFFFFF" stroke="#D6453D" stroke-width="2.5"></circle><text x="437" y="140" font-family="JetBrains Mono" font-size="11" fill="#A12E27">−4,000 · Easypaisa</text>
+              <circle cx="749" cy="109" r="5" fill="#FFFFFF" stroke="#D6453D" stroke-width="2.5"></circle><text x="740" y="128" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#A12E27">−8,000 · JazzCash</text>
+              <line x1="800" x2="800" y1="99" y2="230" stroke="#0B1426" stroke-dasharray="3 3"></line>
+              <circle cx="800" cy="99" r="6" fill="#F2B233" stroke="#0B1426" stroke-width="2"></circle>
+              <rect x="700" y="58" width="100" height="30" rx="7" fill="#0B1426"></rect><text x="750" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#F2B233">12,480</text>
+            </g>
+          </svg>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Where it came from</h3><span style="font-size:13px;color:#5A6173">Lifetime earnings by type · 24,540 pts</span></div>
+          <div style="display:flex;height:18px;border-radius:6px;overflow:hidden;gap:2px"><div style="width:81.5%;background:#1FBF84"></div><div style="width:16.1%;background:#F2B233"></div><div style="width:2.4%;background:#5A5BD5"></div></div>
+          <div style="display:flex;flex-direction:column">
+            <div style="display:grid;grid-template-columns:12px 1fr auto 52px;gap:10px;align-items:center;padding:11px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;background:#1FBF84"></span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Reading &amp; learning</span><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C">READ_ENGAGEMENT</span></div><span style="font:600 14px/1 'JetBrains Mono',monospace">19,990</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173;text-align:right">81.5%</span></div>
+            <div style="display:grid;grid-template-columns:12px 1fr auto 52px;gap:10px;align-items:center;padding:11px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;background:#F2B233"></span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Creator bounties</span><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C">CREATOR_BOUNTY</span></div><span style="font:600 14px/1 'JetBrains Mono',monospace">3,950</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173;text-align:right">16.1%</span></div>
+            <div style="display:grid;grid-template-columns:12px 1fr auto 52px;gap:10px;align-items:center;padding:11px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;background:#5A5BD5"></span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Referral bonuses</span><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C">REFERRAL_BONUS</span></div><span style="font:600 14px/1 'JetBrains Mono',monospace">600</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173;text-align:right">2.4%</span></div>
+          </div>
+          <div style="background:#F4F3EE;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">OUTFLOWS &amp; CORRECTIONS · NOT EARNINGS</span>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span>Withdrawals <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#A12E27">WITHDRAWAL</span></span><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#A12E27">−12,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span>Adjustments <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#5A6173">ADJUSTMENT</span></span><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#454B5C">−60</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:18px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Withdraw</h3><span style="font-size:12px;font-weight:600;color:#065C40;background:#DDF3E8;padding:5px 9px;border-radius:999px">✓ KYC verified</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Method</span><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:13px;font-weight:600;text-align:center"><span style="border:1.5px solid #0B1426;background:#0B1426;color:#FFFFFF;border-radius:10px;padding:11px 6px">JazzCash</span><span style="border:1px solid #D4D3CA;border-radius:10px;padding:11px 6px">Easypaisa</span><span style="border:1px solid #D4D3CA;border-radius:10px;padding:11px 6px">Bank (IBAN)</span></div></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Account reference</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 14px/1 'JetBrains Mono',monospace">0300 123 4471</div><span style="font-size:12px;color:#5A6173">Must be registered to the CNIC you verified.</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Amount</span><div style="height:52px;border:1.5px solid #087A54;box-shadow:0 0 0 4px #DDF3E8;border-radius:11px;display:flex;align-items:center;padding:0 14px;gap:10px"><span style="font:600 18px/1 'JetBrains Mono',monospace;flex:1">8,000 <span style="font-size:12px;color:#8A8F9C">pts</span></span><span style="font:600 15px/1 'JetBrains Mono',monospace;color:#087A54">= Rs 2,000.00</span></div>
+            <div style="display:flex;gap:6px;font:500 11px/1 'JetBrains Mono',monospace"><span style="border:1px solid #E3E2DA;border-radius:7px;padding:6px 9px">2,000 MIN</span><span style="border:1px solid #E3E2DA;border-radius:7px;padding:6px 9px">50%</span><span style="border:1px solid #E3E2DA;border-radius:7px;padding:6px 9px">MAX</span></div></div>
+          <div style="height:50px;background:#0B1426;color:#FFFFFF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px">Request Rs 2,000 withdrawal</div>
+          <span style="font-size:12px;color:#8A8F9C;line-height:1.5">Processed within 2 working days. 4,000 pts are reserved for your pending request.</span>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column">
+          <h3 style="margin:0 0 14px;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Request history</h3>
+          <div style="display:grid;grid-template-columns:120px 1fr 90px 90px 100px;gap:12px;padding:0 0 10px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#8A8F9C"><span>DATE</span><span>METHOD</span><span style="text-align:right">POINTS</span><span style="text-align:right">AMOUNT</span><span style="text-align:right">STATUS</span></div>
+          <sc-for list="{{ withdrawals }}" as="w" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:120px 1fr 90px 90px 100px;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #EFEEE8;font-size:14px">
+              <span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">{{ w.date }}</span><span>{{ w.method }}</span><span style="font:500 13px/1 'JetBrains Mono',monospace;text-align:right">{{ w.pts }}</span><span style="font:600 13px/1 'JetBrains Mono',monospace;text-align:right">{{ w.rs }}</span>
+              <span style="justify-self:end;font-size:12px;font-weight:600;background:{{ w.sb }};color:{{ w.sc }};padding:5px 10px;border-radius:999px">{{ w.st }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="KYC · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Identity (KYC)" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:40px 40px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">IDENTITY VERIFICATION · SHOWN IN FIRST-SUBMISSION STATE</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Verify it’s you, once.</h1></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;overflow:hidden">
+        <div style="padding:16px 20px;display:flex;align-items:center;gap:12px;border-right:1px solid #EFEEE8"><span style="width:28px;height:28px;border-radius:50%;background:#087A54;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">✓</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Personal details</span><span style="font-size:12px;color:#5A6173">Done</span></div></div>
+        <div style="padding:16px 20px;display:flex;align-items:center;gap:12px;border-right:1px solid #EFEEE8;background:#FCEFCC"><span style="width:28px;height:28px;border-radius:50%;background:#0B1426;color:#F2B233;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace">2</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">CNIC &amp; selfie</span><span style="font-size:12px;color:#7A5300">In progress</span></div></div>
+        <div style="padding:16px 20px;display:flex;align-items:center;gap:12px;border-right:1px solid #EFEEE8;color:#8A8F9C"><span style="width:28px;height:28px;border-radius:50%;border:1.5px solid #D4D3CA;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace">3</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Review</span><span style="font-size:12px">Usually 24 hrs</span></div></div>
+        <div style="padding:16px 20px;display:flex;align-items:center;gap:12px;color:#8A8F9C"><span style="width:28px;height:28px;border-radius:50%;border:1.5px solid #D4D3CA;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace">4</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">Verified</span><span style="font-size:12px">Withdrawals unlocked</span></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Full name, as on CNIC</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">Ayesha Rahman</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">CNIC number</span><div style="height:46px;border:1.5px solid #087A54;box-shadow:0 0 0 4px #DDF3E8;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 15px/1 'JetBrains Mono',monospace;letter-spacing:.04em">42101-•••••••-2</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <div style="aspect-ratio:1.4;border:1.5px dashed #087A54;background:#F3FAF6;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center"><span style="font-size:14px;font-weight:600;color:#065C40">✓ CNIC front</span><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173">front.jpg · 1.2 MB</span></div>
+            <div style="aspect-ratio:1.4;border:1.5px dashed #D4D3CA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center"><span style="font-size:14px;font-weight:600">CNIC back</span><span style="font-size:12px;color:#5A6173">Drop or <a href="#">browse</a></span></div>
+            <div style="aspect-ratio:1.4;border:1.5px dashed #D4D3CA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center"><span style="font-size:14px;font-weight:600">Selfie with CNIC</span><span style="font-size:12px;color:#5A6173">Use camera</span></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#454B5C;line-height:1.5"><span style="width:18px;height:18px;border-radius:5px;background:#087A54;color:#FFFFFF;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none">✓</span>I confirm these documents are mine and consent to their use for identity verification.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #EFEEE8;padding-top:18px"><span style="font-size:13px;color:#5A6173">Step 2 of 3</span><span style="background:#087A54;color:#FFFFFF;font-weight:600;font-size:15px;padding:13px 22px;border-radius:12px">Submit for review</span></div>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#0B1426;color:#FFFFFF;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#1FBF84">WHY WE ASK</span>
+            <span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.15">Cash payouts in Pakistan must follow State Bank of Pakistan know-your-customer rules.</span>
+            <span style="font-size:13px;line-height:1.55;color:#C9CFDC">We verify once, then every withdrawal goes only to accounts registered in your name. Documents are encrypted and never shown to other users.</span>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">STATUS STATES</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600"><span style="background:#ECECE6;color:#454B5C;padding:6px 10px;border-radius:999px">● Not started</span><span style="background:#FCEFCC;color:#7A5300;padding:6px 10px;border-radius:999px">● In review</span><span style="background:#DDF3E8;color:#065C40;padding:6px 10px;border-radius:999px">● Verified</span><span style="background:#FBE3E0;color:#A12E27;padding:6px 10px;border-radius:999px">● Needs resubmission</span></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Premium · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Premium" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:40px 40px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#7A5300">PREMIUM</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Go further, earn faster.</h1></div>
+      <div style="display:grid;grid-template-columns:380px minmax(0,1fr);gap:22px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#F2B233;border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:18px">
+            <span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em">MONTHLY</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:600 52px/1 'JetBrains Mono',monospace;letter-spacing:-0.03em">Rs 999</span><span style="font-size:14px">/ month</span></div>
+            <div style="display:flex;flex-direction:column;gap:0;font-size:14px">
+              <div style="padding:10px 0;border-top:1px solid rgba(11,20,38,.18)">Higher points on every read</div>
+              <div style="padding:10px 0;border-top:1px solid rgba(11,20,38,.18)">All learning paths, incl. Advanced</div>
+              <div style="padding:10px 0;border-top:1px solid rgba(11,20,38,.18)">Priority withdrawal processing</div>
+              <div style="padding:10px 0;border-top:1px solid rgba(11,20,38,.18);border-bottom:1px solid rgba(11,20,38,.18)">Ad-free reading</div>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">PAY TO</span>
+            <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:#5A6173">Account title</span><span style="font-weight:600">Digitize Online SMC (Pvt) Ltd</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:#5A6173">Bank</span><span style="font-weight:600">[Bank name]</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;align-items:center"><span style="color:#5A6173">IBAN</span><span style="font:500 13px/1 'JetBrains Mono',monospace">PK•• •••• •••• ••••</span></div>
+          </div>
+          <div style="background:#0B1426;color:#FFFFFF;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">IF ALREADY PREMIUM, THIS COLUMN SHOWS</span>
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:12px;font-weight:700;background:#F2B233;color:#0B1426;padding:5px 9px;border-radius:999px">PREMIUM · ACTIVE</span><span style="font-size:13px;color:#C9CFDC">Renews 23 Oct 2026</span></div>
+            <span style="font-size:13px;color:#9AA3B8">…with a renew-early action and perks used this month.</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Submit payment proof</h3><span style="font-size:13px;color:#5A6173">Transfer Rs 999, then upload the receipt. We activate within one working day.</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Paid via</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">JazzCash<span style="flex:1"></span>▾</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Transaction ID</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 14px/1 'JetBrains Mono',monospace">TX-88213094</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Amount</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 14px/1 'JetBrains Mono',monospace">Rs 999</div></div>
+            </div>
+            <div style="height:120px;border:1.5px dashed #D4D3CA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><span style="font-size:14px;font-weight:600">Drop receipt screenshot</span><span style="font-size:12px;color:#5A6173">PNG or JPG, up to 5 MB</span></div>
+            <div style="display:flex;justify-content:flex-end"><span style="background:#0B1426;color:#FFFFFF;font-weight:600;font-size:15px;padding:13px 22px;border-radius:12px">Submit for activation</span></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column">
+            <h3 style="margin:0 0 12px;font-family:'Instrument Serif',serif;font-weight:400;font-size:24px">Request history</h3>
+            <div style="display:grid;grid-template-columns:120px 1fr 110px 120px;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #EFEEE8;font-size:14px"><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">21 Sep 2026</span><span>JazzCash · TX-88213094</span><span style="font:600 13px/1 'JetBrains Mono',monospace">Rs 999</span><span style="justify-self:end;font-size:12px;font-weight:600;background:#ECECE6;color:#454B5C;padding:5px 10px;border-radius:999px">In review</span></div>
+            <div style="display:grid;grid-template-columns:120px 1fr 110px 120px;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #EFEEE8;font-size:14px"><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">10 Sep 2026</span><span>Bank transfer · receipt unreadable</span><span style="font:600 13px/1 'JetBrains Mono',monospace">Rs 999</span><span style="justify-self:end;font-size:12px;font-weight:600;background:#FBE3E0;color:#A12E27;padding:5px 10px;border-radius:999px">Rejected</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Referrals · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Referrals" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:32px 40px 48px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A5BD5">REFERRALS</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Bring a friend. Both of you earn.</h1></div>
+      <div style="background:#5A5BD5;color:#FFFFFF;border-radius:22px;padding:24px 28px;display:grid;grid-template-columns:1fr 1.4fr auto;gap:24px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#E7E7FB">YOUR CODE</span><span style="font:600 34px/1 'JetBrains Mono',monospace;letter-spacing:.04em">AYESHA-7K2</span></div>
+        <div style="display:flex;align-items:center;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:5px 5px 5px 14px"><span style="font:500 14px/1 'JetBrains Mono',monospace;flex:1">digitize.com.pk/r/AYESHA-7K2</span><span style="background:#FFFFFF;color:#3A3BA8;font-size:13px;font-weight:700;padding:10px 14px;border-radius:9px">Copy link</span></div>
+        <div style="display:flex;gap:8px;font-size:13px;font-weight:600"><span style="border:1px solid rgba(255,255,255,.4);padding:10px 14px;border-radius:10px">WhatsApp</span><span style="border:1px solid rgba(255,255,255,.4);padding:10px 14px;border-radius:10px">More</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Referral funnel</h3><span style="font-size:13px;color:#5A6173">Each friend moves Pending → Qualified → Rewarded</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:grid;grid-template-columns:110px 1fr 40px;gap:12px;align-items:center"><span style="font-size:13px;font-weight:600">Joined</span><div style="height:40px;background:#FCEFCC;border-radius:8px;width:100%;display:flex;align-items:center;padding:0 12px;font:500 11px/1 'JetBrains Mono',monospace;color:#7A5300">5 still pending</div><span style="font:600 18px/1 'JetBrains Mono',monospace;text-align:right">12</span></div>
+            <div style="display:grid;grid-template-columns:110px 1fr 40px;gap:12px;align-items:center"><span style="font-size:13px;font-weight:600">Qualified</span><div><div style="height:40px;background:#9D9EEA;border-radius:8px;width:58%;display:flex;align-items:center;padding:0 12px;font:500 11px/1 'JetBrains Mono',monospace;color:#0B1426">58%</div></div><span style="font:600 18px/1 'JetBrains Mono',monospace;text-align:right">7</span></div>
+            <div style="display:grid;grid-template-columns:110px 1fr 40px;gap:12px;align-items:center"><span style="font-size:13px;font-weight:600">Rewarded</span><div><div style="height:40px;background:#5A5BD5;border-radius:8px;width:50%;display:flex;align-items:center;padding:0 12px;font:500 11px/1 'JetBrains Mono',monospace;color:#FFFFFF">+600 pts</div></div><span style="font:600 18px/1 'JetBrains Mono',monospace;text-align:right">6</span></div>
+          </div>
+          <div style="background:#F4F3EE;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;color:#454B5C">A referral <b>qualifies</b> once your friend shows real activity (reads or learning). It’s <b>rewarded</b> when the +100 pts bonus is paid to you.</div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">New referrals by month</h3><span style="font-size:13px;color:#5A6173">Stacked by where each one is today</span></div>
+            <div style="display:flex;gap:12px;font-size:12px;color:#5A6173"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#5A5BD5"></span>Rewarded</span><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#9D9EEA"></span>Qualified</span><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#F2B233"></span>Pending</span></div></div>
+          <svg viewBox="0 0 520 230" style="width:100%;height:auto;display:block">
+            <g font-family="JetBrains Mono" font-size="10" fill="#8A8F9C">
+              <line x1="30" x2="510" y1="190" y2="190" stroke="#D4D3CA"></line><line x1="30" x2="510" y1="130" y2="130" stroke="#EFEEE8"></line><line x1="30" x2="510" y1="70" y2="70" stroke="#EFEEE8"></line><line x1="30" x2="510" y1="10" y2="10" stroke="#EFEEE8"></line>
+              <text x="22" y="194" text-anchor="end">0</text><text x="22" y="134" text-anchor="end">2</text><text x="22" y="74" text-anchor="end">4</text><text x="22" y="14" text-anchor="end">6</text>
+              <text x="110" y="212" text-anchor="middle">JUL</text><text x="270" y="212" text-anchor="middle">AUG</text><text x="430" y="212" text-anchor="middle">SEP</text>
+            </g>
+            <rect x="80" y="130" width="60" height="60" rx="4" fill="#5A5BD5"></rect>
+            <rect x="240" y="100" width="60" height="90" rx="4" fill="#5A5BD5"></rect><rect x="240" y="70" width="60" height="28" rx="4" fill="#F2B233"></rect>
+            <rect x="400" y="160" width="60" height="30" rx="4" fill="#5A5BD5"></rect><rect x="400" y="130" width="60" height="28" rx="4" fill="#9D9EEA"></rect><rect x="400" y="10" width="60" height="118" rx="4" fill="#F2B233"></rect>
+            <g font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#0B1426" text-anchor="middle"><text x="110" y="122">2</text><text x="270" y="62">4</text></g>
+            <text x="470" y="18" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#0B1426">6</text>
+          </svg>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">People you’ve referred</h3><span style="font-size:13px;color:#5A6173">Showing 5 of 12</span></div>
+        <sc-for list="{{ referrals }}" as="r" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:40px 1fr 160px 180px 110px 70px;gap:14px;align-items:center;padding:12px 0;border-top:1px solid #EFEEE8;font-size:14px">
+            <span style="width:36px;height:36px;border-radius:10px;background:#E7E7FB;color:#3A3BA8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">{{ r.ini }}</span>
+            <span style="font-weight:600">{{ r.name }}</span>
+            <span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">Joined {{ r.joined }}</span>
+            <span style="color:#5A6173">{{ r.act }}</span>
+            <span style="justify-self:start;font-size:12px;font-weight:600;background:{{ r.sb }};color:{{ r.sc }};padding:5px 10px;border-radius:999px">● {{ r.st }}</span>
+            <span style="font:600 13px/1 'JetBrains Mono',monospace;text-align:right;color:#3A3BA8">{{ r.pts }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Creator Studio · desktop" style="flex:none;width:1440px;min-height:1080px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Creator studio" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:32px 40px 48px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#7A5300">CREATOR STUDIO</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Write for Pakistan. Get paid for it.</h1></div><span style="font-size:12px;font-weight:600;background:#DDF3E8;color:#065C40;padding:7px 12px;border-radius:999px">● Approved creator since 28 Jun 2026</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div style="background:#0B1426;color:#FFFFFF;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;color:#9AA3B8">Lifetime bounties</span><span style="font:600 28px/1 'JetBrains Mono',monospace;color:#F2B233">3,950</span><span style="font-size:12px;color:#9AA3B8">≈ Rs 987.50</span></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;color:#5A6173">Published</span><span style="font:600 28px/1 'JetBrains Mono',monospace">3</span></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;color:#5A6173">Total reads</span><span style="font:600 28px/1 'JetBrains Mono',monospace">11,420</span></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;color:#5A6173">In review</span><span style="font:600 28px/1 'JetBrains Mono',monospace">1</span></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">What your writing has earned</h3><span style="font-size:13px;color:#5A6173">CREATOR_BOUNTY entries on your published work · weekly bars, cumulative line</span></div>
+          <div style="display:flex;gap:14px;font-size:12px;color:#5A6173"><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F2B233"></span>Bounty paid</span><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:2.5px;background:#0B1426"></span>Cumulative</span></div></div>
+        <svg viewBox="0 0 860 260" style="width:100%;height:auto;display:block">
+          <g font-family="JetBrains Mono" font-size="10" fill="#8A8F9C">
+            <line x1="48" x2="848" y1="30" y2="30" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="80" y2="80" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="130" y2="130" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="180" y2="180" stroke="#EFEEE8"></line><line x1="48" x2="848" y1="230" y2="230" stroke="#D4D3CA"></line>
+            <text x="40" y="34" text-anchor="end">4k</text><text x="40" y="84" text-anchor="end">3k</text><text x="40" y="134" text-anchor="end">2k</text><text x="40" y="184" text-anchor="end">1k</text><text x="40" y="234" text-anchor="end">0</text>
+            <text x="81" y="250" text-anchor="middle">Jul 1</text><text x="348" y="250" text-anchor="middle">Jul 29</text><text x="614" y="250" text-anchor="middle">Aug 26</text><text x="814" y="250" text-anchor="middle">Sep 16</text>
+          </g>
+          <rect x="200" y="170" width="28" height="60" rx="4" fill="#F2B233"></rect><rect x="334" y="190" width="28" height="40" rx="4" fill="#F2B233"></rect><rect x="600" y="170" width="28" height="60" rx="4" fill="#F2B233"></rect><rect x="734" y="192.5" width="28" height="37.5" rx="4" fill="#F2B233"></rect>
+          <path d="M81,230 L148,230 L214,170 L281,170 L348,130 L414,130 L481,130 L548,130 L614,70 L681,70 L748,32.5 L814,32.5" fill="none" stroke="#0B1426" stroke-width="2.5" stroke-linejoin="round"></path>
+          <g fill="#FFFFFF" stroke="#0B1426" stroke-width="2"><circle cx="214" cy="170" r="4"></circle><circle cx="348" cy="130" r="4"></circle><circle cx="614" cy="70" r="4"></circle><circle cx="748" cy="32.5" r="4"></circle></g>
+          <g font-family="JetBrains Mono" font-size="11" fill="#7A5300" text-anchor="middle"><text x="214" y="162">+1,200</text><text x="348" y="122">+800</text><text x="614" y="62">+1,200</text><text x="748" y="24">+750</text></g>
+        </svg>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px">
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Submit new content</h3>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Title</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px;color:#8A8F9C">A clear, specific headline</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Category</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">Tutorials ▾</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Language</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">English ▾</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Draft or Google Doc link</span><div style="height:110px;border:1px solid #D4D3CA;border-radius:11px"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#5A6173">Bounties set by editors on publish</span><span style="background:#0B1426;color:#FFFFFF;font-weight:600;font-size:14px;padding:12px 18px;border-radius:11px">Submit for review</span></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column">
+          <h3 style="margin:0 0 12px;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Your submissions</h3>
+          <sc-for list="{{ submissions }}" as="s" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 140px 70px;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #EFEEE8">
+              <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:600">{{ s.title }}</span><span style="font-size:12px;color:#5A6173">{{ s.date }} · {{ s.reads }}</span></div>
+              <span style="justify-self:start;font-size:12px;font-weight:600;background:{{ s.sb }};color:{{ s.sc }};padding:5px 10px;border-radius:999px">{{ s.st }}</span>
+              <span style="font:600 13px/1 'JetBrains Mono',monospace;text-align:right;color:#7A5300">{{ s.pts }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Notifications · desktop" style="flex:none;width:1440px;min-height:1000px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Notifications" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:40px 40px 48px;display:flex;flex-direction:column;gap:22px;max-width:980px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">NOTIFICATIONS · 3 UNREAD</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">What’s new</h1></div><a href="#" style="font-size:14px;font-weight:600">Mark all as read</a></div>
+      <div style="display:flex;gap:8px;font-size:13px;font-weight:500"><span style="background:#0B1426;color:#FFFFFF;padding:9px 14px;border-radius:999px">All</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Rewards</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Referrals</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Learning</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">Creator</span><span style="background:#FFFFFF;border:1px solid #E3E2DA;padding:8px 13px;border-radius:999px">System</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;overflow:hidden">
+        <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="6">
+          <sc-if value="{{ n.unread }}">
+            <div style="display:grid;grid-template-columns:12px 96px minmax(0,1fr) 80px;gap:16px;align-items:start;padding:18px 24px;border-bottom:1px solid #EFEEE8;background:#FBFBF7">
+              <span style="width:8px;height:8px;border-radius:50%;background:#087A54;margin-top:6px"></span>
+              <span style="justify-self:start;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;background:{{ n.tb }};color:{{ n.tc }};padding:5px 7px;border-radius:6px">{{ n.type }}</span>
+              <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:700">{{ n.title }}</span><span style="font-size:14px;color:#5A6173">{{ n.body }}</span></div>
+              <span style="font:500 12px/1.4 'JetBrains Mono',monospace;color:#5A6173;text-align:right">{{ n.time }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ n.read }}">
+            <div style="display:grid;grid-template-columns:12px 96px minmax(0,1fr) 80px;gap:16px;align-items:start;padding:18px 24px;border-bottom:1px solid #EFEEE8">
+              <span></span>
+              <span style="justify-self:start;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;background:{{ n.tb }};color:{{ n.tc }};padding:5px 7px;border-radius:6px">{{ n.type }}</span>
+              <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:500;color:#454B5C">{{ n.title }}</span><span style="font-size:14px;color:#8A8F9C">{{ n.body }}</span></div>
+              <span style="font:500 12px/1.4 'JetBrains Mono',monospace;color:#8A8F9C;text-align:right">{{ n.time }}</span>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+    </main>
+  </div>
+
+  <div data-screen-label="Settings · desktop" style="flex:none;width:1440px;min-height:1000px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);display:grid;grid-template-columns:272px minmax(0,1fr)">
+    <div style="position:relative"><dc-import name="Sidebar" active="Settings" hint-size="272px,100%" style="position:absolute;top:0;left:0;width:272px;height:100%"></dc-import></div>
+    <main style="padding:40px 40px 48px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#087A54">SETTINGS</span><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:48px;line-height:1">Your account</h1></div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:16px"><div style="width:64px;height:64px;border-radius:18px;background:#1FBF84;color:#0B1426;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px">AR</div><div style="display:flex;flex-direction:column;gap:4px;flex:1"><span style="font-size:18px;font-weight:700">Ayesha Rahman</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">@ayesha_r · member since Aug 2026</span></div><span style="border:1px solid #D4D3CA;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600">Change photo</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Display name</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">Ayesha Rahman</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Username</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">ayesha_r</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Email</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">ayesha.rahman@gmail.com</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Mobile</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font:500 14px/1 'JetBrains Mono',monospace">+92 300 123 4471</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">City</span><div style="height:46px;border:1px solid #D4D3CA;border-radius:11px;display:flex;align-items:center;padding:0 14px;font-size:15px">Karachi ▾</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:600">Language</span><div style="display:flex;background:#F4F3EE;border-radius:11px;padding:4px;height:46px"><span style="flex:1;background:#FFFFFF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;box-shadow:0 1px 2px rgba(11,20,38,.08)">English</span><span style="flex:1;display:flex;align-items:center;justify-content:center;font-family:'Noto Nastaliq Urdu',serif;font-size:14px;color:#5A6173">اردو</span></div></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px"><span style="padding:12px 18px;font-size:14px;font-weight:600;color:#5A6173">Cancel</span><span style="background:#087A54;color:#FFFFFF;font-weight:600;font-size:14px;padding:12px 18px;border-radius:11px">Save changes</span></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:8px 28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #EFEEE8"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:600">Password</span><span style="font-size:13px;color:#5A6173">Last changed 34 days ago</span></div><span style="border:1px solid #D4D3CA;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600">Change</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #EFEEE8"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:600">Identity (KYC)</span><span style="font-size:13px;color:#5A6173">Verified 18 Sep 2026</span></div><span style="font-size:12px;font-weight:600;background:#DDF3E8;color:#065C40;padding:6px 10px;border-radius:999px">● Verified</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:600">Email digests</span><span style="font-size:13px;color:#5A6173">Weekly AI roundup, payout receipts</span></div><span style="width:44px;height:26px;border-radius:13px;background:#087A54;position:relative"><span style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF"></span></span></div>
+          </div>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5A6173">CURRENT TIER</span>
+            <span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">Free</span>
+            <div style="display:flex;flex-direction:column;font-size:14px">
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8"><span>Read to earn</span><span style="color:#087A54;font-weight:600">✓</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8"><span>Beginner &amp; Intermediate paths</span><span style="color:#087A54;font-weight:600">✓</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8"><span>Referral bonuses</span><span style="color:#087A54;font-weight:600">✓</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8;color:#8A8F9C"><span>Advanced paths</span><span>Premium</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #EFEEE8;color:#8A8F9C"><span>Priority payouts</span><span>Premium</span></div>
+            </div>
+            <span style="background:#F2B233;color:#0B1426;font-weight:700;font-size:14px;text-align:center;padding:13px;border-radius:11px">Upgrade to Premium · Rs 999/mo</span>
+          </div>
+          <span style="font-size:13px;color:#A12E27;font-weight:600;padding:0 6px">Delete account…</span>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:baseline;gap:14px"><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:5px 8px;border-radius:5px">03</span><span style="font-size:15px;font-weight:600">Chart empty states &amp; creator application</span><span style="font-size:13px;color:#5A6173">— what new accounts see</span></div>
+  <div data-screen-label="Empty states · desktop" style="flex:none;width:1440px;background:#F4F3EE;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(11,20,38,.1);padding:40px;display:grid;grid-template-columns:1.4fr 1fr;gap:20px">
+    <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Balance over time</h3><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#8A8F9C">REWARDS · 0 LEDGER ENTRIES</span></div>
+      <div style="position:relative;height:230px">
+        <svg viewBox="0 0 800 230" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+          <line x1="0" x2="800" y1="200" y2="200" stroke="#D4D3CA"></line><line x1="0" x2="800" y1="140" y2="140" stroke="#EFEEE8" stroke-dasharray="4 6"></line><line x1="0" x2="800" y1="80" y2="80" stroke="#EFEEE8" stroke-dasharray="4 6"></line>
+          <path d="M0,200 C160,196 260,180 380,160 S620,110 800,70" fill="none" stroke="#1FBF84" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"></path>
+          <circle cx="0" cy="200" r="6" fill="#F2B233" stroke="#0B1426" stroke-width="2"></circle>
+        </svg>
+        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);background:#FFFFFF;border:1px solid #E3E2DA;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;box-shadow:0 8px 24px rgba(11,20,38,.06);width:340px">
+          <span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.1">Your line starts with one article.</span>
+          <span style="font-size:13px;color:#5A6173">Every point you earn is plotted here — withdrawals too.</span>
+          <span style="margin-top:4px;background:#087A54;color:#FFFFFF;font-size:13px;font-weight:600;padding:10px 14px;border-radius:10px">Read today’s lead · +40 pts</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Where it came from</h3><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#8A8F9C">0 PTS EARNED YET</span></div>
+      <div style="height:18px;border-radius:6px;background:repeating-linear-gradient(90deg,#EFEEE8 0 8px,#F7F6F1 8px 16px)"></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;border:2px solid #1FBF84"></span><span style="font-size:14px">Read an article</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#087A54">+20–40 each</span></div>
+        <div style="display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;border:2px solid #5A5BD5"></span><span style="font-size:14px">Invite a friend who stays</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#3A3BA8">+100 each</span></div>
+        <div style="display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #EFEEE8"><span style="width:10px;height:10px;border-radius:3px;border:2px solid #F2B233"></span><span style="font-size:14px">Publish as a creator</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#7A5300">Bounty on publish</span></div>
+      </div>
+      <span style="font-size:12px;color:#5A6173">The breakdown fills in as you earn. Legend doubles as a how-to.</span>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">What your writing has earned</h3><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#8A8F9C">CREATOR STUDIO · NO PUBLISHED PIECES</span></div>
+      <div style="display:flex;align-items:flex-end;gap:14px;height:150px;padding:0 8px;border-bottom:1px solid #D4D3CA">
+        <div style="flex:1;height:18%;border:1.5px dashed #E3E2DA;border-bottom:none;border-radius:5px 5px 0 0"></div><div style="flex:1;height:30%;border:1.5px dashed #E3E2DA;border-bottom:none;border-radius:5px 5px 0 0"></div><div style="flex:1;height:22%;border:1.5px dashed #E3E2DA;border-bottom:none;border-radius:5px 5px 0 0"></div><div style="flex:1;height:44%;border:1.5px dashed #E3E2DA;border-bottom:none;border-radius:5px 5px 0 0"></div><div style="flex:1;height:36%;border:1.5px dashed #E3E2DA;border-bottom:none;border-radius:5px 5px 0 0"></div><div style="flex:1;height:60%;border:1.5px dashed #F2B233;background:#FFF8E6;border-bottom:none;border-radius:5px 5px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font:600 11px/1 'JetBrains Mono',monospace;color:#7A5300">You?</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><span style="font-size:14px;color:#454B5C;line-height:1.45">Bars appear when editors pay a bounty on your published work.</span><span style="flex:none;background:#0B1426;color:#FFFFFF;font-size:13px;font-weight:600;padding:10px 14px;border-radius:10px">Submit a draft</span></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Referral funnel</h3><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#8A8F9C">REFERRALS · NOBODY YET</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:grid;grid-template-columns:90px 1fr 24px;gap:10px;align-items:center"><span style="font-size:13px;font-weight:600;color:#8A8F9C">Joined</span><div style="height:30px;border:1.5px dashed #E3E2DA;border-radius:8px"></div><span style="font:600 14px/1 'JetBrains Mono',monospace;color:#8A8F9C">0</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr 24px;gap:10px;align-items:center"><span style="font-size:13px;font-weight:600;color:#8A8F9C">Qualified</span><div style="height:30px;width:70%;border:1.5px dashed #E3E2DA;border-radius:8px"></div><span style="font:600 14px/1 'JetBrains Mono',monospace;color:#8A8F9C">0</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr 24px;gap:10px;align-items:center"><span style="font-size:13px;font-weight:600;color:#8A8F9C">Rewarded</span><div style="height:30px;width:45%;border:1.5px dashed #E3E2DA;border-radius:8px"></div><span style="font:600 14px/1 'JetBrains Mono',monospace;color:#8A8F9C">0</span></div>
+      </div>
+      <div style="display:flex;align-items:center;border:1px dashed #5A5BD5;background:#F4F4FD;border-radius:11px;padding:4px 4px 4px 12px"><span style="font:600 14px/1 'JetBrains Mono',monospace;flex:1">AYESHA-7K2</span><span style="background:#5A5BD5;color:#FFFFFF;font-size:12px;font-weight:600;padding:9px 12px;border-radius:8px">Share on WhatsApp</span></div>
+    </div>
+    <div style="grid-column:span 2;background:#0B1426;color:#FFFFFF;border-radius:22px;padding:28px 32px;display:grid;grid-template-columns:1.2fr 1fr auto;gap:32px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#F2B233">CREATOR STUDIO · NOT YET A CREATOR</span><span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1.05">Know something about AI that Pakistan should read?</span></div>
+      <div style="display:flex;flex-direction:column;gap:0;font-size:14px">
+        <div style="display:grid;grid-template-columns:28px 1fr;padding:9px 0;border-top:1px solid #24304A"><span style="font-family:'JetBrains Mono',monospace;color:#6E7890">01</span>Apply with two writing samples</div>
+        <div style="display:grid;grid-template-columns:28px 1fr;padding:9px 0;border-top:1px solid #24304A"><span style="font-family:'JetBrains Mono',monospace;color:#6E7890">02</span>Editors review within a week</div>
+        <div style="display:grid;grid-template-columns:28px 1fr;padding:9px 0;border-top:1px solid #24304A;border-bottom:1px solid #24304A"><span style="font-family:'JetBrains Mono',monospace;color:#6E7890">03</span>Publish, get a bounty in points</div>
+      </div>
+      <span style="background:#F2B233;color:#0B1426;font-weight:700;font-size:15px;padding:14px 20px;border-radius:12px">Apply to the program</span>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:baseline;gap:14px"><span style="font:600 11px/1 'JetBrains Mono',monospace;background:#0B1426;color:#FFFFFF;padding:5px 8px;border-radius:5px">04</span><span style="font-size:15px;font-weight:600">Mobile</span><span style="font-size:13px;color:#5A6173">— sidebar becomes a top balance bar + 5-slot tab bar with a raised “Earn” wallet</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+  <div data-screen-label="Home / News feed · mobile" style="flex:none;width:390px;height:844px;background:#F4F3EE;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #0B1426,0 20px 40px rgba(11,20,38,.2);position:relative;margin:10px">
+    <div style="background:#FFFFFF;border-bottom:1px solid #E3E2DA;padding:52px 18px 12px;display:flex;align-items:center;gap:10px">
+      <div style="display:grid;grid-template-columns:repeat(3,6px);gap:2px"><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px;background:#F2B233;border-radius:50%"></div><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px"></div><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px;background:#087A54;border-radius:1.5px"></div><div style="height:6px"></div></div>
+      <div style="display:flex;align-items:baseline;gap:4px;line-height:1"><span style="font-weight:700;font-size:16px">Digitize</span><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#5A6173">Pakistan</span></div>
+      <span style="flex:1"></span>
+      <span style="background:#087A54;color:#FFFFFF;font-size:13px;font-weight:600;padding:9px 12px;border-radius:10px">Start earning</span>
+      <span style="width:40px;height:40px;border:1px solid #E3E2DA;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="width:16px;height:2px;background:#0B1426"></span><span style="width:16px;height:2px;background:#0B1426"></span></span>
+    </div>
+    <div style="padding:18px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;gap:6px;font-size:13px;font-weight:500;overflow:hidden"><span style="background:#0B1426;color:#FFFFFF;padding:8px 13px;border-radius:999px;flex:none">All</span><span style="border:1px solid #D4D3CA;padding:7px 12px;border-radius:999px;flex:none">Policy</span><span style="border:1px solid #D4D3CA;padding:7px 12px;border-radius:999px;flex:none">Research</span><span style="border:1px solid #D4D3CA;padding:7px 12px;border-radius:999px;flex:none">Pakistan</span></div>
+      <div style="aspect-ratio:16/10;border-radius:16px;background:repeating-linear-gradient(135deg,#E6E5DE 0 10px,#EDECE6 10px 20px)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">POLICY · 7 MIN</span><span style="font:600 10px/1 'JetBrains Mono',monospace;background:#FCEFCC;color:#7A5300;padding:5px 7px;border-radius:6px">+40 PTS</span></div>
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:34px;line-height:1.02">Pakistan’s first national AI policy is here. What it means for you.</h2>
+      <div style="background:#0B1426;color:#FFFFFF;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.05">Your time is worth something. <span style="font-style:italic;color:#F2B233">We pay it.</span></span>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 15px/1 'JetBrains Mono',monospace">1,000 pts = <span style="color:#F2B233">Rs 250</span></span><span style="background:#1FBF84;color:#0B1426;font-weight:700;font-size:13px;padding:9px 12px;border-radius:9px">Join free</span></div>
+      </div>
+      <sc-for list="{{ articlesShort }}" as="a" hint-placeholder-count="2">
+        <div style="display:grid;grid-template-columns:1fr 88px;gap:12px;padding-top:14px;border-top:1px solid #E3E2DA"><div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">{{ a.cat }}</span><span style="font-family:'Instrument Serif',serif;font-size:20px;line-height:1.1">{{ a.title }}</span><span style="font:500 10px/1 'JetBrains Mono',monospace;color:#7A5300">{{ a.mins }} · +{{ a.pts }} pts</span></div><div style="aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(135deg,#E6E5DE 0 8px,#EDECE6 8px 16px)"></div></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div data-screen-label="Article detail · mobile" style="flex:none;width:390px;height:844px;background:#FFFFFF;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #0B1426,0 20px 40px rgba(11,20,38,.2);position:relative;margin:10px">
+    <div style="padding:52px 18px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #E3E2DA"><span style="font-size:20px">←</span><span style="flex:1;font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#087A54">POLICY</span><span style="font-size:13px;font-weight:600">Share</span></div>
+    <div style="height:3px;background:#EFEEE8"><div style="width:38%;height:3px;background:#087A54"></div></div>
+    <div style="padding:20px 20px 120px;display:flex;flex-direction:column;gap:14px">
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:36px;line-height:1">Pakistan’s first national AI policy is here.</h1>
+      <p style="margin:0;font-size:16px;line-height:1.5;color:#454B5C">A national AI fund, data-residency rules and a skills target of a million professionals.</p>
+      <span style="font-size:12px;color:#5A6173"><b style="color:#0B1426">Hamza Qureshi</b> · 23 Sep · 7 min</span>
+      <div style="aspect-ratio:16/10;border-radius:14px;background:repeating-linear-gradient(135deg,#E6E5DE 0 10px,#EDECE6 10px 20px)"></div>
+      <p style="margin:0;font-size:17px;line-height:1.7;color:#1E2638">The Ministry of IT &amp; Telecom published the long-awaited framework on Monday evening. It is the first time the government has set out, in one place, how it expects AI to be built, bought and regulated.</p>
+      <p style="margin:0;font-size:17px;line-height:1.7;color:#1E2638">Three things stand out. First, a national AI fund to back local research and startups…</p>
+    </div>
+    <div style="position:absolute;left:12px;right:12px;bottom:24px;background:#0B1426;color:#FFFFFF;border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(11,20,38,.3)">
+      <svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#24304A" stroke-width="5"></circle><circle cx="20" cy="20" r="16" fill="none" stroke="#1FBF84" stroke-width="5" stroke-linecap="round" stroke-dasharray="38 100" transform="rotate(-90 20 20)"></circle></svg>
+      <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">Keep reading · 38%</span><span style="font-size:12px;color:#9AA3B8">Finish to earn</span></div>
+      <span style="font:600 14px/1 'JetBrains Mono',monospace;color:#F2B233">+40</span>
+    </div>
+  </div>
+
+  <div data-screen-label="Dashboard · mobile" style="flex:none;width:390px;height:844px;background:#F4F3EE;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #0B1426,0 20px 40px rgba(11,20,38,.2);position:relative;margin:10px">
+    <div style="background:#0B1426;color:#FFFFFF;padding:52px 18px 20px;border-radius:0 0 26px 26px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:11px;background:#1FBF84;color:#0B1426;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">AR</div><div style="display:flex;flex-direction:column;gap:0;flex:1"><span style="font-family:'Noto Nastaliq Urdu',serif;font-size:13px;line-height:1.8;color:#1FBF84">السلام علیکم</span><span style="font-size:15px;font-weight:600;line-height:1">Ayesha</span></div><span style="width:40px;height:40px;border-radius:11px;background:#141F36;border:1px solid #24304A;position:relative"><span style="position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:#D6453D"></span></span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">POINTS BALANCE</span><span style="font:600 44px/1 'JetBrains Mono',monospace;color:#F2B233;letter-spacing:-0.03em">12,480</span><span style="font-size:13px;color:#C9CFDC">≈ Rs 3,120.00 · <span style="color:#1FBF84">+1,240 this week</span></span></div>
+      <div style="display:flex;gap:8px"><span style="flex:1;background:#1FBF84;color:#0B1426;font-weight:700;font-size:14px;text-align:center;padding:12px;border-radius:11px">Withdraw</span><span style="flex:1;background:#141F36;border:1px solid #24304A;font-weight:600;font-size:14px;text-align:center;padding:11px;border-radius:11px">Invite · +100</span></div>
+    </div>
+    <div style="padding:16px 16px 110px;display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between"><span style="font-size:14px;font-weight:700">AI Foundations</span><span style="font:500 12px/1 'JetBrains Mono',monospace;color:#5A6173">5/8</span></div>
+        <div style="height:6px;background:#EFEEE8;border-radius:3px"><div style="height:6px;width:62%;background:#087A54;border-radius:3px"></div></div>
+        <span style="font-size:13px;color:#5A6173">Next: Where models fail · <span style="font-family:'JetBrains Mono',monospace;color:#7A5300">+80</span></span>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:6px 16px">
+        <sc-for list="{{ ledgerShort }}" as="l" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:11px 0;border-bottom:1px solid #EFEEE8">
+            <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.desc }}</span>
+            <sc-if value="{{ l.pos }}"><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#087A54;text-align:right">{{ l.amt }}</span></sc-if>
+            <sc-if value="{{ l.neg }}"><span style="font:600 13px/1 'JetBrains Mono',monospace;color:#A12E27;text-align:right">{{ l.amt }}</span></sc-if>
+            <span style="justify-self:start;font:500 9px/1 'JetBrains Mono',monospace;background:{{ l.tb }};color:{{ l.tc }};padding:4px 6px;border-radius:5px">{{ l.type }}</span>
+            <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C;text-align:right">{{ l.date }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-top:1px solid #E3E2DA;padding:8px 10px 26px;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;font-size:11px;font-weight:600;color:#8A8F9C;text-align:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#0B1426"><span style="width:22px;height:4px;border-radius:2px;background:#087A54"></span>Home</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px;border-radius:2px;background:transparent"></span>Learn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:-26px"><span style="width:58px;height:58px;border-radius:18px;background:#0B1426;border:4px solid #F4F3EE;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace;color:#F2B233">12.4k</span>Earn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Refer</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>More</div>
+    </div>
+  </div>
+
+  <div data-screen-label="Rewards · mobile" style="flex:none;width:390px;height:844px;background:#F4F3EE;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #0B1426,0 20px 40px rgba(11,20,38,.2);position:relative;margin:10px">
+    <div style="padding:52px 18px 10px;display:flex;align-items:baseline;justify-content:space-between"><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:34px">Rewards</h1><span style="font:500 11px/1 'JetBrains Mono',monospace;color:#5A6173">1k = Rs 250</span></div>
+    <div style="padding:0 16px 110px;display:flex;flex-direction:column;gap:12px">
+      <div style="background:#0B1426;color:#FFFFFF;border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:flex-end"><div style="display:flex;flex-direction:column;gap:6px"><span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#9AA3B8">AVAILABLE</span><span style="font:600 32px/1 'JetBrains Mono',monospace;color:#F2B233">12,480</span><span style="font-size:12px;color:#C9CFDC">≈ Rs 3,120.00</span></div><span style="background:#1FBF84;color:#0B1426;font-weight:700;font-size:13px;padding:10px 14px;border-radius:10px">Withdraw</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:22px">Balance over time</span><span style="font:600 10px/1 'JetBrains Mono',monospace;background:#F4F3EE;padding:6px 8px;border-radius:6px">ALL</span></div>
+        <svg viewBox="0 0 800 240" style="width:100%;height:auto;display:block">
+          <line x1="0" x2="800" y1="230" y2="230" stroke="#D4D3CA" stroke-width="3"></line>
+          <path d="M0,167 L80,152 L160,140 L240,122 L320,103 L400,85 L427,81 L429,123 L500,108 L560,88 L620,66 L680,45 L747,25 L749,109 L775,104 L800,99 L800,230 L0,230 Z" fill="#1FBF84" fill-opacity=".12"></path>
+          <path d="M0,167 L80,152 L160,140 L240,122 L320,103 L400,85 L427,81 L429,123 L500,108 L560,88 L620,66 L680,45 L747,25 L749,109 L775,104 L800,99" fill="none" stroke="#087A54" stroke-width="6" stroke-linejoin="round"></path>
+          <circle cx="429" cy="123" r="12" fill="#FFFFFF" stroke="#D6453D" stroke-width="6"></circle><circle cx="749" cy="109" r="12" fill="#FFFFFF" stroke="#D6453D" stroke-width="6"></circle><circle cx="790" cy="99" r="14" fill="#F2B233" stroke="#0B1426" stroke-width="5"></circle>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font:500 10px/1 'JetBrains Mono',monospace;color:#8A8F9C"><span>AUG 9</span><span>SEP 1</span><span>TODAY</span></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'Instrument Serif',serif;font-size:22px">Where it came from</span>
+        <div style="display:flex;height:14px;border-radius:5px;overflow:hidden;gap:2px"><div style="width:81.5%;background:#1FBF84"></div><div style="width:16.1%;background:#F2B233"></div><div style="width:2.4%;background:#5A5BD5"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#1FBF84"></span>Reading</span><span style="font-family:'JetBrains Mono',monospace">19,990</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#F2B233"></span>Creator</span><span style="font-family:'JetBrains Mono',monospace">3,950</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#5A5BD5"></span>Referrals</span><span style="font-family:'JetBrains Mono',monospace">600</span></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:6px 16px">
+        <sc-for list="{{ withdrawals }}" as="w" hint-placeholder-count="3">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #EFEEE8"><div style="display:flex;flex-direction:column;gap:3px"><span style="font:600 13px/1 'JetBrains Mono',monospace">{{ w.rs }}</span><span style="font-size:12px;color:#5A6173">{{ w.method }}</span></div><span style="font-size:11px;font-weight:600;background:{{ w.sb }};color:{{ w.sc }};padding:4px 9px;border-radius:999px">{{ w.st }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-top:1px solid #E3E2DA;padding:8px 10px 26px;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;font-size:11px;font-weight:600;color:#8A8F9C;text-align:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Home</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Learn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:-26px;color:#0B1426"><span style="width:58px;height:58px;border-radius:18px;background:#F2B233;border:4px solid #F4F3EE;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace;color:#0B1426">12.4k</span>Earn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Refer</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>More</div>
+    </div>
+  </div>
+
+  <div data-screen-label="Referrals · mobile" style="flex:none;width:390px;height:844px;background:#F4F3EE;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #0B1426,0 20px 40px rgba(11,20,38,.2);position:relative;margin:10px">
+    <div style="padding:52px 18px 10px"><h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:34px">Referrals</h1></div>
+    <div style="padding:0 16px 110px;display:flex;flex-direction:column;gap:12px">
+      <div style="background:#5A5BD5;color:#FFFFFF;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px"><span style="font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#E7E7FB">YOUR CODE</span><span style="font:600 26px/1 'JetBrains Mono',monospace;letter-spacing:.04em">AYESHA-7K2</span><div style="display:flex;gap:8px"><span style="flex:1;background:#FFFFFF;color:#3A3BA8;font-weight:700;font-size:13px;text-align:center;padding:11px;border-radius:10px">Copy link</span><span style="flex:1;border:1px solid rgba(255,255,255,.45);font-weight:600;font-size:13px;text-align:center;padding:10px;border-radius:10px">WhatsApp</span></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'Instrument Serif',serif;font-size:22px">Funnel</span>
+        <div style="display:grid;grid-template-columns:76px 1fr 24px;gap:8px;align-items:center;font-size:12px;font-weight:600"><span>Joined</span><div style="height:26px;background:#FCEFCC;border-radius:6px"></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">12</span></div>
+        <div style="display:grid;grid-template-columns:76px 1fr 24px;gap:8px;align-items:center;font-size:12px;font-weight:600"><span>Qualified</span><div><div style="height:26px;width:58%;background:#9D9EEA;border-radius:6px"></div></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">7</span></div>
+        <div style="display:grid;grid-template-columns:76px 1fr 24px;gap:8px;align-items:center;font-size:12px;font-weight:600"><span>Rewarded</span><div><div style="height:26px;width:50%;background:#5A5BD5;border-radius:6px"></div></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">6</span></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E2DA;border-radius:18px;padding:4px 16px">
+        <sc-for list="{{ referrals }}" as="r" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EFEEE8"><span style="width:32px;height:32px;border-radius:9px;background:#E7E7FB;color:#3A3BA8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px">{{ r.ini }}</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600">{{ r.name }}</span><span style="font-size:11px;color:#5A6173">{{ r.act }}</span></div><span style="font-size:11px;font-weight:600;background:{{ r.sb }};color:{{ r.sc }};padding:4px 9px;border-radius:999px">{{ r.st }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-top:1px solid #E3E2DA;padding:8px 10px 26px;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;font-size:11px;font-weight:600;color:#8A8F9C;text-align:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Home</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>Learn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:-26px"><span style="width:58px;height:58px;border-radius:18px;background:#0B1426;border:4px solid #F4F3EE;display:flex;align-items:center;justify-content:center;font:600 12px/1 'JetBrains Mono',monospace;color:#F2B233">12.4k</span>Earn</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#0B1426"><span style="width:22px;height:4px;border-radius:2px;background:#5A5BD5"></span>Refer</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="width:22px;height:4px"></span>More</div>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const v = {
+      principles: [
+        { n: 'A', t: 'Ledger-clear', d: 'Every point and rupee is shown to the unit, in monospace, with its type. No vague “rewards”.' },
+        { n: 'B', t: 'Earned trust', d: 'Calm surfaces, real compliance language, no confetti. It handles CNICs and cash — it should feel like it.' },
+        { n: 'C', t: 'Two scripts, one voice', d: 'English does the work; Urdu greets you and signs off. Nastaliq is used sparingly, never as decoration.' }
+      ],
+      palette: [
+        { name: 'Midnight', hex: '#0B1426', role: 'Nav, footer, money panels, primary text' },
+        { name: 'Midnight 2', hex: '#141F36', role: 'Raised dark surfaces' },
+        { name: 'Porcelain', hex: '#F4F3EE', role: 'Page canvas' },
+        { name: 'Paper', hex: '#FFFFFF', role: 'Cards, forms, reading' },
+        { name: 'Rule', hex: '#E3E2DA', role: 'Borders & dividers' },
+        { name: 'Slate', hex: '#5A6173', role: 'Secondary text' },
+        { name: 'Emerald 600', hex: '#087A54', role: 'Primary action, links (AA on white)' },
+        { name: 'Emerald 400', hex: '#1FBF84', role: 'On-dark accents, READ_ENGAGEMENT' },
+        { name: 'Mint', hex: '#DDF3E8', role: 'Success tint, focus ring' },
+        { name: 'Marigold', hex: '#F2B233', role: 'Points, coins, CREATOR_BOUNTY' },
+        { name: 'Iris', hex: '#5A5BD5', role: 'Referrals, REFERRAL_BONUS' },
+        { name: 'Rose', hex: '#D6453D', role: 'Withdrawals, errors' }
+      ],
+      scale: [
+        { token: 'display-xl', use: 'Hero / brand moments', size: '112 → 56' },
+        { token: 'display-l', use: 'Lead headline', size: '60 → 34' },
+        { token: 'display-m', use: 'Page title (app)', size: '44 → 32' },
+        { token: 'display-s', use: 'Card & list headlines', size: '28 → 22' },
+        { token: 'body-l', use: 'Article body', size: '19 / 1.7' },
+        { token: 'body', use: 'UI text', size: '15 / 1.5' },
+        { token: 'label', use: 'Mono overlines, tags', size: '11 · +.1em' },
+        { token: 'figure-xl', use: 'Balances', size: '56 → 40' }
+      ],
+      toolsTeaser: [
+        { ini: 'Cl', name: 'Claude', cat: 'Assistant · Writing', price: 'FREEMIUM', bg: '#C2643C' },
+        { ini: 'Pe', name: 'Perplexity', cat: 'Search · Research', price: 'FREEMIUM', bg: '#1F6F74' },
+        { ini: 'Mj', name: 'Midjourney', cat: 'Image generation', price: 'PAID', bg: '#0B1426' },
+        { ini: 'Eb', name: 'ElevenLabs', cat: 'Voice · Urdu support', price: 'FREEMIUM', bg: '#5A5BD5' }
+      ],
+      articles: [
+        { time: '10:42', cat: 'PAKISTAN', title: 'Karachi fintech raises Series A to bring AI underwriting to small merchants', dek: 'The round values the company at an undisclosed sum and targets 50,000 kiryana stores by 2027.', mins: '5 min', pts: 30 },
+        { time: '09:15', cat: 'RESEARCH', title: 'A new open model reads Urdu better than anything before it', dek: 'Benchmarks show strong gains on Nastaliq OCR and Roman-Urdu chat — here is how it was trained.', mins: '8 min', pts: 40 },
+        { time: '08:03', cat: 'PRODUCTS', title: 'The five AI tools freelancers on Fiverr are actually paying for', dek: 'We surveyed 400 Pakistani freelancers. The answers were not what we expected.', mins: '6 min', pts: 30 },
+        { time: 'Yesterday', cat: 'POLICY', title: 'SBP sandbox opens to AI credit-scoring pilots', dek: 'Six banks and two microfinance lenders are in the first cohort.', mins: '4 min', pts: 20 }
+      ],
+      mostRead: [
+        { n: '1', t: 'How to write prompts that actually work in Urdu' },
+        { n: '2', t: 'Is AI coming for call-centre jobs in Pakistan?' },
+        { n: '3', t: 'A plain-language guide to large language models' },
+        { n: '4', t: 'Freelancing with AI: a starter kit for 2026' }
+      ],
+      tools: [
+        { ini: 'Cl', name: 'Claude', cat: 'Assistant', desc: 'Long-context assistant for writing, analysis and code.', price: 'Freemium', bg: '#C2643C' },
+        { ini: 'Pe', name: 'Perplexity', cat: 'Research', desc: 'Answer engine that cites its sources as it goes.', price: 'Freemium', bg: '#1F6F74' },
+        { ini: 'Mj', name: 'Midjourney', cat: 'Image', desc: 'High-quality image generation from text prompts.', price: 'Paid', bg: '#0B1426' },
+        { ini: 'Eb', name: 'ElevenLabs', cat: 'Voice', desc: 'Realistic text-to-speech with Urdu voices.', price: 'Freemium', bg: '#5A5BD5' },
+        { ini: 'Cu', name: 'Cursor', cat: 'Code', desc: 'AI-first code editor built on VS Code.', price: 'Freemium', bg: '#2B2F3A' },
+        { ini: 'Ca', name: 'Canva Magic', cat: 'Design', desc: 'Generate layouts, images and copy inside Canva.', price: 'Freemium', bg: '#087A54' },
+        { ini: 'No', name: 'NotebookLM', cat: 'Research', desc: 'Turn your documents into a researchable notebook.', price: 'Free', bg: '#B8860B' },
+        { ini: 'Ru', name: 'Runway', cat: 'Video', desc: 'Text- and image-to-video generation and editing.', price: 'Paid', bg: '#7A2E5C' },
+        { ini: 'Gr', name: 'Grammarly', cat: 'Writing', desc: 'Grammar, tone and rewrite suggestions everywhere.', price: 'Freemium', bg: '#1C7C5A' }
+      ],
+      ledger: [
+        { date: '23 Sep · 10:48', desc: 'Read “Pakistan’s first national AI policy…”', type: 'READ_ENGAGEMENT', tc: '#065C40', tb: '#DDF3E8', amt: '+40', pos: true },
+        { date: '22 Sep · 19:02', desc: 'Referral qualified — Bilal S.', type: 'REFERRAL_BONUS', tc: '#3A3BA8', tb: '#E7E7FB', amt: '+100', pos: true },
+        { date: '21 Sep · 14:30', desc: 'Bounty — “Prompting in Roman Urdu”', type: 'CREATOR_BOUNTY', tc: '#7A5300', tb: '#FCEFCC', amt: '+750', pos: true },
+        { date: '20 Sep · 09:11', desc: 'Withdrawal to JazzCash ••• 4471', type: 'WITHDRAWAL', tc: '#A12E27', tb: '#FBE3E0', amt: '−8,000', pos: false, neg: true },
+        { date: '18 Sep · 16:45', desc: 'Milestone — AI Foundations, module 3', type: 'READ_ENGAGEMENT', tc: '#065C40', tb: '#DDF3E8', amt: '+120', pos: true },
+        { date: '17 Sep · 12:00', desc: 'Manual correction — duplicate read', type: 'ADJUSTMENT', tc: '#454B5C', tb: '#ECECE6', amt: '−60', pos: false, neg: true }
+      ],
+      paths: [
+        { title: 'AI Foundations', sub: 'What models are, how they work, where they fail', done: 5, total: 8, pct: '62%', pts: '500', lvl: 'Beginner', status: 'In progress' },
+        { title: 'Prompting for Work', sub: 'Practical prompting for email, research and reports', done: 2, total: 6, pct: '33%', pts: '400', lvl: 'Beginner', status: 'In progress' },
+        { title: 'AI for Freelancers', sub: 'Win clients and ship faster with AI tools', done: 7, total: 7, pct: '100%', pts: '600', lvl: 'Intermediate', status: 'Complete' },
+        { title: 'Data & Privacy in Pakistan', sub: 'PECA, data residency and responsible AI', done: 0, total: 5, pct: '0%', pts: '350', lvl: 'Intermediate', status: 'Not started' },
+        { title: 'Build with AI APIs', sub: 'Call models from code, safely and cheaply', done: 0, total: 9, pct: '0%', pts: '900', lvl: 'Advanced', status: 'Premium' },
+        { title: 'AI for Teachers', sub: 'Lesson planning and assessment with AI', done: 1, total: 6, pct: '16%', pts: '400', lvl: 'Beginner', status: 'In progress' }
+      ],
+      withdrawals: [
+        { date: '20 Sep 2026', method: 'JazzCash ••• 4471', pts: '8,000', rs: 'Rs 2,000', st: 'Paid', sc: '#065C40', sb: '#DDF3E8' },
+        { date: '02 Sep 2026', method: 'Easypaisa ••• 9012', pts: '4,000', rs: 'Rs 1,000', st: 'Paid', sc: '#065C40', sb: '#DDF3E8' },
+        { date: '14 Aug 2026', method: 'Meezan Bank ••• 3310', pts: '10,000', rs: 'Rs 2,500', st: 'Rejected', sc: '#A12E27', sb: '#FBE3E0' },
+        { date: '23 Sep 2026', method: 'JazzCash ••• 4471', pts: '4,000', rs: 'Rs 1,000', st: 'Pending', sc: '#7A5300', sb: '#FCEFCC' }
+      ],
+      referrals: [
+        { ini: 'BS', name: 'Bilal Siddiqui', joined: '12 Sep 2026', act: 'Read 14 articles', st: 'Rewarded', sc: '#065C40', sb: '#DDF3E8', pts: '+100' },
+        { ini: 'MK', name: 'Mehwish Khan', joined: '09 Sep 2026', act: 'Completed a path', st: 'Rewarded', sc: '#065C40', sb: '#DDF3E8', pts: '+100' },
+        { ini: 'ZA', name: 'Zain Abbasi', joined: '18 Sep 2026', act: 'Read 6 articles', st: 'Qualified', sc: '#3A3BA8', sb: '#E7E7FB', pts: 'Paying' },
+        { ini: 'SN', name: 'Sana Naqvi', joined: '21 Sep 2026', act: 'Signed up', st: 'Pending', sc: '#7A5300', sb: '#FCEFCC', pts: '—' },
+        { ini: 'UF', name: 'Usman Farooq', joined: '22 Sep 2026', act: 'Signed up', st: 'Pending', sc: '#7A5300', sb: '#FCEFCC', pts: '—' }
+      ],
+      submissions: [
+        { title: 'Prompting in Roman Urdu: a field guide', date: '14 Sep', st: 'Published', sc: '#065C40', sb: '#DDF3E8', pts: '+750', reads: '3,204 reads' },
+        { title: 'I automated my Daraz store with AI — here is what broke', date: '02 Sep', st: 'Published', sc: '#065C40', sb: '#DDF3E8', pts: '+1,200', reads: '5,880 reads' },
+        { title: 'Five AI tools every Pakistani student should know', date: '20 Sep', st: 'In review', sc: '#454B5C', sb: '#ECECE6', pts: '—', reads: 'Submitted 3 days ago' },
+        { title: 'Why local LLMs matter for Pakistan', date: '11 Aug', st: 'Changes requested', sc: '#7A5300', sb: '#FCEFCC', pts: '—', reads: 'Editor left 2 notes' }
+      ],
+      week: [
+        { d: 'Wed', h: '38%', v: '120' }, { d: 'Thu', h: '55%', v: '180' }, { d: 'Fri', h: '30%', v: '90' }, { d: 'Sat', h: '72%', v: '240' },
+        { d: 'Sun', h: '48%', v: '160' }, { d: 'Mon', h: '90%', v: '300' }, { d: 'Tue', h: '46%', v: '150' }
+      ],
+      milestones: [
+        { n: '01', t: 'What is a model, really?', m: '12 min · +60 pts', done: true },
+        { n: '02', t: 'Tokens, context and why it forgets', m: '15 min · +60 pts', done: true },
+        { n: '03', t: 'Training vs. prompting', m: '14 min · +60 pts', done: true },
+        { n: '04', t: 'Hallucinations and how to catch them', m: '18 min · +80 pts', done: true },
+        { n: '05', t: 'Images, audio and multimodal AI', m: '16 min · +80 pts', done: true },
+        { n: '06', t: 'Where models fail — and why it matters', m: '18 min · +80 pts', current: true },
+        { n: '07', t: 'AI and the Pakistani job market', m: '20 min · +80 pts', locked: true },
+        { n: '08', t: 'Final check — 10 questions', m: '10 min · +500 pts on pass', locked: true }
+      ],
+      notifications: [
+        { type: 'REWARD', tc: '#7A5300', tb: '#FCEFCC', title: 'Withdrawal of Rs 1,000 is being processed', body: 'JazzCash ••• 4471 · usually within 2 working days.', time: '12 min', unread: true },
+        { type: 'REFERRAL', tc: '#3A3BA8', tb: '#E7E7FB', title: 'Zain Abbasi’s referral just qualified', body: 'Your +100 pts bonus will be paid in the next cycle.', time: '3 h', unread: true },
+        { type: 'CREATOR', tc: '#7A5300', tb: '#FCEFCC', title: 'Your article is in editorial review', body: '“Five AI tools every Pakistani student should know”', time: 'Yesterday', unread: true },
+        { type: 'LEARNING', tc: '#065C40', tb: '#DDF3E8', title: 'New module unlocked in AI Foundations', body: 'Module 6 · Where models fail — 18 min, +80 pts', time: '2 days', unread: false, read: true },
+        { type: 'SYSTEM', tc: '#454B5C', tb: '#ECECE6', title: 'Your identity has been verified', body: 'You can now withdraw to any linked account.', time: '5 days', unread: false, read: true },
+        { type: 'REWARD', tc: '#7A5300', tb: '#FCEFCC', title: 'Rs 2,000 paid to JazzCash ••• 4471', body: 'Reference DP-2026-0920-4471', time: '3 days', unread: false, read: true }
+      ]
+    };
+    v.articlesShort = v.articles.slice(0, 2);
+    v.ledgerShort = v.ledger.slice(0, 4);
+    return v;
+  }
+}
+</script>
+</body>
+</html>
