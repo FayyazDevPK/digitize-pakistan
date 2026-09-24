@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getContentList } from "@/lib/content";
+import { getContentCategories, getContentList, ContentSort } from "@/lib/content";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import { SITE_NAME } from "@/lib/site";
@@ -22,92 +22,142 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ToolsPage() {
-  const items = await getContentList("TOOL_LISTING");
-  const featured = items.slice(0, 3);
-  const rest = items.slice(3);
+const SORTS: { key: ContentSort; label: string }[] = [
+  { key: "newest", label: "Newest" },
+  { key: "alphabetical", label: "A–Z" },
+  { key: "popular", label: "Popular" },
+];
+
+function toolsHref(category?: string, sort?: ContentSort) {
+  const qs = new URLSearchParams();
+  if (category) qs.set("category", category);
+  if (sort && sort !== "newest") qs.set("sort", sort);
+  const q = qs.toString();
+  return q ? `/tools?${q}` : "/tools";
+}
+
+export default async function ToolsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; sort?: string }>;
+}) {
+  const params = await searchParams;
+  const sort: ContentSort = SORTS.some((s) => s.key === params.sort)
+    ? (params.sort as ContentSort)
+    : "newest";
+  const category = params.category || undefined;
+
+  const [items, categories] = await Promise.all([
+    getContentList("TOOL_LISTING", { category, sort }),
+    getContentCategories("TOOL_LISTING"),
+  ]);
 
   return (
     <div className="min-h-screen bg-paper">
       <PublicHeader active="AI Tools" />
 
-      <div className="max-w-[1280px] mx-auto p-4 md:p-7 flex flex-col gap-[22px]">
-        <div className="flex items-end justify-between flex-wrap gap-4">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="font-display text-3xl md:text-[38px]">AI tool directory</h1>
-            <span className="text-sm text-muted">{items.length} tools listed</span>
+      <div className="max-w-[1360px] mx-auto px-4 md:px-12 py-8 md:py-12 flex flex-col gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_420px] gap-8 items-end">
+          <div className="flex flex-col gap-3">
+            <span className="font-mono text-[11px] tracking-[.12em] text-primary">
+              CURATED · TESTED · PRICED IN PKR
+            </span>
+            <h1 className="font-display text-5xl md:text-[64px] leading-none m-0">
+              The AI Tool Directory
+            </h1>
+            <p className="text-lg text-graphite max-w-[620px] leading-[1.5] m-0">
+              Every tool reviewed by our editors, with notes on Urdu support, local payment
+              options and what it&apos;s actually good for.
+            </p>
+          </div>
+          <div className="hidden md:flex h-14 bg-white border border-border-strong rounded-2xl items-center gap-3 pl-[18px] pr-2 text-[15px] text-[#8A8F9C]">
+            <span className="w-[13px] h-[13px] border-2 border-[#8A8F9C] rounded-full shrink-0" />
+            <span className="flex-1">Search tools, e.g. &quot;Urdu voice&quot;</span>
+            <span className="bg-ink text-white text-[13px] font-semibold px-3.5 py-2.5 rounded-[10px]">
+              Search
+            </span>
           </div>
         </div>
 
-        {items.length === 0 && <p className="font-mono text-sm text-muted">No tools listed yet.</p>}
-
-        {featured.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {featured.map((tool) => (
+        <div className="flex items-center gap-2 flex-wrap text-[13px] font-medium">
+          <Link
+            href={toolsHref(undefined, sort)}
+            className={`px-3.5 py-2 rounded-full ${
+              !category ? "bg-ink text-white" : "bg-white border border-border"
+            }`}
+          >
+            All tools
+          </Link>
+          {categories.map((c) => (
+            <Link
+              key={c.id}
+              href={toolsHref(c.slug, sort)}
+              className={`px-3.5 py-2 rounded-full ${
+                category === c.slug ? "bg-ink text-white" : "bg-white border border-border"
+              }`}
+            >
+              {c.name}
+            </Link>
+          ))}
+          <span className="flex-1" />
+          <span className="text-muted">{items.length} listed</span>
+          <span className="text-muted ml-2">Sort</span>
+          <span className="flex bg-[#E9E8E1] rounded-[10px] p-[3px]">
+            {SORTS.map((s) => (
               <Link
-                key={tool.id}
-                href={`/tools/${tool.slug}`}
-                className={`bg-white rounded-[10px] p-[18px] flex flex-col gap-2.5 border ${
-                  tool.visibility === "PREMIUM_ONLY" ? "border-[#E3D3A8]" : "border-border"
+                key={s.key}
+                href={toolsHref(category, s.key)}
+                className={`px-2.5 py-1.5 rounded-lg ${
+                  sort === s.key ? "bg-white font-semibold" : "text-muted"
                 }`}
               >
-                <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 rounded-[9px] bg-[#E7E2D9]" />
-                  <span
-                    className={`text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded ${
-                      tool.visibility === "PREMIUM_ONLY"
-                        ? "bg-premium text-white"
-                        : "border border-[#9AA0AC] text-[#4E5463]"
-                    }`}
-                  >
-                    {tool.visibility === "PREMIUM_ONLY" ? "★ PREMIUM" : "FREE"}
+                {s.label}
+              </Link>
+            ))}
+          </span>
+        </div>
+
+        {items.length === 0 && (
+          <p className="font-mono text-sm text-muted py-6">
+            {category ? "No tools in this category." : "No tools listed yet."}
+          </p>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((tool) => (
+            <Link
+              key={tool.id}
+              href={`/tools/${tool.slug}`}
+              className="bg-white border border-border rounded-[18px] p-[22px] flex flex-col gap-4 hover:border-ink transition-colors"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-[13px] bg-[#E7E2D9] shrink-0" />
+                <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+                  <span className="text-[17px] font-bold truncate">{tool.title}</span>
+                  <span className="font-mono text-[11px] tracking-[.08em] text-muted uppercase truncate">
+                    {tool.category?.name}
                   </span>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[16px] font-semibold">{tool.title}</span>
-                  <span className="text-[13px] text-muted leading-[1.5]">{tool.excerpt}</span>
-                </div>
-                <div className="flex items-center gap-2.5 font-mono text-[11px] text-muted pt-[3px] border-t border-[#F0EDE7]">
-                  <span>{tool.category?.name?.toUpperCase()}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        {rest.length > 0 && (
-          <div className="flex flex-col gap-2.5">
-            <div className="font-mono text-[11px] font-semibold tracking-[.16em] border-b-2 border-ink pb-[7px]">
-              ALL TOOLS
-            </div>
-            {rest.map((tool, i) => (
-              <Link
-                key={tool.id}
-                href={`/tools/${tool.slug}`}
-                className={`flex items-center gap-3.5 py-3 ${
-                  i < rest.length - 1 ? "border-b border-border" : ""
-                }`}
-              >
-                <div className="w-[34px] h-[34px] rounded-lg bg-[#E7E2D9] shrink-0" />
-                <span className="text-[14.5px] font-semibold w-[170px] shrink-0 truncate">
-                  {tool.title}
-                </span>
-                <span className="text-[13px] text-muted flex-1 min-w-0 truncate">
-                  {tool.excerpt}
-                </span>
                 <span
-                  className={`text-[10px] font-semibold px-[7px] py-[3px] rounded shrink-0 ${
+                  className={`text-xs font-semibold px-2.5 py-1.5 rounded-full shrink-0 ${
                     tool.visibility === "PREMIUM_ONLY"
-                      ? "bg-premium text-white"
-                      : "border border-[#9AA0AC] text-[#4E5463]"
+                      ? "bg-premium-bg text-premium"
+                      : "bg-mint text-primary-deep"
                   }`}
                 >
-                  {tool.visibility === "PREMIUM_ONLY" ? "★ PREMIUM" : "FREE"}
+                  {tool.visibility === "PREMIUM_ONLY" ? "Paid" : "Free"}
                 </span>
-              </Link>
-            ))}
-          </div>
-        )}
+              </div>
+              <p className="text-sm leading-[1.5] text-graphite m-0 min-h-[42px]">
+                {tool.excerpt}
+              </p>
+              <div className="flex justify-between items-center border-t border-[#EFEEE8] pt-3.5 text-[13px]">
+                <span className="text-muted">Editor-reviewed</span>
+                <span className="font-semibold">View tool →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
       <PublicFooter />
     </div>

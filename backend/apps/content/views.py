@@ -1,11 +1,18 @@
 from django.db.models import F
+from django.db.models.functions import Lower
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from .models import Content
-from .serializers import ContentDetailSerializer, ContentListSerializer
+from .models import Category, Content
+from .serializers import CategorySerializer, ContentDetailSerializer, ContentListSerializer
+
+SORT_ORDERINGS = {
+    "newest": ("-published_at", "-id"),
+    "alphabetical": (Lower("title"), "id"),
+    "popular": ("-view_count", "-published_at", "-id"),
+}
 
 
 class ContentListView(ListAPIView):
@@ -13,11 +20,32 @@ class ContentListView(ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        qs = Content.objects.filter(status="PUBLISHED").order_by("-published_at")
-        content_type = self.request.query_params.get("type")
+        params = self.request.query_params
+        qs = Content.objects.filter(status="PUBLISHED").select_related("category")
+        content_type = params.get("type")
         if content_type:
             qs = qs.filter(type=content_type.upper())
-        return qs
+        category = params.get("category")
+        if category:
+            qs = qs.filter(category__slug=category)
+        # Unknown/missing sort falls back to newest.
+        order = SORT_ORDERINGS.get(params.get("sort", "newest"), SORT_ORDERINGS["newest"])
+        return qs.order_by(*order)
+
+
+class ContentCategoryListView(ListAPIView):
+    """Categories that have published content, optionally scoped by ?type=."""
+
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+    pagination_class = None
+
+    def get_queryset(self):
+        content = Content.objects.filter(status="PUBLISHED")
+        content_type = self.request.query_params.get("type")
+        if content_type:
+            content = content.filter(type=content_type.upper())
+        return Category.objects.filter(pk__in=content.values("category_id")).order_by("name")
 
 
 class ContentDetailView(RetrieveAPIView):
