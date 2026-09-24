@@ -96,7 +96,7 @@ export default function NotificationsPage() {
         userName={user.display_name || user.username}
       />
 
-      <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:py-8 pb-24 md:pb-10 flex flex-col gap-6 max-w-[980px]">
+      <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:pt-10 pb-24 md:pb-12 flex flex-col gap-[22px] max-w-[980px]">
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div className="flex flex-col gap-2">
             <span className="font-mono text-[11px] tracking-[.12em] text-primary">
@@ -117,7 +117,7 @@ export default function NotificationsPage() {
               <button
                 key={g.key}
                 onClick={() => setFilter(g.key)}
-                className={`text-[13px] font-semibold px-3.5 py-2 rounded-full border transition-colors ${
+                className={`text-[13px] font-medium px-[13px] py-2 rounded-full border transition-colors ${
                   filter === g.key
                     ? "bg-ink text-white border-ink"
                     : "bg-white text-muted border-border hover:border-border-strong"
@@ -139,7 +139,7 @@ export default function NotificationsPage() {
             return (
               <div
                 key={n.id}
-                className={`grid grid-cols-[12px_86px_minmax(0,1fr)_70px] sm:grid-cols-[12px_96px_minmax(0,1fr)_80px] gap-4 items-start px-4 sm:px-6 py-4 ${
+                className={`grid grid-cols-[12px_86px_minmax(0,1fr)_70px] sm:grid-cols-[12px_96px_minmax(0,1fr)_80px] gap-4 items-start px-4 sm:px-6 py-[18px] ${
                   i < visibleNotifications.length - 1 ? "border-b border-[#EFEEE8]" : ""
                 } ${!n.is_read ? "bg-[#FBFBF7]" : ""}`}
               >
@@ -157,13 +157,13 @@ export default function NotificationsPage() {
                     {n.title}
                   </span>
                   {n.message && (
-                    <span className={`text-sm ${!n.is_read ? "text-muted" : "text-muted-2"}`}>
+                    <span className={`text-sm ${!n.is_read ? "text-muted" : "text-[#8A8F9C]"}`}>
                       {n.message}
                     </span>
                   )}
                 </div>
                 <span
-                  className={`font-mono text-xs text-right ${!n.is_read ? "text-muted" : "text-muted-2"}`}
+                  className={`font-mono text-xs text-right ${!n.is_read ? "text-muted" : "text-[#8A8F9C]"}`}
                 >
                   {relativeTime(n.created_at)}
                 </span>

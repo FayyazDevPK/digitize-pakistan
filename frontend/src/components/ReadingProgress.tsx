@@ -11,9 +11,13 @@ export default function ReadingProgress({ targetId }: { targetId: string }) {
       const el = document.getElementById(targetId);
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const scrolled = -rect.top;
-      const raw = total > 0 ? scrolled / total : window.scrollY > 0 ? 1 : 0;
+      const top = rect.top + window.scrollY;
+      // A "reading line" at mid-screen travels from the article's top edge to its bottom edge.
+      const line = window.scrollY + window.innerHeight * 0.5;
+      const atPageEnd =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 2;
+      const raw = atPageEnd && line >= top ? 1 : (line - top) / rect.height;
       setPct(Math.min(100, Math.max(0, Math.round(raw * 100))));
     }
     update();
@@ -32,9 +36,12 @@ export default function ReadingProgress({ targetId }: { targetId: string }) {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={pct}
-      className="sticky top-0 z-40 h-[3px] bg-border"
+      className="fixed inset-x-0 top-0 z-[60] h-1 bg-[#D4D3CA]/60"
     >
-      <div className="h-[3px] bg-primary transition-[width] duration-100" style={{ width: `${pct}%` }} />
+      <div
+        className="h-1 bg-primary transition-[width] duration-100"
+        style={{ width: `${pct}%` }}
+      />
     </div>
   );
 }

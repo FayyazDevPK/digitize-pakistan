@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
+import ArticleReadToEarn from "@/components/ArticleReadToEarn";
 import ReadingProgress from "@/components/ReadingProgress";
 import BackLink from "@/components/BackLink";
 import { ContentItem } from "@/lib/content";
@@ -136,26 +137,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </article>
 
         <aside className="flex flex-col gap-4 pt-11">
-          <div className="bg-ink text-white rounded-[20px] p-6 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <span className="font-mono text-[11px] tracking-[.12em] text-primary-light">
-                READ TO EARN
-              </span>
-              <span className="font-mono text-[11px] font-semibold bg-marigold text-ink px-[7px] py-[5px] rounded-md">
-                +40 PTS
-              </span>
-            </div>
-            <span className="font-display text-2xl leading-[1.1]">
-              Keep reading to credit this article.
-            </span>
-            <div className="bg-ink-raised border border-[#24304A] rounded-xl p-3 text-xs leading-[1.5] text-[#C9CFDC]">
-              Not signed in?{" "}
-              <a href="/register" className="text-white font-semibold border-b border-primary-light">
-                Create a free account
-              </a>{" "}
-              and this read counts.
-            </div>
-          </div>
+          <ArticleReadToEarn />
           <div className="bg-white border border-border rounded-[20px] p-5 flex flex-col gap-2.5">
             <span className="font-mono text-[11px] tracking-[.12em] text-muted">CATEGORY</span>
             <span className="text-sm font-semibold">{article.category?.name}</span>
