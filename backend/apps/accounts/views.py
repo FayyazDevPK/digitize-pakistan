@@ -9,7 +9,7 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import PasswordChangeSerializer, RegisterSerializer, UserSerializer
+from .serializers import DeactivateAccountSerializer, PasswordChangeSerializer, RegisterSerializer, UserSerializer
 
 
 class MeView(APIView):
@@ -60,6 +60,28 @@ class PasswordChangeView(APIView):
             BlacklistedToken.objects.get_or_create(token=token)
         refresh = RefreshToken.for_user(user)
         return Response({"access": str(refresh.access_token), "refresh": str(refresh)})
+
+
+class DeactivateAccountView(APIView):
+    """
+    Soft-delete: flips is_active off and revokes every refresh token. No related rows
+    (KYC, ledger, withdrawals, subscriptions, submissions, notifications) are touched --
+    they're retained for compliance.
+    """
+
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "deactivate"
+
+    def post(self, request):
+        serializer = DeactivateAccountSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.is_active = False
+        user.save(update_fields=["is_active"])
+        for token in OutstandingToken.objects.filter(user=user):
+            BlacklistedToken.objects.get_or_create(token=token)
+        return Response(status=204)
 
 
 class RegisterView(generics.CreateAPIView):

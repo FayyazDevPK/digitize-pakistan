@@ -3,6 +3,7 @@ from django.urls import include, path
 from rest_framework_simplejwt.views import TokenBlacklistView, TokenRefreshView
 
 from apps.accounts.views import (
+    DeactivateAccountView,
     MeAvatarView,
     MeView,
     PasswordChangeView,
@@ -17,6 +18,7 @@ urlpatterns = [
     path("api/logout/", TokenBlacklistView.as_view(), name="logout"),
     path("api/me/", MeView.as_view(), name="me"),
     path("api/me/avatar/", MeAvatarView.as_view(), name="me-avatar"),
+    path("api/me/deactivate/", DeactivateAccountView.as_view(), name="me-deactivate"),
     path("api/me/password/", PasswordChangeView.as_view(), name="me-password"),
     path("api/register/", RegisterView.as_view(), name="register"),
     path("api/content/", include("apps.content.urls")),

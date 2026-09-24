@@ -107,3 +107,44 @@ class TestPasswordChange:
             for _ in range(7)
         ]
         assert codes[:5] == [400] * 5 and 429 in codes[5:]
+
+
+@pytest.mark.django_db
+class TestDeactivateAccount:
+    def test_deactivate_keeps_related_rows_and_kills_tokens(self, isolated_cache):
+        from rest_framework.test import APIClient
+        from rest_framework_simplejwt.tokens import RefreshToken
+
+        from apps.kyc.models import KYCRecord
+        from apps.notifications.models import Notification
+        from apps.rewards.models import RewardsLedgerEntry, WithdrawalRequest
+        from apps.subscriptions.models import SubscriptionRequest
+
+        user = User.objects.create_user(username="leaver", password="Old-pass-123!")
+        KYCRecord.objects.create(user=user, document_type="CNIC", full_name="L", cnic_number="42101-1234567-2")
+        SubscriptionRequest.objects.create(user=user, method="JAZZCASH", transaction_ref="T", amount_paid=1)
+        Notification.objects.create(user=user, type="SYSTEM", title="t")
+        counts = lambda: (
+            KYCRecord.objects.filter(user=user).count(), SubscriptionRequest.objects.filter(user=user).count(),
+            Notification.objects.filter(user=user).count(), RewardsLedgerEntry.objects.filter(user=user).count(),
+            WithdrawalRequest.objects.filter(user=user).count(),
+        )
+        before = counts()
+
+        refresh = RefreshToken.for_user(user)
+        c = APIClient()
+        c.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        assert c.get("/api/me/").status_code == 200
+
+        assert c.post("/api/me/deactivate/", {"password": "wrong"}, format="json").status_code == 400
+        assert User.objects.get(pk=user.pk).is_active is True
+
+        assert c.post("/api/me/deactivate/", {"password": "Old-pass-123!"}, format="json").status_code == 204
+        user.refresh_from_db()
+        assert user.is_active is False
+        assert counts() == before
+
+        assert c.get("/api/me/").status_code == 401  # pre-deactivation access token
+        anon = APIClient()
+        assert anon.post("/api/token/refresh/", {"refresh": str(refresh)}, format="json").status_code == 401
+        assert anon.post("/api/token/", {"username": "leaver", "password": "Old-pass-123!"}, format="json").status_code == 401

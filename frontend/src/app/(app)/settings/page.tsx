@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authFetch, fetchCurrentUser, storeTokens, CurrentUser } from "@/lib/auth";
+import { authFetch, fetchCurrentUser, storeTokens, clearTokens, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 
@@ -45,6 +45,10 @@ export default function SettingsPage() {
   const [newPassword, setNewPassword] = useState("");
   const [passwordMsg, setPasswordMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [changingPassword, setChangingPassword] = useState(false);
+  const [showDeactivate, setShowDeactivate] = useState(false);
+  const [deactivatePassword, setDeactivatePassword] = useState("");
+  const [deactivateError, setDeactivateError] = useState<string | null>(null);
+  const [deactivating, setDeactivating] = useState(false);
 
   function fillForm(u: CurrentUser) {
     setDisplayName(u.display_name);
@@ -146,6 +150,25 @@ export default function SettingsPage() {
       setPasswordMsg({ ok: false, text: firstError(body) });
     }
     setChangingPassword(false);
+  }
+
+  async function handleDeactivate(e: React.FormEvent) {
+    e.preventDefault();
+    setDeactivating(true);
+    setDeactivateError(null);
+    const res = await authFetch("/api/me/deactivate/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: deactivatePassword }),
+    });
+    if (res.ok) {
+      clearTokens();
+      router.replace("/login");
+      return;
+    }
+    if (res.status === 429) setDeactivateError("Too many attempts. Try again later.");
+    else setDeactivateError(firstError(await res.json().catch(() => ({}))));
+    setDeactivating(false);
   }
 
   if (loading) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
@@ -442,6 +465,59 @@ export default function SettingsPage() {
                 </button>
               )}
             </div>
+            {!showDeactivate ? (
+              <button
+                type="button"
+                onClick={() => setShowDeactivate(true)}
+                className="self-start text-[13px] font-semibold text-alert px-1.5"
+              >
+                Delete account…
+              </button>
+            ) : (
+              <form
+                onSubmit={handleDeactivate}
+                className="bg-white border border-alert rounded-[22px] p-6 flex flex-col gap-3.5"
+              >
+                <span className="font-mono text-[11px] tracking-[.12em] text-alert">
+                  DEACTIVATE ACCOUNT
+                </span>
+                <p className="text-sm leading-[1.5] text-graphite m-0">
+                  This signs you out everywhere and disables your account. Your identity
+                  verification, rewards ledger, withdrawals and payments are retained for
+                  compliance and are not deleted.
+                </p>
+                <input
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  placeholder="Enter your password to confirm"
+                  value={deactivatePassword}
+                  onChange={(e) => setDeactivatePassword(e.target.value)}
+                  className={INPUT}
+                />
+                {deactivateError && <p className="text-alert text-sm m-0">{deactivateError}</p>}
+                <div className="flex gap-2.5 justify-end">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDeactivate(false);
+                      setDeactivatePassword("");
+                      setDeactivateError(null);
+                    }}
+                    className="px-4 py-3 text-sm font-semibold text-muted"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={deactivating || !deactivatePassword}
+                    className="bg-alert text-white text-sm font-semibold rounded-[11px] px-[18px] py-3 disabled:opacity-60"
+                  >
+                    {deactivating ? "Deactivating..." : "Deactivate account"}
+                  </button>
+                </div>
+              </form>
+            )}
           </aside>
         </div>
       </div>

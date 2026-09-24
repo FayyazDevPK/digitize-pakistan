@@ -106,3 +106,12 @@ class PasswordChangeSerializer(serializers.Serializer):
                 {"new_password": "New password must differ from the current one."}
             )
         return attrs
+
+
+class DeactivateAccountSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        if not self.context["request"].user.check_password(value):
+            raise serializers.ValidationError("Incorrect password.")
+        return value
