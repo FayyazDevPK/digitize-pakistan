@@ -46,7 +46,7 @@ export default function ConsentBanner() {
           </button>
           <button
             onClick={accept}
-            className="font-mono text-[11px] bg-vermilion rounded-sm px-3 py-1.5 hover:bg-vermilion-deep transition-colors"
+            className="font-mono text-[11px] bg-primary rounded-sm px-3 py-1.5 hover:bg-primary-deep transition-colors"
           >
             Accept
           </button>

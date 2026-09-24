@@ -4,27 +4,47 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authFetch, logout } from "@/lib/auth";
+import PixelD from "@/components/PixelD";
 
-const NAV_ITEMS: { label: string; href: string | null }[] = [
-  { label: "Overview", href: "/dashboard" },
-  { label: "My learning", href: "/my-learning" },
-  { label: "Rewards", href: "/rewards" },
-  { label: "Referrals", href: "/referrals" },
-  { label: "Notifications", href: "/notifications" },
-  { label: "Creator studio", href: "/creator" },
-  { label: "Settings", href: "/settings" },
-];
+interface NavItem {
+  label: string;
+  href: string;
+  badge?: number;
+}
 
-export default function AppSidebar({ tier }: { tier?: string }) {
+export default function AppSidebar({
+  tier,
+  kycStatus,
+  userName,
+}: {
+  tier?: string;
+  kycStatus?: string;
+  userName?: string;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [balance, setBalance] = useState<string | null>(null);
+  const [weekChange, setWeekChange] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     authFetch("/api/notifications/")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) setUnreadCount(data.unread_count);
+      })
+      .catch(() => {});
+
+    authFetch("/api/rewards/balance/")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data) return;
+        setBalance(data.balance);
+        const gained = (data.recent_entries || [])
+          .filter((e: { amount: string }) => Number(e.amount) > 0)
+          .reduce((sum: number, e: { amount: string }) => sum + Number(e.amount), 0);
+        setWeekChange(gained);
       })
       .catch(() => {});
   }, [pathname]);
@@ -34,81 +54,216 @@ export default function AppSidebar({ tier }: { tier?: string }) {
     router.replace("/login");
   }
 
-  const onPremium = pathname?.startsWith("/premium");
+  const groups: { title: string; items: NavItem[] }[] = [
+    {
+      title: "Earn",
+      items: [
+        { label: "Overview", href: "/dashboard" },
+        { label: "My learning", href: "/my-learning" },
+        { label: "Rewards", href: "/rewards" },
+        { label: "Referrals", href: "/referrals" },
+      ],
+    },
+    { title: "Create", items: [{ label: "Creator studio", href: "/creator" }] },
+    {
+      title: "Account",
+      items: [
+        { label: "Notifications", href: "/notifications", badge: unreadCount },
+        { label: "Identity (KYC)", href: "/kyc" },
+        { label: "Premium", href: "/premium" },
+        { label: "Settings", href: "/settings" },
+      ],
+    },
+  ];
+
+  const rupees = balance ? Math.round((Number(balance) / 1000) * 250) : 0;
+  const initial = (userName || "?").charAt(0).toUpperCase();
 
   return (
-    <div className="hidden md:flex w-[214px] shrink-0 bg-ink px-4 py-[22px] flex-col gap-[22px] min-h-screen">
-      <div className="flex items-center gap-[9px] px-1.5">
-        <svg width="26" height="26" viewBox="0 0 46 46">
-          <rect width="46" height="46" rx="9" fill="#FAF7F2" />
-          <rect x="11" y="13" width="4" height="20" fill="#12151C" />
-          <path d="M19 13h6a10 10 0 0 1 0 20h-6z" fill="none" stroke="#12151C" strokeWidth="4" />
-          <circle cx="33.5" cy="33.5" r="3.5" fill="#E0512B" />
-        </svg>
-        <div className="flex flex-col leading-none">
-          <span className="text-[14.5px] font-semibold text-paper tracking-tight">Digitize</span>
-          <span className="font-mono text-[8px] font-medium tracking-[.22em] text-[#FF7A52] mt-[3px]">
-            PAKISTAN
-          </span>
-        </div>
-      </div>
+    <div className="hidden md:flex w-[272px] shrink-0 p-3 min-h-screen">
+      <div className="bg-ink rounded-[22px] flex-1 px-4 pt-[22px] pb-4 flex flex-col gap-[22px] text-white">
+        <Link href="/news" className="flex items-center gap-2.5 px-1.5">
+          <PixelD size={7} onDark />
+          <div className="flex items-baseline gap-[5px] leading-none">
+            <span className="font-bold text-[17px] tracking-tight">Digitize</span>
+            <span className="font-display italic text-[19px] text-[#C9CFDC]">Pakistan</span>
+          </div>
+        </Link>
 
-      <nav className="flex flex-col gap-[3px] text-[13.5px]">
-        {NAV_ITEMS.map((item) => {
-          const active = item.href && pathname?.startsWith(item.href);
-          if (!item.href) {
-            return (
-              <span key={item.label} className="text-[#6A7180] px-[11px] py-[9px] cursor-default">
-                {item.label}
+        <div className="bg-ink-raised border border-[#24304A] rounded-2xl px-3.5 pt-3.5 pb-3 flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <span className="font-mono text-[10px] tracking-[.1em] uppercase text-muted-2">
+              Balance
+            </span>
+            {weekChange > 0 && (
+              <span className="font-mono text-[10px] text-primary-light">
+                +{weekChange.toLocaleString()} this wk
               </span>
-            );
-          }
-          return (
+            )}
+          </div>
+          <div className="font-mono text-2xl font-semibold text-marigold tracking-tight">
+            {balance ? Number(balance).toLocaleString() : "—"}
+            <span className="text-xs text-muted-2 ml-1.5">pts</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-[#C9CFDC]">≈ Rs {rupees.toLocaleString()}</span>
             <Link
-              key={item.label}
-              href={item.href}
-              className={
-                active
-                  ? "flex items-center gap-1.5 bg-[#242935] text-paper px-[11px] py-[9px] rounded-[6px] font-medium border-l-2 border-vermilion"
-                  : "flex items-center gap-1.5 text-[#B4B9C3] px-[11px] py-[9px] rounded-[6px] hover:bg-[#1C212B] transition-colors"
-              }
+              href="/rewards"
+              className="text-xs font-semibold text-white border-b border-primary-light"
             >
-              {item.label}
-              {item.label === "Notifications" && unreadCount > 0 && (
-                <span className="w-1.5 h-1.5 rounded-full bg-vermilion shrink-0" />
-              )}
+              Withdraw
             </Link>
-          );
-        })}
-      </nav>
+          </div>
+        </div>
 
-      <div className="mt-auto flex flex-col gap-2">
-        {tier !== "PREMIUM" && (
-          <div
-            className={`bg-[#1C212B] border rounded-[8px] p-3.5 flex flex-col gap-2 ${
-              onPremium ? "border-vermilion" : "border-[#2E3441]"
-            }`}
-          >
-            <span className="self-start border border-[#6A7180] text-[#C9CCD2] text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
-              FREE PLAN
+        <nav className="flex flex-col gap-[18px]">
+          {groups.map((group) => (
+            <div key={group.title} className="flex flex-col gap-0.5">
+              <div className="font-mono text-[10px] tracking-[.12em] uppercase text-[#6E7890] px-2.5 pb-2">
+                {group.title}
+              </div>
+              {group.items.map((item) => {
+                const active = pathname?.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={
+                      active
+                        ? "flex items-center gap-3 px-2.5 py-2.5 rounded-[11px] bg-white text-ink"
+                        : "flex items-center gap-3 px-2.5 py-2.5 rounded-[11px] text-[#C9CFDC] hover:bg-ink-raised hover:text-white transition-colors"
+                    }
+                  >
+                    <span
+                      className={`font-mono text-[10px] w-4 shrink-0 ${
+                        active ? "font-semibold text-primary" : "text-[#6E7890]"
+                      }`}
+                    >
+                      {String(groups.flatMap((g) => g.items).indexOf(item) + 1).padStart(2, "0")}
+                    </span>
+                    <span className={`text-sm flex-1 ${active ? "font-semibold" : "font-medium"}`}>
+                      {item.label}
+                    </span>
+                    {active && <span className="w-1.5 h-1.5 rounded-full bg-primary-light" />}
+                    {!active && !!item.badge && (
+                      <span className="font-mono text-[10px] font-semibold bg-marigold text-ink px-1.5 py-1 rounded-md">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+
+        <div className="flex-1" />
+
+        {kycStatus === "NONE" && (
+          <div className="bg-ink-raised border border-[#24304A] rounded-2xl p-3.5 flex flex-col gap-2">
+            <span className="self-start border border-[#6E7890] text-[#C9CFDC] text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
+              NOT VERIFIED
             </span>
-            <span className="text-[12.5px] text-[#D3D6DC] leading-[1.5]">
-              Premium unlocks 7 paths and 2× read points.
+            <span className="text-[12.5px] text-[#C9CFDC] leading-[1.5]">
+              Verify your identity to withdraw rewards.
             </span>
             <Link
-              href="/premium"
-              className="bg-[#C48A1F] text-[#1A1403] text-xs font-bold py-2 rounded-[6px] text-center"
+              href="/kyc"
+              className="bg-primary text-white text-xs font-bold py-2 rounded-[9px] text-center"
             >
-              See Premium
+              Verify now
             </Link>
           </div>
         )}
-        <button
-          onClick={handleLogout}
-          className="text-[#8A8F9B] text-xs font-mono px-[11px] py-2 text-left hover:text-paper transition-colors"
-        >
-          Log out
-        </button>
+        {kycStatus === "PENDING" && (
+          <div className="bg-ink-raised border border-marigold/60 rounded-2xl p-3.5 flex flex-col gap-2">
+            <span className="self-start bg-premium-bg text-premium text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
+              ⏳ PENDING
+            </span>
+            <span className="text-[12.5px] text-[#C9CFDC] leading-[1.5]">
+              Verification pending review — you can keep earning while you wait.
+            </span>
+            <Link
+              href="/kyc"
+              className="border border-marigold text-marigold text-xs font-bold py-2 rounded-[9px] text-center"
+            >
+              View status
+            </Link>
+          </div>
+        )}
+        {kycStatus === "REJECTED" && (
+          <div className="bg-ink-raised border border-alert rounded-2xl p-3.5 flex flex-col gap-2">
+            <span className="self-start bg-alert-bg text-alert text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
+              REJECTED
+            </span>
+            <span className="text-[12.5px] text-[#C9CFDC] leading-[1.5]">
+              Verification was rejected — resubmit your documents.
+            </span>
+            <Link
+              href="/kyc"
+              className="bg-alert text-white text-xs font-bold py-2 rounded-[9px] text-center"
+            >
+              Resubmit
+            </Link>
+          </div>
+        )}
+
+        {tier !== "PREMIUM" && (
+          <div className="rounded-2xl p-4 bg-marigold text-ink flex flex-col gap-2">
+            <span className="font-mono text-[10px] tracking-[.1em] uppercase font-semibold">
+              Premium
+            </span>
+            <span className="font-display text-[22px] leading-[1.05]">
+              Earn more on every read.
+            </span>
+            <span className="text-xs leading-[1.4]">
+              Unlock every learning path and higher point rates.
+            </span>
+            <Link
+              href="/premium"
+              className="mt-1 self-start bg-ink text-white text-xs font-semibold px-3 py-2 rounded-[9px]"
+            >
+              Upgrade · Rs 999/mo
+            </Link>
+          </div>
+        )}
+
+        <div className="relative border-t border-[#24304A] pt-2.5">
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            className="w-full flex items-center gap-2.5 px-1.5 py-1"
+          >
+            <div className="w-9 h-9 rounded-[11px] bg-primary-light text-ink flex items-center justify-center font-bold text-[13px] shrink-0">
+              {initial}
+            </div>
+            <div className="flex-1 flex flex-col gap-0.5 text-left">
+              <span className="text-[13px] font-semibold truncate">{userName || "Account"}</span>
+              <span className="text-[11px] text-muted-2">
+                {tier === "PREMIUM" ? "Premium" : "Free tier"}
+                {kycStatus === "APPROVED" && (
+                  <span className="text-primary-light"> · KYC verified</span>
+                )}
+              </span>
+            </div>
+            <span className="font-mono text-sm text-[#6E7890]">⋯</span>
+          </button>
+          {menuOpen && (
+            <div className="absolute bottom-full left-1.5 right-1.5 mb-1 bg-ink-raised border border-[#24304A] rounded-[11px] overflow-hidden">
+              <Link
+                href="/settings"
+                className="block px-3.5 py-2.5 text-[13px] text-[#C9CFDC] hover:bg-ink"
+              >
+                Settings
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-3.5 py-2.5 text-[13px] text-rose hover:bg-ink"
+              >
+                Log out
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

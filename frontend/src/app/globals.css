@@ -2,31 +2,46 @@
 
 @theme {
   --font-display: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-sans: 'Schibsted Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-urdu: 'Noto Nastaliq Urdu', serif;
 
-  --color-ink: #12151C;
-  --color-graphite: #2A2F3A;
-  --color-paper: #F2EEE7;
-  --color-paper-raised: #FAF7F2;
-  --color-border: #E3DED5;
-  --color-border-strong: #D8D2C7;
-  --color-muted: #656C7A;
+  /* Surfaces */
+  --color-ink: #0B1426;
+  --color-ink-raised: #141F36;
+  --color-ink-border: #24304A;
+  --color-graphite: #0B1426;
+  --color-paper: #F4F3EE;
+  --color-paper-raised: #FFFFFF;
+  --color-border: #E3E2DA;
+  --color-border-strong: #D4D3CA;
+  --color-muted: #5A6173;
+  --color-muted-2: #9AA3B8;
 
-  --color-vermilion: #E0512B;
-  --color-vermilion-deep: #B23C1B;
+  /* Brand accent — Emerald */
+  --color-primary: #087A54;
+  --color-primary-deep: #065C40;
+  --color-primary-light: #1FBF84;
+  --color-mint: #DDF3E8;
 
-  --color-premium: #8A6118;
-  --color-premium-bg: #FFF9EC;
-  --color-verified: #14455C;
-  --color-verified-bg: #E7EEF2;
-  --color-creator: #7A2E5E;
-  --color-creator-bg: #FBEEF6;
-  --color-success: #1B7A57;
-  --color-success-bg: #E6F3ED;
-  --color-warning: #B5810A;
-  --color-warning-bg: #FFF6E0;
-  --color-alert: #B92D2D;
+  /* Secondary hues */
+  --color-marigold: #F2B233;
+  --color-iris: #5A5BD5;
+  --color-rose: #D6453D;
+
+  /* Ledger / status semantics */
+  --color-premium: #7A5300;
+  --color-premium-bg: #FCEFCC;
+  --color-verified: #065C40;
+  --color-verified-bg: #DDF3E8;
+  --color-creator: #3A3BA8;
+  --color-creator-bg: #E7E7FB;
+  --color-success: #065C40;
+  --color-success-bg: #DDF3E8;
+  --color-warning: #7A5300;
+  --color-warning-bg: #FCEFCC;
+  --color-alert: #A12E27;
+  --color-alert-bg: #FBE3E0;
 }
 
 body {

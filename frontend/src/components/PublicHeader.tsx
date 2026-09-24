@@ -3,74 +3,108 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import { getContentList, ContentItem } from "@/lib/content";
+import PixelD from "@/components/PixelD";
 
 const NAV_LINKS = [
   { label: "News", href: "/news" },
   { label: "AI Tools", href: "/tools" },
+  { label: "Learn", href: "/my-learning" },
+  { label: "Rewards", href: "/rewards" },
 ];
 
 export default function PublicHeader({ active }: { active?: "News" | "AI Tools" }) {
   const [user, setUser] = useState<CurrentUser | null | undefined>(undefined);
+  const [ticker, setTicker] = useState<ContentItem[]>([]);
 
   useEffect(() => {
     fetchCurrentUser().then(setUser);
+    getContentList("NEWS").then((items) => setTicker(items.slice(0, 2)));
   }, []);
 
   return (
-    <div className="bg-ink px-5 md:px-7 h-14 flex items-center justify-between">
-      <div className="flex items-center gap-6 md:gap-[26px]">
-        <Link href="/news" className="flex items-center gap-2.5">
-          <svg width="26" height="26" viewBox="0 0 46 46">
-            <rect width="46" height="46" rx="9" fill="#FAF7F2" />
-            <rect x="11" y="13" width="4" height="20" fill="#12151C" />
-            <path d="M19 13h6a10 10 0 0 1 0 20h-6z" fill="none" stroke="#12151C" strokeWidth="4" />
-            <circle cx="33.5" cy="33.5" r="3.5" fill="#E0512B" />
-          </svg>
-          <div className="hidden sm:flex flex-col leading-none">
-            <span className="text-[15px] font-semibold text-paper tracking-tight">Digitize</span>
-            <span className="font-mono text-[8.5px] font-medium tracking-[.24em] text-[#FF7A52] mt-[3px]">
-              PAKISTAN
-            </span>
+    <div className="w-full font-sans">
+      <div className="hidden md:flex bg-ink text-[#C9CFDC] items-center gap-6 px-12 h-9 text-xs">
+        <span className="flex items-center gap-2 shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary-light" />
+          <span className="font-mono text-[10px] tracking-[.1em] text-primary-light">
+            AI PULSE
+          </span>
+        </span>
+        {ticker[0] && <span className="text-white truncate">{ticker[0].title}</span>}
+        {ticker[1] && (
+          <>
+            <span className="text-[#24304A]">/</span>
+            <span className="truncate hidden lg:inline">{ticker[1].title}</span>
+          </>
+        )}
+        <span className="flex-1" />
+        <span className="font-mono text-[11px] shrink-0">
+          1,000 pts = <span className="text-marigold">Rs 250</span>
+        </span>
+        <span className="text-[#24304A] hidden sm:inline">|</span>
+        <span className="font-urdu text-xs hidden sm:inline">اردو</span>
+      </div>
+
+      <div className="bg-white border-b border-border flex items-center gap-6 md:gap-10 px-5 md:px-12 h-[76px]">
+        <Link href="/news" className="flex items-center gap-2.5 shrink-0">
+          <PixelD size={8} />
+          <div className="flex items-baseline gap-1.5 leading-none text-ink">
+            <span className="font-bold text-xl tracking-tight">Digitize</span>
+            <span className="font-display italic text-2xl text-muted">Pakistan</span>
           </div>
         </Link>
-        <div className="hidden md:flex gap-[22px] text-sm text-[#D3D6DC]">
+
+        <nav className="hidden lg:flex gap-1 bg-paper p-1 rounded-xl">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.label}
               href={l.href}
               className={
                 active === l.label
-                  ? "text-paper font-medium border-b-2 border-vermilion pb-[3px]"
-                  : ""
+                  ? "text-sm font-semibold text-ink bg-white px-4 py-2 rounded-[9px] shadow-sm"
+                  : "text-sm font-medium text-muted px-4 py-2 rounded-[9px]"
               }
             >
               {l.label}
             </Link>
           ))}
+        </nav>
+
+        <div className="flex-1" />
+
+        <div className="hidden md:flex items-center gap-2.5 border border-border rounded-[11px] px-3 h-10 w-[220px] text-[#8A8F9C] text-sm">
+          <span className="w-[11px] h-[11px] rounded-full border-[1.6px] border-[#8A8F9C] shrink-0" />
+          <span className="flex-1 truncate">Search news &amp; tools</span>
+          <span className="font-mono text-[10px] border border-border rounded px-[5px] py-[3px]">
+            /
+          </span>
         </div>
-      </div>
-      <div className="flex items-center gap-3.5">
+
         {user === undefined ? (
-          <div className="w-8 h-8 rounded-full bg-white/10" aria-hidden="true" />
+          <div className="w-10 h-10 rounded-full bg-paper" aria-hidden="true" />
         ) : user ? (
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <span className="text-sm text-[#D3D6DC] hidden sm:inline">
+            <span className="text-sm font-semibold text-ink hidden sm:inline">
               {user.display_name || user.username}
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#3A404C] flex items-center justify-center text-paper text-xs font-semibold shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-ink text-sm font-bold shrink-0">
               {(user.display_name || user.username).charAt(0).toUpperCase()}
             </div>
           </Link>
         ) : (
           <>
-            <Link href="/login" className="text-sm text-[#D3D6DC] hidden sm:inline">
+            <Link href="/login" className="text-sm font-semibold text-ink hidden sm:inline">
               Log in
             </Link>
             <Link
               href="/register"
-              className="bg-vermilion text-white text-[13px] font-semibold px-3.5 py-2 rounded-[6px]"
+              className="flex items-center gap-2.5 bg-primary text-white text-sm font-semibold px-4 h-[42px] rounded-[11px] shrink-0"
             >
               Start earning
+              <span className="font-mono text-[10px] font-semibold bg-marigold text-ink px-1.5 py-1 rounded">
+                +100
+              </span>
             </Link>
           </>
         )}

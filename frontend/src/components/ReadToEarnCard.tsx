@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
 
+const ACTIONS = [
+  { label: "Read an article", pts: "+20–40" },
+  { label: "Finish a learning path", pts: "+500" },
+  { label: "Refer an active friend", pts: "+100" },
+];
+
 export default function ReadToEarnCard() {
   const [user, setUser] = useState<CurrentUser | null | undefined>(undefined);
 
@@ -13,38 +19,56 @@ export default function ReadToEarnCard() {
 
   if (user === undefined) {
     return (
-      <div
-        className="bg-ink rounded-[10px] p-[22px] flex flex-col gap-3"
-        aria-hidden="true"
-      >
-        <div className="h-[10.5px] w-24 rounded-full bg-white/10" />
-        <div className="h-[26px] w-4/5 rounded-md bg-white/10" />
-        <div className="h-[13.5px] w-full rounded-full bg-white/10" />
-        <div className="h-[13.5px] w-2/3 rounded-full bg-white/10" />
-        <div className="h-9 w-full rounded-[6px] bg-white/10 mt-1" />
+      <div className="bg-ink rounded-[20px] p-7 flex flex-col gap-3" aria-hidden="true">
+        <div className="h-[11px] w-40 rounded-full bg-white/10" />
+        <div className="h-[38px] w-4/5 rounded-md bg-white/10" />
+        <div className="h-14 w-full rounded-[14px] bg-white/10" />
+        <div className="h-10 w-full rounded-[12px] bg-white/10 mt-1" />
       </div>
     );
   }
 
   return (
-    <div className="bg-ink rounded-[10px] p-[22px] text-paper flex flex-col gap-3">
-      <span className="font-mono text-[10.5px] font-semibold tracking-[.16em] text-[#FF7A52]">
-        READ TO EARN
+    <div className="bg-ink text-white rounded-[20px] p-7 flex flex-col gap-5">
+      <span className="font-mono text-[11px] tracking-[.12em] text-primary-light">
+        THE DIGITIZE ECONOMY
       </span>
-      <div className="font-display text-[26px] leading-[1.15]">
-        {user ? `Welcome back, ${user.display_name || user.username}.` : "Earn points for every article you finish."}
+      <h3 className="font-display text-[38px] leading-[1.02] m-0">
+        {user ? (
+          <>Welcome back, {user.display_name || user.username}.</>
+        ) : (
+          <>
+            Your time is worth something. <span className="italic text-marigold">We pay it.</span>
+          </>
+        )}
+      </h3>
+      <div className="bg-ink-raised border border-[#24304A] rounded-[14px] px-4 py-4 flex items-baseline justify-between">
+        <span className="font-mono text-2xl font-semibold">
+          1,000<span className="text-xs text-muted-2"> pts</span>
+        </span>
+        <span className="text-[#6E7890]">→</span>
+        <span className="font-mono text-2xl font-semibold text-marigold">Rs 250</span>
       </div>
-      <p className="text-[13.5px] leading-[1.6] text-[#C9CCD2]">
-        {user
-          ? "Keep reading to keep earning — check your balance on the dashboard."
-          : "1,000 pts = Rs 250. Withdraw from Rs 2,000 once KYC is approved."}
-      </p>
+      <div className="flex flex-col">
+        {ACTIONS.map((a) => (
+          <div
+            key={a.label}
+            className="flex justify-between py-2.5 border-t border-[#24304A] text-sm"
+          >
+            <span>{a.label}</span>
+            <span className="font-mono text-primary-light">{a.pts}</span>
+          </div>
+        ))}
+      </div>
       <Link
         href={user ? "/dashboard" : "/register"}
-        className="bg-vermilion text-white text-[13px] font-semibold py-2.5 px-3.5 rounded-[6px] text-center"
+        className="bg-primary-light text-ink font-bold text-[15px] text-center py-3.5 rounded-xl"
       >
-        {user ? "Go to Dashboard" : "Create free account"}
+        {user ? "Go to Dashboard" : "Start earning — it's free"}
       </Link>
+      <span className="text-xs text-muted-2 leading-[1.5]">
+        Cash withdrawals after identity verification, in line with State Bank of Pakistan rules.
+      </span>
     </div>
   );
 }

@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
+import CreatorEarningsChart from "@/components/charts/CreatorEarningsChart";
+import { getContentList } from "@/lib/content";
+
+const TYPE_OPTIONS = [
+  { value: "TUTORIAL", label: "Tutorial" },
+  { value: "NEWS", label: "News" },
+  { value: "GUIDE", label: "Guide" },
+  { value: "TOOL_LISTING", label: "Tool Listing" },
+];
 
 interface CreatorProfile {
   id: number;
@@ -26,11 +35,24 @@ interface Submission {
   reviewed_at: string | null;
 }
 
+interface LedgerEntry {
+  type: string;
+  amount: string;
+  created_at: string;
+}
+
 const REVIEW_BADGE: Record<string, string> = {
-  APPROVED: "bg-success-bg text-success border border-success",
-  REJECTED: "bg-alert/10 text-alert border border-alert",
-  SUBMITTED: "bg-white border border-dashed border-border-strong text-muted",
-  IN_REVIEW: "bg-warning-bg text-warning border border-warning",
+  APPROVED: "bg-mint text-primary-deep",
+  REJECTED: "bg-alert-bg text-alert",
+  SUBMITTED: "bg-[#ECECE6] text-[#454B5C]",
+  IN_REVIEW: "bg-premium-bg text-premium",
+};
+
+const REVIEW_LABEL: Record<string, string> = {
+  APPROVED: "Published",
+  REJECTED: "Returned",
+  SUBMITTED: "In review",
+  IN_REVIEW: "In review",
 };
 
 export default function CreatorPage() {
@@ -38,12 +60,14 @@ export default function CreatorPage() {
   const [user, setUser] = useState<CurrentUser | null>(null);
   const [profile, setProfile] = useState<CreatorProfile | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [ledger, setLedger] = useState<LedgerEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
 
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [type, setType] = useState("TUTORIAL");
   const [body, setBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -58,10 +82,22 @@ export default function CreatorPage() {
     const profileRes = await authFetch("/api/creator/apply/");
     if (profileRes.ok) {
       setProfile(await profileRes.json());
-      const subsRes = await authFetch("/api/creator/submissions/");
-      if (subsRes.ok) {
-        setSubmissions(await subsRes.json());
+      const [subsRes, balanceRes] = await Promise.all([
+        authFetch("/api/creator/submissions/"),
+        authFetch("/api/rewards/balance/"),
+      ]);
+      if (subsRes.ok) setSubmissions(await subsRes.json());
+      if (balanceRes.ok) {
+        const balanceData = await balanceRes.json();
+        setLedger(balanceData.recent_entries ?? []);
       }
+
+      const content = await getContentList();
+      const uniqueCategories = Array.from(
+        new Map(content.map((c) => [c.category.id, c.category])).values()
+      ).map((c) => ({ id: c.id, name: c.name }));
+      setCategories(uniqueCategories);
+      setCategoryId((prev) => prev ?? uniqueCategories[0]?.id ?? null);
     }
     setLoading(false);
   }
@@ -85,20 +121,18 @@ export default function CreatorPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (submitting) return;
+    if (submitting || categoryId === null) return;
     setError(null);
     setSubmitting(true);
     try {
       const res = await authFetch("/api/creator/submissions/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, excerpt, body, category_id: 1, type: "TUTORIAL" }),
+        body: JSON.stringify({ title, body, category_id: categoryId, type }),
       });
       if (res.ok) {
         setTitle("");
-        setExcerpt("");
         setBody("");
-        setShowForm(false);
         load();
       } else {
         const data = await res.json().catch(() => ({}));
@@ -112,148 +146,216 @@ export default function CreatorPage() {
   if (loading) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
   if (!user) return null;
 
+  const inReviewCount = submissions.filter(
+    (s) => s.review_status === "SUBMITTED" || s.review_status === "IN_REVIEW"
+  ).length;
+  const totalReads = 0; // no per-content read-count endpoint exposed yet
+
   return (
     <div className="min-h-screen flex bg-paper">
-      <AppSidebar tier={user.tier} />
+      <AppSidebar
+        tier={user.tier}
+        kycStatus={user.kyc_status}
+        userName={user.display_name || user.username}
+      />
 
       <div className="flex-1 min-w-0">
         {!profile ? (
-          <div className="max-w-xl px-6 md:px-10 py-10">
-            <h1 className="font-display text-3xl mb-6">Creator Program</h1>
+          <div className="px-6 md:px-10 py-8 md:py-8 flex flex-col gap-6 max-w-[900px]">
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[11px] tracking-[.12em] text-premium">
+                CREATOR STUDIO
+              </span>
+              <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
+                Know something about AI that Pakistan should read?
+              </h1>
+            </div>
             {error && (
-              <div className="mb-4 px-4 py-2.5 bg-alert/10 border border-alert rounded-sm text-alert text-sm">
-                {error}
-              </div>
+              <div className="px-4 py-2.5 bg-alert-bg rounded-lg text-alert text-sm">{error}</div>
             )}
-            <div className="bg-paper-raised border border-border rounded-md p-6">
-              <p className="text-sm text-muted mb-4">
-                Premium members can submit AI articles and tutorials, and earn revenue as they&apos;re
-                published.
+            <div className="bg-ink text-white rounded-[22px] p-7 flex flex-col gap-4">
+              <p className="text-[15px] text-[#C9CFDC] m-0">
+                Premium members can submit AI articles and tutorials, and earn a bounty in points
+                each time editors publish their work.
               </p>
               <button
                 onClick={handleApply}
-                className="font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors"
+                className="self-start bg-marigold text-ink font-bold text-sm px-4 py-3 rounded-xl"
               >
                 Apply to Creator Program
               </button>
             </div>
           </div>
         ) : (
-          <>
-            <div className="bg-[#2A1024] px-6 md:px-7 py-[22px] flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-3.5">
-                <div className="w-[38px] h-[38px] rounded-full bg-[#5C2247]" />
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[16px] font-semibold text-creator-bg">
-                      {user.display_name || user.username}
-                    </span>
-                    <span className="bg-[#7A2E5E] text-creator-bg text-[10px] font-semibold tracking-[.06em] px-2 py-[3px] rounded">
-                      ✎ CREATOR
-                    </span>
-                    {user.is_verified_badge && (
-                      <span className="bg-[#F3E3EE] text-[#5C2247] text-[10px] font-semibold px-2 py-[3px] rounded-full">
-                        ✓ VERIFIED
-                      </span>
-                    )}
-                  </div>
-                  <span className="font-mono text-[11.5px] text-[#C9A8BD]">
-                    CREATOR STUDIO · {profile.status}
-                  </span>
-                </div>
+          <div className="px-6 md:px-10 py-8 md:py-8 pb-24 md:pb-10 flex flex-col gap-6">
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[11px] tracking-[.12em] text-premium">
+                  CREATOR STUDIO
+                </span>
+                <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
+                  Write for Pakistan. Get paid for it.
+                </h1>
               </div>
-              {profile.status === "APPROVED" && (
-                <button
-                  onClick={() => setShowForm((s) => !s)}
-                  className="bg-vermilion text-white text-[13px] font-semibold px-4 py-2.5 rounded-[6px]"
-                >
-                  New submission
-                </button>
-              )}
+              <span className="text-xs font-semibold bg-mint text-primary-deep px-3 py-2 rounded-full">
+                ●{" "}
+                {profile.status === "APPROVED"
+                  ? `Approved creator${
+                      profile.approved_at
+                        ? ` since ${new Date(profile.approved_at).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}`
+                        : ""
+                    }`
+                  : profile.status}
+              </span>
             </div>
 
-            <div className="px-6 md:px-7 py-6 md:py-[30px] pb-24 md:pb-[30px] flex flex-col gap-5">
-              {error && (
-                <div className="px-4 py-2.5 bg-alert/10 border border-alert rounded-sm text-alert text-sm">
-                  {error}
-                </div>
-              )}
+            {error && <div className="px-4 py-2.5 bg-alert-bg rounded-lg text-alert text-sm">{error}</div>}
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-                <div className="bg-white border border-border rounded-[9px] p-[18px]">
-                  <div className="font-mono text-[10.5px] tracking-[.14em] text-muted">
-                    TOTAL EARNINGS
-                  </div>
-                  <div className="font-mono text-[30px] font-semibold tabular-nums mt-1.5">
-                    {profile.total_earnings} pts
-                  </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+              <div className="bg-ink text-white rounded-2xl p-[18px] flex flex-col gap-2">
+                <span className="text-xs text-muted-2">Lifetime bounties</span>
+                <span className="font-mono text-[28px] font-semibold text-marigold">
+                  {profile.total_earnings}
+                </span>
+                <span className="text-xs text-muted-2">
+                  ≈ Rs {Math.round((Number(profile.total_earnings) / 1000) * 250).toLocaleString()}
+                </span>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-[18px] flex flex-col gap-2">
+                <span className="text-xs text-muted">Published</span>
+                <span className="font-mono text-[28px] font-semibold">
+                  {profile.published_count}
+                </span>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-[18px] flex flex-col gap-2">
+                <span className="text-xs text-muted">Total reads</span>
+                <span className="font-mono text-[28px] font-semibold">
+                  {totalReads || "—"}
+                </span>
+              </div>
+              <div className="bg-white border border-border rounded-2xl p-[18px] flex flex-col gap-2">
+                <span className="text-xs text-muted">In review</span>
+                <span className="font-mono text-[28px] font-semibold">{inReviewCount}</span>
+              </div>
+            </div>
+
+            <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-display text-2xl m-0">What your writing has earned</h3>
+                  <span className="text-[13px] text-muted">
+                    CREATOR_BOUNTY entries on your published work · per-entry bars, cumulative line
+                  </span>
                 </div>
-                <div className="bg-white border border-border rounded-[9px] p-[18px]">
-                  <div className="font-mono text-[10.5px] tracking-[.14em] text-muted">PUBLISHED</div>
-                  <div className="font-mono text-[30px] font-semibold tabular-nums mt-1.5">
-                    {profile.published_count}
-                  </div>
+                <div className="flex gap-3.5 text-xs text-muted">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-marigold" />
+                    Bounty paid
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3.5 h-[2.5px] bg-ink" />
+                    Cumulative
+                  </span>
                 </div>
               </div>
+              <CreatorEarningsChart entries={ledger} />
+            </div>
 
-              {showForm && profile.status === "APPROVED" && (
-                <div className="bg-white border border-border rounded-[10px] p-5">
-                  <h2 className="font-display text-lg mb-4">Submit new content</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1.3fr] gap-[18px]">
+              <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3.5">
+                <h3 className="font-display text-2xl m-0">Submit new content</h3>
+                {profile.status === "APPROVED" ? (
                   <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                    <input
-                      placeholder="Title"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                      required
-                    />
-                    <input
-                      placeholder="Excerpt"
-                      value={excerpt}
-                      onChange={(e) => setExcerpt(e.target.value)}
-                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                    />
-                    <textarea
-                      placeholder="Body"
-                      value={body}
-                      onChange={(e) => setBody(e.target.value)}
-                      rows={5}
-                      className="border border-border-strong rounded-sm px-3 py-2 bg-white text-sm outline-none focus:border-vermilion"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="self-start font-mono text-xs bg-ink text-paper rounded-sm px-4 py-2 hover:bg-vermilion-deep transition-colors disabled:opacity-60"
-                    >
-                      {submitting ? "Submitting…" : "Submit for review"}
-                    </button>
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[13px] font-semibold">Title</span>
+                      <input
+                        placeholder="A clear, specific headline"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="h-[46px] border border-border-strong rounded-[11px] px-3.5 text-sm outline-none focus:border-primary"
+                        required
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[13px] font-semibold">Category</span>
+                        <select
+                          value={categoryId ?? ""}
+                          onChange={(e) => setCategoryId(Number(e.target.value))}
+                          className="h-[46px] border border-border-strong rounded-[11px] px-3.5 text-sm outline-none focus:border-primary bg-white"
+                          required
+                        >
+                          {categories.length === 0 && <option value="">No categories yet</option>}
+                          {categories.map((c) => (
+                            <option key={c.id} value={c.id}>
+                              {c.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[13px] font-semibold">Type</span>
+                        <select
+                          value={type}
+                          onChange={(e) => setType(e.target.value)}
+                          className="h-[46px] border border-border-strong rounded-[11px] px-3.5 text-sm outline-none focus:border-primary bg-white"
+                        >
+                          {TYPE_OPTIONS.map((t) => (
+                            <option key={t.value} value={t.value}>
+                              {t.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[13px] font-semibold">Draft or Google Doc link</span>
+                      <textarea
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        rows={4}
+                        className="border border-border-strong rounded-[11px] px-3.5 py-3 text-sm outline-none focus:border-primary resize-none"
+                        required
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-muted">Bounties set by editors on publish</span>
+                      <button
+                        type="submit"
+                        disabled={submitting || categoryId === null}
+                        className="bg-ink text-white font-semibold text-sm px-4.5 py-3 rounded-[11px] disabled:opacity-60"
+                      >
+                        {submitting ? "Submitting…" : "Submit for review"}
+                      </button>
+                    </div>
                   </form>
-                </div>
-              )}
+                ) : (
+                  <p className="text-sm text-muted">
+                    Your application is {profile.status.toLowerCase()}. You&apos;ll be able to
+                    submit once approved.
+                  </p>
+                )}
+              </div>
 
-              <div className="bg-white border border-border rounded-[10px] overflow-hidden">
-                <div className="px-[18px] py-[15px] border-b border-border flex items-center justify-between">
-                  <span className="font-mono text-[10.5px] font-semibold tracking-[.16em]">
-                    SUBMISSIONS
-                  </span>
-                  <span className="text-[12.5px] text-vermilion-deep font-medium">
-                    All {submissions.length} →
-                  </span>
-                </div>
+              <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col">
+                <h3 className="font-display text-2xl mb-3 m-0">Your submissions</h3>
                 {submissions.length === 0 && (
-                  <p className="font-mono text-sm text-muted px-[18px] py-4">No submissions yet.</p>
+                  <p className="font-mono text-sm text-muted">No submissions yet.</p>
                 )}
                 {submissions.map((s, i) => (
                   <div
                     key={s.id}
-                    className={`flex items-center gap-3.5 px-[18px] py-3.5 ${
-                      i < submissions.length - 1 ? "border-b border-[#F0EDE7]" : ""
+                    className={`grid grid-cols-[minmax(0,1fr)_100px_60px] gap-3 items-center py-3.5 ${
+                      i > 0 ? "border-t border-[#EFEEE8]" : ""
                     }`}
                   >
-                    <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                      <span className="text-sm font-semibold truncate">{s.title}</span>
-                      <span className="font-mono text-[11px] text-muted">
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                      <span className="text-[15px] font-semibold truncate">{s.title}</span>
+                      <span className="text-xs text-muted truncate">
                         {new Date(s.submitted_at).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "short",
@@ -262,17 +364,20 @@ export default function CreatorPage() {
                       </span>
                     </div>
                     <span
-                      className={`font-mono text-[10px] font-semibold px-2 py-[3px] rounded w-[86px] text-center ${
+                      className={`text-xs font-semibold px-2.5 py-1.5 rounded-full text-center justify-self-start ${
                         REVIEW_BADGE[s.review_status] ?? REVIEW_BADGE.SUBMITTED
                       }`}
                     >
-                      {s.review_status}
+                      {REVIEW_LABEL[s.review_status] ?? s.review_status}
+                    </span>
+                    <span className="font-mono text-[13px] font-semibold text-premium text-right">
+                      —
                     </span>
                   </div>
                 ))}
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
       <MobileTabBar />

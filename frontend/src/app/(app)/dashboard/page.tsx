@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
+import { ledgerStyle } from "@/lib/ledger";
 
 interface LedgerEntry {
   id: number;
@@ -32,6 +33,7 @@ interface LearningPathSummary {
   slug: string;
   access_tier: string;
   milestone_count: number;
+  completed_count: number;
 }
 
 export default function DashboardPage() {
@@ -74,144 +76,196 @@ export default function DashboardPage() {
 
   const points = rewards ? Number(rewards.balance) : 0;
   const rupees = Math.floor(points / 1000) * 250 + Math.round(((points % 1000) / 1000) * 250);
-  const activeReferrals = referrals?.referrals.filter((r) => r.status !== "PENDING").length ?? 0;
-  const pendingReferrals = referrals?.referrals.filter((r) => r.status === "PENDING").length ?? 0;
+  const weekGain =
+    rewards?.recent_entries
+      .filter((e) => Number(e.amount) > 0)
+      .reduce((sum, e) => sum + Number(e.amount), 0) ?? 0;
 
   return (
     <div className="min-h-screen flex bg-paper">
-      <AppSidebar tier={user.tier} />
+      <AppSidebar
+        tier={user.tier}
+        kycStatus={user.kyc_status}
+        userName={user.display_name || user.username}
+      />
 
-      <div className="flex-1 min-w-0 px-6 md:px-[26px] py-6 md:py-[30px] pb-24 md:pb-[30px] flex flex-col gap-[22px]">
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          <div className="flex flex-col gap-[5px]">
-            <h1 className="font-display text-[31px]">
-              Assalam-o-alaikum, {user.display_name || user.username}
+      <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:py-8 pb-24 md:pb-10 flex flex-col gap-6">
+        <div className="flex items-end gap-4 flex-wrap">
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="font-urdu text-base text-primary leading-[1.9]">السلام علیکم</span>
+            <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
+              Assalam-o-alaikum, {user.display_name || user.username}.
             </h1>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="border border-[#9AA0AC] text-[#4E5463] text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
-                {user.tier}
-              </span>
-              {user.kyc_status !== "APPROVED" && (
-                <span className="inline-flex items-center gap-1 bg-warning-bg text-warning border border-warning text-[10.5px] font-semibold px-2 py-[3px] rounded">
-                  ⏳ KYC {user.kyc_status}
-                </span>
-              )}
-              {user.is_verified_badge && (
-                <span className="inline-flex items-center gap-1 bg-verified-bg text-verified border border-verified text-[10px] font-semibold tracking-[.06em] px-[7px] py-[2px] rounded-full">
-                  ✓ VERIFIED
-                </span>
-              )}
-            </div>
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="border border-border-strong bg-white text-[12.5px] px-[13px] py-2 rounded-[6px] cursor-pointer">
-              Invite friends
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="border border-border-strong text-muted text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded">
+              {user.tier}
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#C9C3B7]" />
+            {user.kyc_status !== "APPROVED" && (
+              <span className="inline-flex items-center gap-1 bg-premium-bg text-premium border border-premium text-[10.5px] font-semibold px-2 py-[3px] rounded">
+                ⏳ KYC {user.kyc_status}
+              </span>
+            )}
+            {user.is_verified_badge && (
+              <span className="inline-flex items-center gap-1 bg-verified-bg text-verified border border-verified text-[10px] font-semibold tracking-[.06em] px-[7px] py-[2px] rounded-full">
+                ✓ VERIFIED
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[1.25fr_1fr_1fr] gap-4">
-          <div className="bg-ink rounded-[10px] p-5 text-paper flex flex-col gap-1.5">
-            <span className="font-mono text-[10.5px] tracking-[.14em] text-[#FF7A52]">
-              POINTS BALANCE
+        <div className="grid grid-cols-1 md:grid-cols-[1.35fr_1fr_1fr] gap-4">
+          <div className="bg-ink rounded-[22px] p-6 text-white flex flex-col gap-4">
+            <div className="flex justify-between">
+              <span className="font-mono text-[11px] tracking-[.12em] text-muted-2">
+                POINTS BALANCE
+              </span>
+              {user.kyc_status === "APPROVED" && (
+                <span className="text-xs text-primary-light">● KYC verified</span>
+              )}
+            </div>
+            <div className="flex items-baseline gap-2.5">
+              <span className="font-mono text-5xl font-semibold text-marigold tracking-tight">
+                {points.toLocaleString()}
+              </span>
+              <span className="text-[15px] text-muted-2">pts</span>
+            </div>
+            <span className="text-sm text-[#C9CFDC]">
+              ≈ <span className="font-mono text-white">Rs {rupees.toLocaleString()}</span> at Rs
+              250 / 1,000
             </span>
-            <span className="font-mono text-4xl font-semibold tracking-tight tabular-nums leading-[1.1]">
-              {points.toLocaleString()}
-            </span>
-            <span className="text-[13px] text-[#C9CCD2]">
-              ≈ Rs {rupees.toLocaleString()} · Rs 2,000 minimum
-            </span>
-            <button
-              onClick={() => router.push("/rewards")}
-              className="bg-vermilion text-white text-[12.5px] font-semibold py-[9px] rounded-[6px] text-center mt-1.5"
-            >
-              Withdraw
-            </button>
+            <div className="flex gap-2.5">
+              <button
+                onClick={() => router.push("/rewards")}
+                className="flex-1 bg-primary-light text-ink font-bold text-sm py-3 rounded-xl"
+              >
+                Withdraw
+              </button>
+              <button
+                onClick={() => router.push("/rewards")}
+                className="bg-ink-raised border border-[#24304A] font-semibold text-sm px-4 rounded-xl"
+              >
+                Ledger
+              </button>
+            </div>
           </div>
 
-          <div className="bg-white border border-border rounded-[10px] p-5 flex flex-col gap-1.5">
-            <span className="font-mono text-[10.5px] tracking-[.14em] text-muted">THIS WEEK</span>
-            <span className="font-mono text-[34px] font-semibold tabular-nums leading-[1.15]">
-              {rewards?.recent_entries
-                .filter((e) => Number(e.amount) > 0)
-                .reduce((sum, e) => sum + Number(e.amount), 0)
-                .toLocaleString() ?? 0}
+          <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3.5">
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">THIS WEEK</span>
+            <div className="flex items-baseline gap-2">
+              <span className="font-mono text-[34px] font-semibold">
+                +{weekGain.toLocaleString()}
+              </span>
+              <span className="text-[13px] text-muted">pts</span>
+            </div>
+            <span className="text-[13px] text-primary-deep font-semibold">
+              Recent earning activity
             </span>
-            <span className="text-[13px] text-success font-medium">Recent earning activity</span>
           </div>
 
-          <div className="bg-white border border-border rounded-[10px] p-5 flex flex-col gap-1.5">
-            <span className="font-mono text-[10.5px] tracking-[.14em] text-muted">REFERRALS</span>
-            <span className="font-mono text-[34px] font-semibold tabular-nums leading-[1.15]">
-              {referrals?.referrals.length ?? 0}
-            </span>
-            <span className="text-[13px] text-muted">
-              {activeReferrals} active · {pendingReferrals} pending signup
-            </span>
+          <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3.5">
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">REFERRALS</span>
+            <div className="flex gap-4 items-baseline">
+              <div>
+                <span className="font-mono text-[34px] font-semibold">
+                  {referrals?.referrals.length ?? 0}
+                </span>
+                <span className="text-[13px] text-muted"> invited</span>
+              </div>
+            </div>
             {referrals && (
               <button
                 onClick={copyReferral}
-                className="flex items-center justify-between bg-[#F5F2EC] border border-dashed border-border-strong rounded-[6px] px-2.5 py-[7px] mt-1.5"
+                className="mt-auto flex items-center justify-between border border-dashed border-iris bg-[#F4F4FD] rounded-[11px] px-3 py-2"
               >
-                <span className="font-mono text-xs font-semibold">{referrals.referral_code}</span>
-                <span className="text-[11.5px] text-vermilion-deep font-semibold">
-                  {copied ? "Copied" : "Copy"}
+                <span className="font-mono text-sm font-semibold">{referrals.referral_code}</span>
+                <span className="bg-iris text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg">
+                  {copied ? "Copied" : "Copy link"}
                 </span>
               </button>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-[18px]">
-          <div className="bg-white border border-border rounded-[10px] p-5 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[11px] font-semibold tracking-[.16em]">
-                LEARNING PROGRESS
-              </span>
-              <span className="text-[12.5px] text-vermilion-deep font-medium">All paths →</span>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-[18px]">
+          <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-1">
+            <div className="flex items-baseline justify-between mb-2">
+              <h3 className="font-display text-2xl m-0">Keep learning</h3>
+              <button
+                onClick={() => router.push("/my-learning")}
+                className="text-[13px] font-semibold"
+              >
+                All paths →
+              </button>
             </div>
-            {paths.length === 0 && (
-              <p className="text-sm text-muted">No learning paths yet.</p>
-            )}
+            {paths.length === 0 && <p className="text-sm text-muted">No learning paths yet.</p>}
             {paths.map((p) => (
               <button
                 key={p.id}
                 onClick={() => router.push(`/learning-paths/${p.slug}`)}
-                className="flex items-center justify-between text-sm text-left"
+                className="flex flex-col gap-2 py-3.5 border-t border-[#EFEEE8] text-left"
               >
-                <span className="font-medium">{p.title}</span>
-                <span className="font-mono text-muted">
-                  {p.access_tier === "PREMIUM" && (
-                    <span className="text-premium font-semibold mr-1">★</span>
-                  )}
-                  {p.milestone_count} lessons
-                </span>
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">
+                    {p.access_tier === "PREMIUM" && (
+                      <span className="text-premium font-semibold mr-1">★</span>
+                    )}
+                    {p.title}
+                  </span>
+                  <span className="font-mono text-xs text-muted">
+                    {p.completed_count}/{p.milestone_count} lessons
+                  </span>
+                </div>
+                <div className="h-1.5 bg-[#EFEEE8] rounded-[3px] overflow-hidden">
+                  <div
+                    className="h-1.5 bg-primary rounded-[3px]"
+                    style={{
+                      width: `${
+                        p.milestone_count > 0
+                          ? Math.round((p.completed_count / p.milestone_count) * 100)
+                          : 0
+                      }%`,
+                    }}
+                  />
+                </div>
               </button>
             ))}
           </div>
 
-          <div className="bg-white border border-border rounded-[10px] p-5 flex flex-col gap-3">
-            <span className="font-mono text-[11px] font-semibold tracking-[.16em]">
-              RECENT ACTIVITY
-            </span>
+          <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col">
+            <div className="flex items-baseline justify-between mb-2">
+              <h3 className="font-display text-2xl m-0">Recent activity</h3>
+              <button onClick={() => router.push("/rewards")} className="text-[13px] font-semibold">
+                Full ledger →
+              </button>
+            </div>
             {rewards && rewards.recent_entries.length > 0 ? (
-              rewards.recent_entries.map((e, i) => {
+              rewards.recent_entries.map((e) => {
                 const isNegative = Number(e.amount) < 0;
+                const style = ledgerStyle(e.type);
                 return (
                   <div
                     key={e.id}
-                    className={`flex justify-between text-[13.5px] pb-2.5 ${
-                      i < rewards.recent_entries.length - 1 ? "border-b border-[#F0EDE7]" : ""
-                    }`}
+                    className="grid grid-cols-[minmax(0,1fr)_auto_auto] sm:grid-cols-[110px_minmax(0,1fr)_auto] gap-3 items-center py-3 border-t border-[#EFEEE8]"
                   >
-                    <span className={isNegative ? "text-muted" : ""}>
-                      {e.type}
-                      {e.source_content_title ? ` · ${e.source_content_title}` : ""}
+                    <span className="font-mono text-[11px] text-muted-2 hidden sm:inline">
+                      {new Date(e.created_at).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                      })}
+                    </span>
+                    <span className="text-sm truncate">
+                      {e.source_content_title || style.label}
                     </span>
                     <span
-                      className={`font-mono font-semibold shrink-0 ml-3 ${
-                        isNegative ? "text-muted" : "text-success"
+                      className="font-mono text-[10px] font-semibold px-[7px] py-[5px] rounded-md hidden sm:inline shrink-0"
+                      style={{ background: style.bg, color: style.text }}
+                    >
+                      {e.type}
+                    </span>
+                    <span
+                      className={`font-mono font-semibold text-sm shrink-0 ${
+                        isNegative ? "text-alert" : "text-primary"
                       }`}
                     >
                       {isNegative ? "" : "+"}

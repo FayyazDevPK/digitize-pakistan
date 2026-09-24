@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api-client";
 import { storeTokens, fetchCurrentUser } from "@/lib/auth";
+import PixelD from "@/components/PixelD";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,47 +43,66 @@ export default function LoginPage() {
   if (checkingAuth) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-[500px] bg-paper-raised border border-border-strong rounded-[10px] overflow-hidden flex flex-col">
-        <div className="bg-ink px-7 py-[26px] flex flex-col gap-[9px]">
-          <svg width="30" height="30" viewBox="0 0 46 46">
-            <rect width="46" height="46" rx="9" fill="#FAF7F2" />
-            <rect x="11" y="13" width="4" height="20" fill="#12151C" />
-            <path d="M19 13h6a10 10 0 0 1 0 20h-6z" fill="none" stroke="#12151C" strokeWidth="4" />
-            <circle cx="33.5" cy="33.5" r="3.5" fill="#E0512B" />
-          </svg>
-          <div className="font-display text-[27px] text-paper leading-[1.15]">Welcome back</div>
-          <span className="text-[13.5px] text-[#C9CCD2]">Log in to keep reading and earning.</span>
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+      <div className="hidden lg:flex bg-ink text-white flex-col justify-between p-16">
+        <Link href="/news" className="flex items-center gap-2.5">
+          <PixelD size={8} onDark />
+          <div className="flex items-baseline gap-1.5 leading-none">
+            <span className="font-extrabold text-xl">Digitize</span>
+            <span className="font-display italic text-2xl text-[#C9CFDC]">Pakistan</span>
+          </div>
+        </Link>
+        <div className="flex flex-col gap-6">
+          <div className="font-urdu text-3xl leading-[2] text-primary-light">خوش آمدید</div>
+          <h1 className="font-display text-6xl xl:text-7xl leading-[.95] m-0">
+            Welcome back.
+            <br />
+            <span className="italic text-marigold">Your points missed you.</span>
+          </h1>
+          <div className="flex gap-7 mt-3">
+            <div className="flex flex-col gap-1.5">
+              <span className="font-mono text-xl font-semibold">1,000 pts</span>
+              <span className="text-[13px] text-muted-2">= Rs 250, withdrawable</span>
+            </div>
+            <div className="w-px bg-[#24304A]" />
+            <div className="flex flex-col gap-1.5">
+              <span className="font-mono text-xl font-semibold">KYC</span>
+              <span className="text-[13px] text-muted-2">SBP-aligned verification</span>
+            </div>
+          </div>
         </div>
+        <span className="text-xs text-[#6E7890]">
+          © {new Date().getFullYear()} Digitize Online SMC (Private) Limited
+        </span>
+      </div>
 
-        <div className="px-7 pt-6 pb-7 flex flex-col gap-4">
-          <div className="flex bg-[#EDE9E1] rounded-[7px] p-[3px]">
-            <Link
-              href="/register"
-              className="flex-1 text-center text-[13.5px] text-muted py-2"
-            >
-              Register
-            </Link>
-            <span className="flex-1 text-center text-[13.5px] font-semibold bg-white py-2 rounded-[5px] border border-border">
-              Log in
+      <div className="flex items-center justify-center p-6 md:p-12">
+        <div className="w-full max-w-[420px] flex flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <h2 className="font-display text-4xl md:text-[44px] m-0">Log in</h2>
+            <span className="text-[15px] text-muted">
+              New here?{" "}
+              <Link href="/register" className="text-primary font-semibold">
+                Create an account
+              </Link>
             </span>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">Username</span>
+              <span className="text-[13px] font-semibold">Username</span>
               <input
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm text-ink outline-none focus:border-vermilion transition-colors"
+                className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">Password</span>
+              <span className="text-[13px] font-semibold">Password</span>
               <input
                 type="password"
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm text-ink outline-none focus:border-vermilion transition-colors"
+                className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
@@ -94,27 +114,20 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="bg-vermilion text-white text-sm font-semibold py-[13px] rounded-[7px] text-center hover:bg-vermilion-deep transition-colors disabled:opacity-60"
+              className="h-[50px] bg-primary text-white font-semibold text-base rounded-xl disabled:opacity-60"
             >
               {submitting ? "Logging in…" : "Log in"}
             </button>
           </form>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3 text-xs text-[#8A8F9C]">
             <div className="flex-1 h-px bg-border" />
-            <span className="font-mono text-[10.5px] text-[#8A8F9B]">OR</span>
+            or
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          <span className="border border-border-strong bg-white text-[13.5px] font-medium py-3 rounded-[7px] text-center">
+          <span className="h-[50px] flex items-center justify-center bg-white border border-border-strong rounded-xl font-semibold text-[15px]">
             Continue with Google
-          </span>
-
-          <span className="text-[11.5px] text-muted leading-[1.55] text-center">
-            New here?{" "}
-            <Link href="/register" className="text-vermilion-deep font-medium">
-              Create a free account
-            </Link>
           </span>
         </div>
       </div>

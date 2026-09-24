@@ -1,11 +1,6 @@
 import Link from "next/link";
-
-const LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Terms", href: "/terms" },
-  { label: "Privacy", href: "/privacy" },
-];
+import PixelD from "@/components/PixelD";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface AdSlotData {
   id: number;
@@ -27,41 +22,122 @@ async function getAd(placement: string): Promise<AdSlotData | null> {
   return slot ?? null;
 }
 
+const COLUMNS: { title: string; links: { label: string; href?: string }[] }[] = [
+  {
+    title: "Read",
+    links: [
+      { label: "Latest news", href: "/news" },
+      { label: "Policy & regulation" },
+      { label: "Research" },
+      { label: "Startups in Pakistan" },
+    ],
+  },
+  {
+    title: "Earn",
+    links: [
+      { label: "How points work", href: "/rewards" },
+      { label: "Learning paths", href: "/my-learning" },
+      { label: "Referral program", href: "/referrals" },
+      { label: "Creator studio", href: "/creator" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Contact", href: "/contact" },
+      { label: "Careers" },
+      { label: "Press kit" },
+    ],
+  },
+];
+
 export default async function PublicFooter() {
   const ad = await getAd("FOOTER");
 
   return (
-    <footer className="border-t border-border mt-10">
+    <footer className="bg-ink text-[#C9CFDC] font-sans flex flex-col gap-10 md:gap-12 px-6 md:px-12 pt-12 md:pt-16 pb-7">
       {ad && (
-        <a
-          href={ad.target_url}
-          target="_blank"
-          rel="noopener sponsored"
-          className="block max-w-[1280px] mx-auto px-4 md:px-7 pt-6"
-        >
-          <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
+        <a href={ad.target_url} target="_blank" rel="noopener sponsored" className="block">
+          <div className="font-mono text-[10px] uppercase text-muted-2 mb-2">Sponsored</div>
           {ad.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={ad.image_url}
               alt={ad.advertiser_name}
-              className="w-full rounded-sm border border-border"
+              className="w-full rounded-sm border border-[#24304A]"
             />
           )}
-          <div className="text-xs text-muted mt-1">{ad.advertiser_name}</div>
+          <div className="text-xs text-muted-2 mt-1">{ad.advertiser_name}</div>
         </a>
       )}
-      <div className="max-w-[1280px] mx-auto px-4 md:px-7 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span className="font-mono text-[11px] text-muted">
-          © {new Date().getFullYear()} Digitize Online SMC (Private) Limited
-        </span>
-        <div className="flex gap-5">
-          {LINKS.map((l) => (
-            <Link key={l.label} href={l.href} className="text-[13px] text-muted hover:text-ink">
-              {l.label}
-            </Link>
-          ))}
+
+      <div className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr_1.3fr] gap-8 md:gap-10">
+        <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
+          <Link href="/news" className="flex items-center gap-2.5">
+            <PixelD size={8} onDark />
+            <div className="flex items-baseline gap-1.5 leading-none">
+              <span className="font-bold text-xl text-white tracking-tight">Digitize</span>
+              <span className="font-display italic text-2xl">Pakistan</span>
+            </div>
+          </Link>
+          <p className="text-sm leading-relaxed max-w-[300px]">
+            AI news, tools and learning for Pakistan — and a fair share of the value for your
+            time.
+          </p>
+          <div className="font-urdu text-[15px] leading-[2] text-white">پڑھیں، سیکھیں، کمائیں</div>
         </div>
+
+        {COLUMNS.map((col) => (
+          <div key={col.title} className="flex flex-col gap-3">
+            <div className="font-mono text-[10px] tracking-[.12em] uppercase text-[#6E7890] mb-1">
+              {col.title}
+            </div>
+            {col.links.map((l) =>
+              l.href ? (
+                <Link key={l.label} href={l.href} className="text-sm text-[#C9CFDC]">
+                  {l.label}
+                </Link>
+              ) : (
+                <span key={l.label} className="text-sm text-[#C9CFDC]">
+                  {l.label}
+                </span>
+              )
+            )}
+          </div>
+        ))}
+
+        <div className="col-span-2 md:col-span-1 bg-ink-raised border border-[#24304A] rounded-[18px] p-5 flex flex-col gap-3.5">
+          <div className="font-mono text-[10px] tracking-[.12em] uppercase text-[#6E7890]">
+            Current payout rate
+          </div>
+          <div className="flex items-baseline gap-2.5">
+            <span className="font-mono text-[28px] font-semibold text-white">1,000</span>
+            <span className="text-[13px]">pts</span>
+            <span className="text-[#6E7890]">=</span>
+            <span className="font-mono text-[28px] font-semibold text-marigold">Rs 250</span>
+          </div>
+          <div className="text-xs leading-relaxed text-muted-2">
+            Withdrawals to JazzCash, Easypaisa or bank. Identity verification required before
+            first payout.
+          </div>
+          <NewsletterSignup />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-5 border-t border-[#24304A] pt-[22px] text-xs text-muted-2">
+        <span>© {new Date().getFullYear()} Digitize Online SMC (Private) Limited · Karachi, Pakistan</span>
+        <span className="flex-1" />
+        <Link href="/terms" className="text-[#C9CFDC]">
+          Terms
+        </Link>
+        <Link href="/privacy" className="text-[#C9CFDC]">
+          Privacy
+        </Link>
+        <span>Payout policy</span>
+        <span className="font-mono text-[11px] border border-[#24304A] rounded-[7px] px-2.5 py-1.5">
+          EN / اردو
+        </span>
       </div>
     </footer>
   );
