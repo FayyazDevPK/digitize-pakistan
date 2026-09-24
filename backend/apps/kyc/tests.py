@@ -42,6 +42,57 @@ class TestKYCStatusSync:
         user.refresh_from_db()
         assert user.kyc_status == "PENDING"
 
+    def test_deleting_only_record_reverts_status_to_none(self):
+        """
+        Regression test for a second real bug in the same denormalized
+        field: there was no post_delete handler at all, so deleting a
+        user's only KYCRecord (e.g. an admin clearing test data) left
+        User.kyc_status permanently stuck at the deleted record's status,
+        even though no KYCRecord existed anymore.
+        """
+        user = User.objects.create_user(username="kyctestuser2", password="x")
+
+        record = KYCRecord.objects.create(
+            user=user,
+            document_type="CNIC",
+            document_ref_url="https://example.com/doc1.jpg",
+            status="PENDING",
+        )
+        user.refresh_from_db()
+        assert user.kyc_status == "PENDING"
+
+        record.delete()
+        user.refresh_from_db()
+        assert user.kyc_status == "NONE"
+
+    def test_deleting_newest_record_reverts_to_next_remaining_status(self):
+        """
+        The delete handler must recompute from the real remaining records,
+        not just blindly reset to NONE -- if an older record still exists
+        after the newest one is deleted, the denormalized status should
+        reflect that older record, not pretend no submission ever happened.
+        """
+        user = User.objects.create_user(username="kyctestuser3", password="x")
+
+        older = KYCRecord.objects.create(
+            user=user,
+            document_type="CNIC",
+            document_ref_url="https://example.com/doc1.jpg",
+            status="REJECTED",
+        )
+        newer = KYCRecord.objects.create(
+            user=user,
+            document_type="CNIC",
+            document_ref_url="https://example.com/doc2.jpg",
+            status="PENDING",
+        )
+        user.refresh_from_db()
+        assert user.kyc_status == "PENDING"
+
+        newer.delete()
+        user.refresh_from_db()
+        assert user.kyc_status == "REJECTED"
+
 
 def _png(name="x.png"):
     import io
