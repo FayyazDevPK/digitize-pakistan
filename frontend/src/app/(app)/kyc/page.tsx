@@ -342,8 +342,9 @@ export default function KYCPage() {
                 rules.
               </span>
               <span className="text-[13px] leading-[1.55] text-[#C9CFDC]">
-                We verify once, then every withdrawal goes only to accounts registered in your
-                name. Documents are encrypted and never shown to other users.
+                We verify once. Withdrawals must go to an account registered in your own name.
+                Your documents are kept private and are only seen by our compliance team, never
+                by other users.
               </span>
             </div>
           </aside>

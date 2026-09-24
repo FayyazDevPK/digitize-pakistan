@@ -98,9 +98,6 @@ export default async function PublicFooter() {
               AI news, tools and learning for Pakistan — and a fair share of the
               value for your time.
             </p>
-            <div className="font-urdu text-[15px] leading-[2] text-white">
-              پڑھیں، سیکھیں، کمائیں
-            </div>
           </div>
 
           {COLUMNS.map((col) => (
@@ -160,10 +157,9 @@ export default async function PublicFooter() {
           <Link href="/privacy" className="text-[#C9CFDC]">
             Privacy
           </Link>
-          <span>Payout policy</span>
-          <span className="font-mono text-[11px] border border-[#24304A] rounded-[7px] px-2.5 py-1.5">
-            EN / اردو
-          </span>
+          <Link href="/payout-policy" className="text-[#C9CFDC]">
+            Payout policy
+          </Link>
         </div>
       </footer>
     </>

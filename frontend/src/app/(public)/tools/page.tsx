@@ -66,13 +66,13 @@ export default async function ToolsPage({
               The AI Tool Directory
             </h1>
             <p className="text-lg text-graphite max-w-[620px] leading-[1.5] m-0">
-              Every tool reviewed by our editors, with notes on Urdu support, local payment
+              Every tool reviewed by our editors, with notes on language support, local payment
               options and what it&apos;s actually good for.
             </p>
           </div>
           <div className="hidden md:flex h-14 bg-white border border-border-strong rounded-2xl items-center gap-3 pl-[18px] pr-2 text-[15px] text-[#8A8F9C]">
             <span className="w-[13px] h-[13px] border-2 border-[#8A8F9C] rounded-full shrink-0" />
-            <span className="flex-1">Search tools, e.g. &quot;Urdu voice&quot;</span>
+            <span className="flex-1">Search tools, e.g. &quot;voice&quot;</span>
             <span className="bg-ink text-white text-[13px] font-semibold px-3.5 py-2.5 rounded-[10px]">
               Search
             </span>

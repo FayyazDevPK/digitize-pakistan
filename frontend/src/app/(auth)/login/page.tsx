@@ -53,7 +53,6 @@ export default function LoginPage() {
           </div>
         </Link>
         <div className="flex flex-col gap-6">
-          <div className="font-urdu text-3xl leading-[2] text-primary-light">خوش آمدید</div>
           <h1 className="font-display text-6xl xl:text-7xl leading-[.95] m-0">
             Welcome back.
             <br />

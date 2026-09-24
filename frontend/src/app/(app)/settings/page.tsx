@@ -34,7 +34,6 @@ export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
-  const [language, setLanguage] = useState("EN");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -54,7 +53,6 @@ export default function SettingsPage() {
     setDisplayName(u.display_name);
     setPhone(u.phone);
     setCity(u.city);
-    setLanguage(u.language);
   }
 
   async function loadAvatar(u: CurrentUser) {
@@ -100,7 +98,7 @@ export default function SettingsPage() {
     setSaving(true);
     setSaved(false);
     const updated = await patchMe(
-      JSON.stringify({ display_name: displayName, phone, city, language }),
+      JSON.stringify({ display_name: displayName, phone, city }),
       true
     );
     if (updated) {
@@ -274,28 +272,6 @@ export default function SettingsPage() {
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="text-[13px] font-semibold">Language</span>
-                    <div className="flex bg-paper rounded-[11px] p-1 h-[46px]">
-                      {[
-                        { key: "EN", label: "English", cls: "" },
-                        { key: "UR", label: "اردو", cls: "font-urdu" },
-                      ].map((l) => (
-                        <button
-                          type="button"
-                          key={l.key}
-                          onClick={() => setLanguage(l.key)}
-                          className={`flex-1 rounded-lg text-sm ${l.cls} ${
-                            language === l.key
-                              ? "bg-white font-semibold shadow-[0_1px_2px_rgba(11,20,38,.08)]"
-                              : "text-muted"
-                          }`}
-                        >
-                          {l.label}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                 </div>
                 {error && <p className="text-alert text-sm m-0">{error}</p>}

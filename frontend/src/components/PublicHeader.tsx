@@ -42,8 +42,6 @@ export default function PublicHeader({ active }: { active?: "News" | "AI Tools" 
         <span className="font-mono text-[11px] shrink-0">
           1,000 pts = <span className="text-marigold">Rs 250</span>
         </span>
-        <span className="text-[#24304A] hidden sm:inline">|</span>
-        <span className="font-urdu text-xs hidden sm:inline">اردو</span>
       </div>
 
       <div className="bg-white border-b border-border flex items-center gap-6 md:gap-10 px-5 md:px-12 h-[76px]">

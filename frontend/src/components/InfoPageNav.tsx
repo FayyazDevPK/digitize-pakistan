@@ -5,6 +5,7 @@ const LINKS = [
   { label: "Contact", href: "/contact" },
   { label: "Terms of Service", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy" },
+  { label: "Payout Policy", href: "/payout-policy" },
 ];
 
 export default function InfoPageNav({ active }: { active: string }) {

@@ -92,9 +92,8 @@ export default function DashboardPage() {
       <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:py-8 pb-24 md:pb-10 flex flex-col gap-6">
         <div className="flex items-end gap-4 flex-wrap">
           <div className="flex flex-col gap-1 flex-1">
-            <span className="font-urdu text-base text-primary leading-[1.9]">السلام علیکم</span>
             <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
-              Assalam-o-alaikum, {user.display_name || user.username}.
+              Welcome back, {user.display_name || user.username}.
             </h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap">

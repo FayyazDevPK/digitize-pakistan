@@ -107,7 +107,6 @@ export interface CurrentUser {
   has_avatar: boolean;
   phone: string;
   city: string;
-  language: string;
   email_digests: boolean;
   date_joined: string;
   password_changed_at: string | null;
