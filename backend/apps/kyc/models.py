@@ -1,7 +1,12 @@
 from django.conf import settings
 from django.db import models
 
-from .validators import kyc_upload_path, validate_document_file
+from .validators import (
+    kyc_upload_path,
+    validate_cnic_number,
+    validate_document_file,
+    validate_image_file,
+)
 
 
 class KYCRecord(models.Model):
@@ -25,6 +30,12 @@ class KYCRecord(models.Model):
     document_file = models.FileField(
         upload_to=kyc_upload_path, blank=True, validators=[validate_document_file]
     )
+    # Full submission (new records). Blank on legacy rows that used document_file / document_ref_url.
+    full_name = models.CharField(max_length=150, blank=True)
+    cnic_number = models.CharField(max_length=15, blank=True, validators=[validate_cnic_number])
+    cnic_front = models.ImageField(upload_to=kyc_upload_path, blank=True, validators=[validate_image_file])
+    cnic_back = models.ImageField(upload_to=kyc_upload_path, blank=True, validators=[validate_image_file])
+    selfie = models.ImageField(upload_to=kyc_upload_path, blank=True, validators=[validate_image_file])
     submitted_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
     reviewed_by = models.ForeignKey(

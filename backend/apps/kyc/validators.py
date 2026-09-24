@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 
 from django.core.exceptions import ValidationError
@@ -42,3 +43,11 @@ def receipt_upload_path(instance, filename):
 
 def avatar_upload_path(instance, filename):
     return _random_path("avatars", filename)
+
+
+CNIC_RE = re.compile(r"^\d{5}-\d{7}-\d$")
+
+
+def validate_cnic_number(value):
+    if not CNIC_RE.match(value):
+        raise ValidationError("Enter the CNIC as XXXXX-XXXXXXX-X (13 digits with two dashes).")

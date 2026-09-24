@@ -2,9 +2,11 @@ from rest_framework import serializers
 
 from .models import KYCRecord
 
+REQUIRED_NEW = ("full_name", "cnic_number", "cnic_front", "cnic_back", "selfie")
+
 
 class KYCRecordSerializer(serializers.ModelSerializer):
-    has_document_file = serializers.SerializerMethodField()
+    has_legacy_document = serializers.SerializerMethodField()
 
     class Meta:
         model = KYCRecord
@@ -12,22 +14,30 @@ class KYCRecordSerializer(serializers.ModelSerializer):
             "id",
             "status",
             "document_type",
-            "document_ref_url",
-            "document_file",
-            "has_document_file",
+            "full_name",
+            "cnic_number",
+            "cnic_front",
+            "cnic_back",
+            "selfie",
+            "has_legacy_document",
             "submitted_at",
             "reviewed_at",
             "rejection_reason",
         ]
         read_only_fields = ["id", "status", "submitted_at", "reviewed_at", "rejection_reason"]
-        extra_kwargs = {"document_file": {"write_only": True, "required": False}}
+        # Uploaded images are never echoed back; staff view them through the admin only.
+        extra_kwargs = {
+            "cnic_front": {"write_only": True, "required": False},
+            "cnic_back": {"write_only": True, "required": False},
+            "selfie": {"write_only": True, "required": False},
+        }
 
-    def get_has_document_file(self, obj):
-        return bool(obj.document_file)
+    def get_has_legacy_document(self, obj):
+        return bool(obj.document_file or obj.document_ref_url)
 
     def validate(self, attrs):
-        if not attrs.get("document_file") and not attrs.get("document_ref_url"):
-            raise serializers.ValidationError(
-                {"document_file": "Upload a document file (or provide a document link)."}
-            )
+        # document_file / document_ref_url are legacy and no longer accepted for new submissions.
+        missing = {f: "This field is required." for f in REQUIRED_NEW if not attrs.get(f)}
+        if missing:
+            raise serializers.ValidationError(missing)
         return attrs

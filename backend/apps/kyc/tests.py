@@ -43,8 +43,32 @@ class TestKYCStatusSync:
         assert user.kyc_status == "PENDING"
 
 
+def _png(name="x.png"):
+    import io
+
+    from django.core.files.uploadedfile import SimpleUploadedFile
+    from PIL import Image
+
+    buf = io.BytesIO()
+    Image.new("RGB", (4, 4), "blue").save(buf, "PNG")
+    return SimpleUploadedFile(name, buf.getvalue(), content_type="image/png")
+
+
+def _payload(**over):
+    data = {
+        "document_type": "CNIC",
+        "full_name": "Ayesha Rahman",
+        "cnic_number": "42101-1234567-2",
+        "cnic_front": _png("front-ayesha.png"),
+        "cnic_back": _png(),
+        "selfie": _png(),
+    }
+    data.update(over)
+    return {k: v for k, v in data.items() if v is not None}
+
+
 @pytest.mark.django_db
-class TestKYCFileUpload:
+class TestKYCFullSubmission:
     def _client(self, username="uploader"):
         from rest_framework.test import APIClient
 
@@ -53,37 +77,42 @@ class TestKYCFileUpload:
         client.force_authenticate(user)
         return user, client
 
-    def test_multipart_upload_stores_file_and_hides_path(self, settings, tmp_path):
+    def test_full_submission_stored_and_not_echoed(self, settings, tmp_path):
+        settings.MEDIA_ROOT = tmp_path
+        user, c = self._client()
+        res = c.post("/api/kyc/", _payload(), format="multipart")
+        assert res.status_code == 201, res.data
+        for f in ("cnic_front", "cnic_back", "selfie"):
+            assert f not in res.data
+        rec = KYCRecord.objects.get(user=user)
+        assert rec.full_name == "Ayesha Rahman" and rec.cnic_number == "42101-1234567-2"
+        assert "ayesha" not in rec.cnic_front.name
+        assert rec.cnic_front and rec.cnic_back and rec.selfie
+
+    @pytest.mark.parametrize("bad", ["4210112345672", "42101-123456-72", "4210a-1234567-2", "42101-1234567-22", ""])
+    def test_invalid_cnic_rejected(self, bad, settings, tmp_path):
+        settings.MEDIA_ROOT = tmp_path
+        _, c = self._client("u" + str(abs(hash(bad)) % 10000))
+        res = c.post("/api/kyc/", _payload(cnic_number=bad), format="multipart")
+        assert res.status_code == 400 and "cnic_number" in res.data
+
+    def test_missing_pieces_and_wrong_type_rejected(self, settings, tmp_path):
         from django.core.files.uploadedfile import SimpleUploadedFile
 
         settings.MEDIA_ROOT = tmp_path
-        user, client = self._client()
-        f = SimpleUploadedFile("my-cnic-ayesha.jpg", b"\xff\xd8\xff data", content_type="image/jpeg")
-        res = client.post("/api/kyc/", {"document_type": "CNIC", "document_file": f}, format="multipart")
-        assert res.status_code == 201
-        assert res.data["has_document_file"] is True
-        assert "document_file" not in res.data
-        record = KYCRecord.objects.get(user=user)
-        assert "ayesha" not in record.document_file.name
-        assert record.document_file.name.endswith(".jpg")
+        _, c = self._client("uploader2")
+        res = c.post("/api/kyc/", _payload(selfie=None, full_name=None), format="multipart")
+        assert res.status_code == 400 and {"selfie", "full_name"} <= set(res.data)
+        pdf = SimpleUploadedFile("a.pdf", b"%PDF", content_type="application/pdf")
+        assert c.post("/api/kyc/", _payload(cnic_back=pdf), format="multipart").status_code == 400
 
-    def test_rejects_disallowed_extension_and_missing_document(self, settings, tmp_path):
-        from django.core.files.uploadedfile import SimpleUploadedFile
-
-        settings.MEDIA_ROOT = tmp_path
-        _, client = self._client("uploader2")
-        bad = SimpleUploadedFile("x.exe", b"MZ", content_type="application/octet-stream")
-        res = client.post("/api/kyc/", {"document_type": "CNIC", "document_file": bad}, format="multipart")
-        assert res.status_code == 400
-        res = client.post("/api/kyc/", {"document_type": "CNIC"}, format="multipart")
+    def test_legacy_fields_no_longer_accepted_for_new_submissions(self):
+        _, c = self._client("uploader3")
+        res = c.post("/api/kyc/", {"document_type": "CNIC", "document_ref_url": "https://e.com/a.jpg"}, format="json")
         assert res.status_code == 400
 
-    def test_legacy_url_submission_still_works(self):
-        _, client = self._client("uploader3")
-        res = client.post(
-            "/api/kyc/",
-            {"document_type": "CNIC", "document_ref_url": "https://example.com/a.jpg"},
-            format="json",
-        )
-        assert res.status_code == 201
-        assert res.data["has_document_file"] is False
+    def test_legacy_record_still_readable(self):
+        user, c = self._client("legacy")
+        KYCRecord.objects.create(user=user, document_type="CNIC", document_ref_url="https://e.com/a.jpg")
+        res = c.get("/api/kyc/")
+        assert res.status_code == 200 and res.data["has_legacy_document"] is True

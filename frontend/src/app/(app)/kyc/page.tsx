@@ -11,10 +11,28 @@ interface KYCRecord {
   status: string;
   document_type: string;
   document_ref_url: string;
-  has_document_file: boolean;
+  has_legacy_document: boolean;
   submitted_at: string;
   reviewed_at: string | null;
   rejection_reason: string;
+}
+
+type UploadKey = "cnic_front" | "cnic_back" | "selfie";
+
+const UPLOADS: { key: UploadKey; label: string }[] = [
+  { key: "cnic_front", label: "CNIC front" },
+  { key: "cnic_back", label: "CNIC back" },
+  { key: "selfie", label: "Selfie with CNIC" },
+];
+
+const MAX_BYTES = 5 * 1024 * 1024;
+const CNIC_PATTERN = /^\d{5}-\d{7}-\d$/;
+
+function formatCnic(raw: string): string {
+  const d = raw.replace(/\D/g, "").slice(0, 13);
+  if (d.length <= 5) return d;
+  if (d.length <= 12) return `${d.slice(0, 5)}-${d.slice(5)}`;
+  return `${d.slice(0, 5)}-${d.slice(5, 12)}-${d.slice(12)}`;
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -37,8 +55,14 @@ export default function KYCPage() {
   const [record, setRecord] = useState<KYCRecord | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const [documentType, setDocumentType] = useState("CNIC");
-  const [documentFile, setDocumentFile] = useState<File | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [cnicNumber, setCnicNumber] = useState("");
+  const [files, setFiles] = useState<Record<UploadKey, File | null>>({
+    cnic_front: null,
+    cnic_back: null,
+    selfie: null,
+  });
+  const [fileErrors, setFileErrors] = useState<Partial<Record<UploadKey, string>>>({});
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -57,22 +81,40 @@ export default function KYCPage() {
     });
   }, [router]);
 
+  function pickFile(key: UploadKey, file: File | null) {
+    if (file && !["image/jpeg", "image/png"].includes(file.type)) {
+      setFileErrors((e) => ({ ...e, [key]: "Use a JPG or PNG image." }));
+      return;
+    }
+    if (file && file.size > MAX_BYTES) {
+      setFileErrors((e) => ({ ...e, [key]: "Image is over 5 MB." }));
+      return;
+    }
+    setFileErrors((e) => ({ ...e, [key]: undefined }));
+    setFiles((f) => ({ ...f, [key]: file }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
-      if (!documentFile) return;
       const form = new FormData();
-      form.append("document_type", documentType);
-      form.append("document_file", documentFile);
+      form.append("document_type", "CNIC");
+      form.append("full_name", fullName.trim());
+      form.append("cnic_number", cnicNumber);
+      for (const { key } of UPLOADS) form.append(key, files[key] as File);
       const res = await authFetch("/api/kyc/", { method: "POST", body: form });
       if (res.ok) {
         setRecord(await res.json());
-        setDocumentFile(null);
+        setFiles({ cnic_front: null, cnic_back: null, selfie: null });
       } else {
         const body = await res.json().catch(() => ({}));
-        const fieldError = body.document_file?.[0] ?? body.non_field_errors?.[0];
+        const fieldError =
+          body.cnic_number?.[0] ??
+          body.full_name?.[0] ??
+          UPLOADS.map((u) => body[u.key]?.[0]).find(Boolean) ??
+          body.non_field_errors?.[0];
         setError(body.detail || fieldError || "Submission failed.");
       }
     } catch {
@@ -187,51 +229,78 @@ export default function KYCPage() {
 
             {canSubmit && (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-[13px] font-semibold">Document type</span>
-                  <select
-                    value={documentType}
-                    onChange={(e) => setDocumentType(e.target.value)}
-                    className="h-[46px] bg-white border border-border-strong rounded-[11px] px-3.5 text-sm outline-none focus:border-primary"
-                  >
-                    <option value="CNIC">CNIC</option>
-                    <option value="PASSPORT">Passport</option>
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-[13px] font-semibold">
-                    {documentType === "CNIC" ? "CNIC" : "Passport"} scan or photo
-                  </span>
-                  <label
-                    className={`min-h-[140px] rounded-[14px] border-[1.5px] border-dashed flex flex-col items-center justify-center gap-1.5 text-center px-4 py-5 cursor-pointer ${
-                      documentFile ? "border-primary bg-[#F3FAF6]" : "border-border-strong"
-                    }`}
-                  >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[13px] font-semibold">Full name, as on CNIC</span>
                     <input
-                      type="file"
-                      accept="image/jpeg,image/png,application/pdf,.jpg,.jpeg,.png,.pdf"
-                      className="sr-only"
-                      onChange={(e) => setDocumentFile(e.target.files?.[0] ?? null)}
+                      required
+                      maxLength={150}
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="h-[46px] border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary"
                     />
-                    {documentFile ? (
-                      <>
-                        <span className="text-sm font-semibold text-primary-deep">
-                          ✓ {documentFile.name}
-                        </span>
-                        <span className="font-mono text-[11px] text-muted">
-                          {(documentFile.size / (1024 * 1024)).toFixed(1)} MB · click to replace
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-sm font-semibold">Upload document</span>
-                        <span className="text-xs text-muted">
-                          <span className="text-primary underline">Click to browse</span> · JPG, PNG or
-                          PDF, max 5 MB
-                        </span>
-                      </>
-                    )}
-                  </label>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[13px] font-semibold">CNIC number</span>
+                    <input
+                      required
+                      inputMode="numeric"
+                      placeholder="42101-1234567-2"
+                      value={cnicNumber}
+                      onChange={(e) => setCnicNumber(formatCnic(e.target.value))}
+                      className={`h-[46px] border rounded-[11px] px-3.5 font-mono text-[15px] tracking-[.04em] outline-none focus:border-primary ${
+                        cnicNumber && !CNIC_PATTERN.test(cnicNumber)
+                          ? "border-alert"
+                          : "border-border-strong"
+                      }`}
+                    />
+                    <span className="text-xs text-muted">13 digits: XXXXX-XXXXXXX-X</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  {UPLOADS.map(({ key, label }) => {
+                    const file = files[key];
+                    return (
+                      <div key={key} className="flex flex-col gap-1.5">
+                        <label
+                          className={`aspect-[1.4] min-h-[120px] rounded-[14px] border-[1.5px] border-dashed flex flex-col items-center justify-center gap-1.5 text-center px-3 cursor-pointer ${
+                            file ? "border-primary bg-[#F3FAF6]" : "border-border-strong"
+                          }`}
+                        >
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+                            className="sr-only"
+                            onChange={(e) => {
+                              pickFile(key, e.target.files?.[0] ?? null);
+                              e.target.value = "";
+                            }}
+                          />
+                          {file ? (
+                            <>
+                              <span className="text-sm font-semibold text-primary-deep">
+                                ✓ {label}
+                              </span>
+                              <span className="font-mono text-[11px] text-muted break-all">
+                                {file.name.slice(0, 22)} · {(file.size / (1024 * 1024)).toFixed(1)} MB
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-sm font-semibold">{label}</span>
+                              <span className="text-xs text-muted">
+                                <span className="text-primary underline">Browse</span> · JPG or PNG
+                              </span>
+                            </>
+                          )}
+                        </label>
+                        {fileErrors[key] && (
+                          <span className="text-xs text-alert">{fileErrors[key]}</span>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div className="flex gap-2.5 items-start text-[13px] text-graphite bg-paper rounded-2xl p-3.5">
@@ -248,7 +317,12 @@ export default function KYCPage() {
                   <span className="text-[13px] text-muted">Step 2 of 3</span>
                   <button
                     type="submit"
-                    disabled={submitting || !documentFile}
+                    disabled={
+                      submitting ||
+                      !fullName.trim() ||
+                      !CNIC_PATTERN.test(cnicNumber) ||
+                      UPLOADS.some((u) => !files[u.key])
+                    }
                     className="bg-primary text-white font-semibold text-[15px] px-5 py-3 rounded-xl disabled:opacity-60"
                   >
                     {submitting ? "Submitting…" : "Submit for review"}
