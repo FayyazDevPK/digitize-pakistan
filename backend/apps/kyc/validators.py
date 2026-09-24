@@ -24,6 +24,9 @@ def validate_receipt_file(file):
     _check(file, ALLOWED_IMAGE_EXTENSIONS)
 
 
+validate_image_file = validate_receipt_file
+
+
 def _random_path(prefix, filename):
     # Random name so original filenames (often containing PII) aren't stored.
     return f"{prefix}/{uuid.uuid4().hex}{os.path.splitext(filename)[1].lower()}"
@@ -35,3 +38,7 @@ def kyc_upload_path(instance, filename):
 
 def receipt_upload_path(instance, filename):
     return _random_path("receipts", filename)
+
+
+def avatar_upload_path(instance, filename):
+    return _random_path("avatars", filename)

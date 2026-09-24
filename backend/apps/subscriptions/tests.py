@@ -21,6 +21,9 @@ def _png():
 def isolated_cache(settings):
     # Throttle counters must not leak between runs / into the shared dev Redis.
     settings.CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+    from django.core.cache import cache
+
+    cache.clear()  # locmem is process-wide; don't let throttle counts leak between tests
 
 
 @pytest.fixture

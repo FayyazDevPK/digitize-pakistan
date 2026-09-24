@@ -18,6 +18,10 @@ class UserAdmin(BaseUserAdmin):
                     "referred_by",
                     "display_name",
                     "avatar_url",
+                    "phone",
+                    "city",
+                    "language",
+                    "email_digests",
                 )
             },
         ),

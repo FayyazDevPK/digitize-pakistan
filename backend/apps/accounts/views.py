@@ -1,14 +1,20 @@
+from django.http import FileResponse, Http404
+from django.utils import timezone
 from rest_framework import generics
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import RegisterSerializer, UserSerializer
+from .serializers import PasswordChangeSerializer, RegisterSerializer, UserSerializer
 
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
         serializer = UserSerializer(request.user)
@@ -23,6 +29,37 @@ class MeView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class MeAvatarView(APIView):
+    """The signed-in user's own avatar. Never publicly served."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not request.user.avatar:
+            raise Http404
+        return FileResponse(request.user.avatar.open("rb"))
+
+
+class PasswordChangeView(APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "password_change"
+
+    def post(self, request):
+        serializer = PasswordChangeSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.set_password(serializer.validated_data["new_password"])
+        user.password_changed_at = timezone.now()
+        user.save(update_fields=["password", "password_changed_at"])
+
+        # Revoke every existing session, then hand this client a fresh pair so it stays signed in.
+        for token in OutstandingToken.objects.filter(user=user):
+            BlacklistedToken.objects.get_or_create(token=token)
+        refresh = RefreshToken.for_user(user)
+        return Response({"access": str(refresh.access_token), "refresh": str(refresh)})
 
 
 class RegisterView(generics.CreateAPIView):

@@ -3,8 +3,18 @@ import secrets
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from apps.kyc.validators import avatar_upload_path, validate_image_file
+
 
 class User(AbstractUser):
+    CITY_CHOICES = [
+        (c, c)
+        for c in (
+            "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan",
+            "Peshawar", "Quetta", "Hyderabad", "Sialkot", "Other",
+        )
+    ]
+    LANGUAGE_CHOICES = [("EN", "English"), ("UR", "اردو")]
     ROLE_CHOICES = [
         ("USER", "User"),
         ("CREATOR", "Creator"),
@@ -34,6 +44,12 @@ class User(AbstractUser):
     referral_code = models.CharField(max_length=12, unique=True, blank=True)
     display_name = models.CharField(max_length=100, blank=True)
     avatar_url = models.URLField(blank=True)
+    avatar = models.ImageField(upload_to=avatar_upload_path, blank=True, validators=[validate_image_file])
+    phone = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=30, choices=CITY_CHOICES, blank=True)
+    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default="EN")
+    email_digests = models.BooleanField(default=True)
+    password_changed_at = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.referral_code:

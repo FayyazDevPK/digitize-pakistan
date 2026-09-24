@@ -104,6 +104,13 @@ export interface CurrentUser {
   kyc_status: string;
   display_name: string;
   avatar_url: string;
+  has_avatar: boolean;
+  phone: string;
+  city: string;
+  language: string;
+  email_digests: boolean;
+  date_joined: string;
+  password_changed_at: string | null;
 }
 
 export async function fetchCurrentUser(): Promise<CurrentUser | null> {

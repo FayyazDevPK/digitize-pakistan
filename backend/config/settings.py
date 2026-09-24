@@ -185,6 +185,7 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "register": "10/hour",
     "login": "10/min",
     "subscription": "5/hour",
+    "password_change": "5/hour",
 }
 
 SIMPLE_JWT = {
