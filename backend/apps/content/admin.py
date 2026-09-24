@@ -15,3 +15,14 @@ class ContentAdmin(admin.ModelAdmin):
     list_filter = ("type", "visibility", "status", "category")
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title", "body")
+    filter_horizontal = ("alternatives",)
+    fieldsets = (
+        (None, {"fields": ("author", "type", "title", "slug", "excerpt", "body", "cover_image_url")}),
+        ("Classification", {"fields": ("category", "tags", "visibility", "status", "published_at")}),
+        (
+            "Tool listing details (TOOL_LISTING only)",
+            {"fields": ("pros", "cons", "pricing_info", "alternatives")},
+        ),
+        ("Stats", {"fields": ("view_count",)}),
+    )
+    readonly_fields = ("view_count",)

@@ -50,6 +50,19 @@ class Content(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
     published_at = models.DateTimeField(null=True, blank=True)
     view_count = models.PositiveIntegerField(default=0)
+    # Tool-listing fields (blank for other content types). pros/cons are one item per line.
+    pros = models.TextField(blank=True, help_text="One short point per line.")
+    cons = models.TextField(blank=True, help_text="One short point per line.")
+    pricing_info = models.TextField(
+        blank=True, help_text="Free text, one pricing line per line (e.g. 'Free tier available')."
+    )
+    alternatives = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        blank=True,
+        related_name="alternative_to",
+        limit_choices_to={"type": "TOOL_LISTING"},
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

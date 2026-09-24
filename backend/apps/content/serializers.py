@@ -29,6 +29,44 @@ class ContentListSerializer(serializers.ModelSerializer):
         ]
 
 
+def _lines(text):
+    return [line.strip() for line in text.splitlines() if line.strip()]
+
+
+class AlternativeSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+
+    class Meta:
+        model = Content
+        fields = ["id", "title", "slug", "category"]
+
+
 class ContentDetailSerializer(ContentListSerializer):
+    pros = serializers.SerializerMethodField()
+    cons = serializers.SerializerMethodField()
+    pricing_lines = serializers.SerializerMethodField()
+    alternatives = serializers.SerializerMethodField()
+
     class Meta(ContentListSerializer.Meta):
-        fields = ContentListSerializer.Meta.fields + ["body"]
+        fields = ContentListSerializer.Meta.fields + [
+            "body",
+            "pros",
+            "cons",
+            "pricing_lines",
+            "alternatives",
+        ]
+
+    def get_pros(self, obj):
+        return _lines(obj.pros)
+
+    def get_cons(self, obj):
+        return _lines(obj.cons)
+
+    def get_pricing_lines(self, obj):
+        return _lines(obj.pricing_info)
+
+    def get_alternatives(self, obj):
+        qs = obj.alternatives.filter(status="PUBLISHED", type="TOOL_LISTING").select_related(
+            "category"
+        )
+        return AlternativeSerializer(qs, many=True).data
