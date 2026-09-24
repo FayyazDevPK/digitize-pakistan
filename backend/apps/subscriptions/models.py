@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from apps.kyc.validators import receipt_upload_path, validate_receipt_file
+
 
 class SubscriptionRequest(models.Model):
     METHOD_CHOICES = [
@@ -19,6 +21,10 @@ class SubscriptionRequest(models.Model):
     method = models.CharField(max_length=20, choices=METHOD_CHOICES)
     transaction_ref = models.CharField(max_length=100)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    iban = models.CharField(max_length=34, blank=True)
+    receipt_file = models.ImageField(
+        upload_to=receipt_upload_path, blank=True, validators=[validate_receipt_file]
+    )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
     requested_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)

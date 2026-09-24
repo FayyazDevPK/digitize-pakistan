@@ -1,6 +1,9 @@
 from datetime import timedelta
 
 from django.contrib import admin
+from django.http import FileResponse, Http404
+from django.urls import path, reverse
+from django.utils.html import format_html
 from django.utils import timezone
 
 from apps.notifications.services import notify
@@ -52,6 +55,33 @@ def reject_subscription(modeladmin, request, queryset):
 
 @admin.register(SubscriptionRequest)
 class SubscriptionRequestAdmin(admin.ModelAdmin):
-    list_display = ("user", "method", "amount_paid", "status", "requested_at", "reviewer")
+    list_display = ("user", "method", "amount_paid", "iban", "status", "requested_at", "reviewer")
     list_filter = ("status", "method")
     actions = [approve_subscription, reject_subscription]
+    readonly_fields = ("receipt_link",)
+
+    def get_urls(self):
+        custom = [
+            path(
+                "<int:pk>/receipt/",
+                self.admin_site.admin_view(self.download_receipt),
+                name="subscriptions_subscriptionrequest_receipt",
+            )
+        ]
+        return custom + super().get_urls()
+
+    def download_receipt(self, request, pk):
+        # Staff-session gated; receipts are never publicly served.
+        if not self.has_view_permission(request):
+            raise Http404
+        obj = self.get_object(request, str(pk))
+        if obj is None or not obj.receipt_file:
+            raise Http404
+        return FileResponse(obj.receipt_file.open("rb"))
+
+    @admin.display(description="Receipt")
+    def receipt_link(self, obj):
+        if not obj.receipt_file:
+            return "—"
+        url = reverse("admin:subscriptions_subscriptionrequest_receipt", args=[obj.pk])
+        return format_html('<a href="{}" target="_blank">View receipt</a>', url)
