@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from .validators import kyc_upload_path, validate_document_file
+
 
 class KYCRecord(models.Model):
     STATUS_CHOICES = [
@@ -19,7 +21,10 @@ class KYCRecord(models.Model):
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
     document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPE_CHOICES)
-    document_ref_url = models.URLField()
+    document_ref_url = models.URLField(blank=True)
+    document_file = models.FileField(
+        upload_to=kyc_upload_path, blank=True, validators=[validate_document_file]
+    )
     submitted_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
     reviewed_by = models.ForeignKey(

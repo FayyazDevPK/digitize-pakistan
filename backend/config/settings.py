@@ -191,3 +191,9 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+# Uploaded KYC documents / payment receipts. Deliberately NOT served via MEDIA_URL:
+# files are only retrievable through staff-gated views. Production must use
+# access-controlled (private) storage, not a public bucket.
+MEDIA_ROOT = BASE_DIR / "private_media"
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024

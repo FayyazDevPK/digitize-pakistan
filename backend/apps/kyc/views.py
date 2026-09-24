@@ -1,3 +1,4 @@
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,6 +9,7 @@ from .serializers import KYCRecordSerializer
 
 class KYCSubmissionView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
         record = KYCRecord.objects.filter(user=request.user).order_by("-submitted_at").first()
