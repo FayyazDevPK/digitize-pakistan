@@ -5,6 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { apiFetch, login } from "@/lib/api-client";
 import { storeTokens, fetchCurrentUser } from "@/lib/auth";
+import PixelD from "@/components/PixelD";
+import PasswordStrength from "@/components/PasswordStrength";
+
+const STEPS = [
+  { n: "01", label: "Create your free account", pts: "+100 pts" },
+  { n: "02", label: "Read articles and finish learning paths", pts: "+20–500" },
+  { n: "03", label: "Verify your CNIC and withdraw", pts: "Rs 250 / 1k" },
+];
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -53,46 +61,74 @@ export default function RegisterPage() {
   if (checkingAuth) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-[500px] bg-paper-raised border border-border-strong rounded-[10px] overflow-hidden flex flex-col">
-        <div className="bg-ink px-7 py-[26px] flex flex-col gap-[9px]">
-          <svg width="30" height="30" viewBox="0 0 46 46">
-            <rect width="46" height="46" rx="9" fill="#FAF7F2" />
-            <rect x="11" y="13" width="4" height="20" fill="#12151C" />
-            <path d="M19 13h6a10 10 0 0 1 0 20h-6z" fill="none" stroke="#12151C" strokeWidth="4" />
-            <circle cx="33.5" cy="33.5" r="3.5" fill="#E0512B" />
-          </svg>
-          <div className="font-display text-[27px] text-paper leading-[1.15]">
-            Create your account
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+      <div className="hidden lg:flex bg-ink text-white flex-col justify-between p-16">
+        <Link href="/news" className="flex items-center gap-2.5">
+          <PixelD size={8} onDark />
+          <div className="flex items-baseline gap-1.5 leading-none">
+            <span className="font-extrabold text-xl">Digitize</span>
+            <span className="font-display italic text-2xl text-[#C9CFDC]">Pakistan</span>
           </div>
-          <span className="text-[13.5px] text-[#C9CCD2]">Free to read and earn. No card needed.</span>
+        </Link>
+        <div className="flex flex-col gap-7">
+          <h1 className="font-display text-6xl xl:text-7xl leading-[.95] m-0">
+            Read. Learn.
+            <br />
+            <span className="italic text-marigold">Get paid.</span>
+          </h1>
+          <div className="flex flex-col">
+            {STEPS.map((s, i) => (
+              <div
+                key={s.n}
+                className={`grid grid-cols-[40px_1fr_auto] gap-3 py-4 items-center border-t border-[#24304A] ${
+                  i === STEPS.length - 1 ? "border-b" : ""
+                }`}
+              >
+                <span className="font-mono text-xs text-[#6E7890]">{s.n}</span>
+                <span className="text-base">{s.label}</span>
+                <span
+                  className={`font-mono text-[13px] font-semibold ${
+                    i === 0 ? "text-marigold" : i === 1 ? "text-primary-light" : "text-white"
+                  }`}
+                >
+                  {s.pts}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
+        <span className="text-xs text-[#6E7890]">
+          © {new Date().getFullYear()} Digitize Online SMC (Private) Limited
+        </span>
+      </div>
 
-        <div className="px-7 pt-6 pb-7 flex flex-col gap-4">
-          <div className="flex bg-[#EDE9E1] rounded-[7px] p-[3px]">
-            <span className="flex-1 text-center text-[13.5px] font-semibold bg-white py-2 rounded-[5px] border border-border">
-              Register
+      <div className="flex items-center justify-center p-6 md:p-12">
+        <div className="w-full max-w-[440px] flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h2 className="font-display text-4xl md:text-[44px] m-0">Create your account</h2>
+            <span className="text-[15px] text-muted">
+              Already a member?{" "}
+              <Link href="/login" className="text-primary font-semibold">
+                Log in
+              </Link>
             </span>
-            <Link href="/login" className="flex-1 text-center text-[13.5px] text-muted py-2">
-              Log in
-            </Link>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">Username</span>
+              <span className="text-[13px] font-semibold">Username</span>
               <input
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
+                className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">Email</span>
+              <span className="text-[13px] font-semibold">Email</span>
               <input
                 type="email"
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
+                className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -100,26 +136,31 @@ export default function RegisterPage() {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">Password</span>
+              <span className="text-[13px] font-semibold">Password</span>
               <input
                 type="password"
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm outline-none focus:border-vermilion transition-colors"
+                className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 minLength={8}
                 required
+                autoComplete="new-password"
               />
+              <PasswordStrength password={password} />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[12.5px] font-semibold text-ink">
-                Referral code <span className="text-muted font-normal">(optional)</span>
+            <div className="flex flex-col gap-1.5 bg-white border border-dashed border-border-strong rounded-2xl p-3.5">
+              <span className="text-[13px] font-semibold">
+                Referral code <span className="font-normal text-[#8A8F9C]">— optional</span>
               </span>
               <input
-                className="bg-white border border-border-strong rounded-[7px] px-[13px] py-[11px] text-sm font-mono outline-none focus:border-vermilion transition-colors"
-                placeholder="DGP-XXXXXX"
+                className="h-11 border border-border-strong rounded-[10px] px-3 font-mono text-sm outline-none focus:border-primary"
+                placeholder="e.g. AYESHA-7K2"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
               />
+              <span className="text-xs text-muted">
+                Got a code from a friend? You both earn +100 pts once you&apos;re active.
+              </span>
             </div>
 
             {error && <p className="text-alert text-sm">{error}</p>}
@@ -127,25 +168,22 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="bg-vermilion text-white text-sm font-semibold py-[13px] rounded-[7px] text-center hover:bg-vermilion-deep transition-colors disabled:opacity-60"
+              className="h-[50px] bg-primary text-white font-semibold text-base rounded-xl disabled:opacity-60"
             >
-              {submitting ? "Creating account…" : "Create account"}
+              {submitting ? "Creating account…" : "Create account & claim 100 pts"}
             </button>
           </form>
 
-          <div className="flex items-center gap-2.5">
-            <div className="flex-1 h-px bg-border" />
-            <span className="font-mono text-[10.5px] text-[#8A8F9B]">OR</span>
-            <div className="flex-1 h-px bg-border" />
-          </div>
-
-          <span className="border border-border-strong bg-white text-[13.5px] font-medium py-3 rounded-[7px] text-center">
-            Continue with Google
-          </span>
-
-          <span className="text-[11.5px] text-muted leading-[1.55] text-center">
-            Withdrawals require CNIC verification under SBP rules. You can read and earn before
-            verifying.
+          <span className="text-xs text-[#8A8F9C] leading-[1.5]">
+            By continuing you agree to our{" "}
+            <Link href="/terms" className="text-primary font-medium">
+              Terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="text-primary font-medium">
+              Privacy Policy
+            </Link>
+            .
           </span>
         </div>
       </div>
