@@ -20,7 +20,6 @@ class UserAdmin(BaseUserAdmin):
                     "avatar_url",
                     "phone",
                     "city",
-                    "language",
                     "email_digests",
                 )
             },

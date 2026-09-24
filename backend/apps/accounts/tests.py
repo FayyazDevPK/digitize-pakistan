@@ -26,13 +26,13 @@ class TestSettingsProfile:
         user, c = self._client()
         res = c.patch(
             "/api/me/",
-            {"phone": "+92 300 123-4471", "city": "Karachi", "language": "UR",
+            {"phone": "+92 300 123-4471", "city": "Karachi", 
              "email_digests": False, "tier": "PREMIUM", "date_joined": "2000-01-01T00:00:00Z"},
             format="json",
         )
         assert res.status_code == 200
         user.refresh_from_db()
-        assert (user.phone, user.city, user.language, user.email_digests) == ("+923001234471", "Karachi", "UR", False)
+        assert (user.phone, user.city, user.email_digests) == ("+923001234471", "Karachi", False)
         assert user.tier == "FREE"
         assert user.date_joined.year != 2000
 

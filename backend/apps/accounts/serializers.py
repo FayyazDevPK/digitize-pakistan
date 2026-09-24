@@ -36,7 +36,6 @@ class UserSerializer(serializers.ModelSerializer):
             "has_avatar",
             "phone",
             "city",
-            "language",
             "email_digests",
             "date_joined",
             "password_changed_at",

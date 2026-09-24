@@ -14,7 +14,6 @@ class User(AbstractUser):
             "Peshawar", "Quetta", "Hyderabad", "Sialkot", "Other",
         )
     ]
-    LANGUAGE_CHOICES = [("EN", "English"), ("UR", "اردو")]
     ROLE_CHOICES = [
         ("USER", "User"),
         ("CREATOR", "Creator"),
@@ -47,7 +46,6 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to=avatar_upload_path, blank=True, validators=[validate_image_file])
     phone = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=30, choices=CITY_CHOICES, blank=True)
-    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default="EN")
     email_digests = models.BooleanField(default=True)
     password_changed_at = models.DateTimeField(null=True, blank=True)
 

@@ -192,3 +192,23 @@ class TestRequestWithdrawal:
         assert withdrawal.amount_rs == Decimal("2000.00")
         assert withdrawal.status == "REQUESTED"
         assert get_balance(premium_kyc_user) == Decimal("2000")
+
+
+class TestPayoutPolicyConstants:
+    """The public /payout-policy page renders frontend/src/lib/payout.ts; keep it in sync."""
+
+    def test_frontend_payout_constants_match_backend(self):
+        import re
+        from pathlib import Path
+
+        from django.conf import settings
+
+        from apps.rewards.services import MIN_WITHDRAWAL_RS, POINTS_TO_RS
+
+        src = (Path(settings.BASE_DIR).parent / "frontend/src/lib/payout.ts").read_text()
+        num = lambda name: Decimal(re.search(rf"{name} = ([\d_.]+);", src).group(1).replace("_", ""))
+
+        assert num("RS_PER_UNIT") / num("POINTS_PER_UNIT") == POINTS_TO_RS
+        assert num("MIN_WITHDRAWAL_RS") == MIN_WITHDRAWAL_RS
+        rate = settings.REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["withdrawal"]
+        assert rate == f"{num('WITHDRAWAL_REQUESTS_PER_HOUR')}/hour"
