@@ -100,3 +100,23 @@ class TestContentListFilterSort:
         Category.objects.create(name="Empty", slug="empty")
         res = APIClient().get("/api/content/categories/?type=TOOL_LISTING")
         assert [c["slug"] for c in res.data] == ["voice"]
+
+
+@pytest.mark.django_db
+class TestAuthorByline:
+    def test_author_name_uses_display_name_then_username_and_leaks_nothing_else(self):
+        from rest_framework.test import APIClient
+
+        from apps.content.models import Category, Content
+
+        a = User.objects.create_user(username="hq", password="x", email="private@x.com", display_name="Hamza Qureshi")
+        b = User.objects.create_user(username="plain", password="x", email="p2@x.com")
+        cat = Category.objects.create(name="N", slug="n")
+        for slug, author in (("s1", a), ("s2", b)):
+            Content.objects.create(author=author, type="NEWS", title=slug, slug=slug, body="b",
+                                   category=cat, status="PUBLISHED")
+        c = APIClient()
+        assert c.get("/api/content/s1/").data["author_name"] == "Hamza Qureshi"
+        assert c.get("/api/content/s2/").data["author_name"] == "plain"
+        assert {x["author_name"] for x in c.get("/api/content/").data} == {"Hamza Qureshi", "plain"}
+        assert "private@x.com" not in str(c.get("/api/content/s1/").data)

@@ -10,6 +10,7 @@ export interface ContentItem {
   visibility: string;
   published_at: string | null;
   view_count: number;
+  author_name: string;
 }
 
 export type ContentSort = "newest" | "alphabetical" | "popular";

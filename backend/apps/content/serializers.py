@@ -11,6 +11,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ContentListSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    author_name = serializers.SerializerMethodField()
+
+    def get_author_name(self, obj):
+        # Public byline: display name only, falling back to the public username.
+        return obj.author.display_name or obj.author.username
 
     class Meta:
         model = Content
@@ -26,6 +31,7 @@ class ContentListSerializer(serializers.ModelSerializer):
             "visibility",
             "published_at",
             "view_count",
+            "author_name",
         ]
 
 

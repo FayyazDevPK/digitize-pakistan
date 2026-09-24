@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
+import ReadingProgress from "@/components/ReadingProgress";
 import BackLink from "@/components/BackLink";
 import { ContentItem } from "@/lib/content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
@@ -11,9 +12,12 @@ interface ContentDetail extends ContentItem {
   body: string;
 }
 
-async function getContent(slug: string): Promise<ContentDetail | null> {
+// countView=false for SEO metadata fetches so one page view increments view_count once.
+async function getContent(slug: string, countView = true): Promise<ContentDetail | null> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${API_URL}/api/content/${slug}/`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/api/content/${slug}/${countView ? "" : "?count=0"}`, {
+    cache: "no-store",
+  });
   if (!res.ok) return null;
   return res.json();
 }
@@ -24,7 +28,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getContent(slug);
+  const article = await getContent(slug, false);
   if (!article) return {};
 
   const title = `${article.title} — Digitize Pakistan`;
@@ -57,14 +61,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     description: article.excerpt,
     ...(article.published_at ? { datePublished: article.published_at } : {}),
     ...(article.cover_image_url ? { image: [article.cover_image_url] } : {}),
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Digitize Online SMC (Private) Limited",
-    },
+    author: { "@type": "Organization", name: SITE_NAME },
+    publisher: { "@type": "Organization", name: "Digitize Online SMC (Private) Limited" },
     mainEntityOfPage: `${SITE_URL}/news/${article.slug}`,
   };
 
@@ -76,35 +74,50 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       />
       <PublicHeader active="News" />
 
-      <div className="max-w-[1280px] mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-8">
-        <div className="flex flex-col gap-[18px] min-w-0">
+      <ReadingProgress targetId="article-body" />
+
+      <div className="max-w-[1360px] mx-auto px-4 md:px-12 py-8 md:py-12 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-10 md:gap-16">
+        <article id="article-body" className="flex flex-col gap-6 max-w-[780px] lg:ml-10 min-w-0">
           <BackLink label="News" />
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold tracking-[.14em] text-vermilion-deep">
-              {article.category?.name?.toUpperCase() ?? "NEWS"}
-            </span>
-            {article.published_at && (
-              <span className="font-mono text-[10.5px] text-muted">
-                {new Date(article.published_at)
-                  .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
-                  .toUpperCase()}
-              </span>
-            )}
+          <div className="flex gap-2 font-mono text-[11px] tracking-[.1em] text-muted">
+            <span>NEWS</span>
+            <span>/</span>
+            <span className="text-primary">{article.category?.name?.toUpperCase() ?? "GENERAL"}</span>
           </div>
-          <h1 className="font-display text-3xl md:text-[46px] leading-[1.06]">{article.title}</h1>
+          <h1 className="font-display text-4xl md:text-6xl leading-[1.02] m-0">{article.title}</h1>
           {article.excerpt && (
-            <p className="font-display italic text-lg md:text-xl leading-[1.45] text-graphite">
-              {article.excerpt}
-            </p>
+            <p className="text-xl leading-[1.5] text-graphite m-0">{article.excerpt}</p>
           )}
 
-          <div className="h-[180px] md:h-[280px] bg-[#E7E2D9] rounded-lg flex items-center justify-center font-mono text-[11px] tracking-[.14em] text-[#8A8F9B]">
-            ARTICLE IMAGE
+          <div className="flex items-center gap-3 py-4 border-y border-border text-sm text-muted flex-wrap">
+            <span className="w-9 h-9 rounded-full bg-border-strong shrink-0" />
+            <div className="flex flex-col gap-0.5">
+              <span className="text-ink font-semibold">{article.author_name}</span>
+              <span className="text-xs">
+                {article.published_at &&
+                  new Date(article.published_at).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+              </span>
+            </div>
+            <span className="flex-1" />
+            <span className="border border-border-strong rounded-[9px] px-3 py-2 text-xs font-semibold text-ink">
+              Share
+            </span>
+            <span className="border border-border-strong rounded-[9px] px-3 py-2 text-xs font-semibold text-ink">
+              Save
+            </span>
           </div>
 
-          <div
-            className="text-[16px] md:text-[17px] leading-[1.68] text-graphite flex flex-col gap-4 whitespace-pre-wrap"
-          >
+          <div className="aspect-video rounded-[18px] bg-[repeating-linear-gradient(135deg,#E6E5DE_0,#E6E5DE_12px,#EDECE6_12px,#EDECE6_24px)] flex items-end p-4">
+            <span className="font-mono text-[11px] text-muted bg-white px-2.5 py-1.5 rounded-md">
+              article image · 16:9
+            </span>
+          </div>
+
+          <div className="text-lg leading-[1.75] text-graphite flex flex-col gap-5 whitespace-pre-wrap">
             {article.body}
           </div>
 
@@ -120,22 +133,34 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               ))}
             </div>
           )}
-        </div>
+        </article>
 
-        <div className="flex flex-col gap-[18px]">
-          <div className="bg-white border border-border rounded-[10px] p-[18px] flex flex-col gap-2.5">
-            <span className="font-mono text-[10.5px] font-semibold tracking-[.16em]">CATEGORY</span>
-            <span className="text-[13.5px] font-medium">{article.category?.name}</span>
-          </div>
-          <div className="bg-ink rounded-[10px] p-5 flex flex-col gap-1.5">
-            <span className="font-mono text-[10.5px] tracking-[.14em] text-[#FF7A52]">
-              READ TO EARN
+        <aside className="flex flex-col gap-4 pt-11">
+          <div className="bg-ink text-white rounded-[20px] p-6 flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+              <span className="font-mono text-[11px] tracking-[.12em] text-primary-light">
+                READ TO EARN
+              </span>
+              <span className="font-mono text-[11px] font-semibold bg-marigold text-ink px-[7px] py-[5px] rounded-md">
+                +40 PTS
+              </span>
+            </div>
+            <span className="font-display text-2xl leading-[1.1]">
+              Keep reading to credit this article.
             </span>
-            <span className="text-[14px] text-[#E6E8EC]">
-              Log in and finish this article to credit points to your balance.
-            </span>
+            <div className="bg-ink-raised border border-[#24304A] rounded-xl p-3 text-xs leading-[1.5] text-[#C9CFDC]">
+              Not signed in?{" "}
+              <a href="/register" className="text-white font-semibold border-b border-primary-light">
+                Create a free account
+              </a>{" "}
+              and this read counts.
+            </div>
           </div>
-        </div>
+          <div className="bg-white border border-border rounded-[20px] p-5 flex flex-col gap-2.5">
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">CATEGORY</span>
+            <span className="text-sm font-semibold">{article.category?.name}</span>
+          </div>
+        </aside>
       </div>
       <PublicFooter />
     </div>

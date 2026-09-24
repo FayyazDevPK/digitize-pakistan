@@ -21,7 +21,7 @@ class ContentListView(ListAPIView):
 
     def get_queryset(self):
         params = self.request.query_params
-        qs = Content.objects.filter(status="PUBLISHED").select_related("category")
+        qs = Content.objects.filter(status="PUBLISHED").select_related("category", "author")
         content_type = params.get("type")
         if content_type:
             qs = qs.filter(type=content_type.upper())
@@ -52,7 +52,7 @@ class ContentDetailView(RetrieveAPIView):
     serializer_class = ContentDetailSerializer
     permission_classes = [AllowAny]
     lookup_field = "slug"
-    queryset = Content.objects.filter(status="PUBLISHED")
+    queryset = Content.objects.filter(status="PUBLISHED").select_related("category", "author")
 
     def get_object(self):
         obj = super().get_object()

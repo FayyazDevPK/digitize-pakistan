@@ -38,21 +38,30 @@ async function getAd(placement: string): Promise<AdSlotData | null> {
   const res = await fetch(`${API_URL}/api/ads/?placement=${placement}`, { cache: "no-store" });
   if (!res.ok) return null;
   const data = await res.json();
-  // Only DIRECT slots with an image + link render as a "Sponsored" block —
-  // ADSENSE slots need the AdSense script, which isn't wired up yet.
   const slot = (data as AdSlotData[]).find((s) => s.image_url && s.target_url);
   return slot ?? null;
 }
 
 export default async function NewsPage() {
-  const [items, tools, ad, sidebarAd] = await Promise.all([
+  const dateLabel = new Date()
+    .toLocaleDateString("en-GB", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    })
+    .toUpperCase();
+
+  const [items, mostRead, tools, ad, sidebarAd] = await Promise.all([
     getContentList("NEWS"),
+    getContentList("NEWS", { sort: "popular" }),
     getContentList("TOOL_LISTING"),
     getAd("ARTICLE_INLINE"),
     getAd("SIDEBAR"),
   ]);
 
   const [lead, ...rest] = items;
+  const topRead = mostRead.filter((m) => m.view_count > 0).slice(0, 5);
 
   const organizationJsonLd = {
     "@context": "https://schema.org",
@@ -71,59 +80,157 @@ export default async function NewsPage() {
       />
       <PublicHeader active="News" />
 
-      <div className="max-w-[1280px] mx-auto p-4 md:p-7 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-7">
-        <div className="flex flex-col gap-[22px] min-w-0">
+      <div className="max-w-[1360px] mx-auto px-4 md:px-12 pt-8 md:pt-10 pb-16 md:pb-[72px] flex flex-col gap-8 md:gap-10">
+        <div className="flex items-end justify-between gap-4 flex-wrap border-b-2 border-ink pb-4 md:pb-[18px]">
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">
+              {dateLabel}
+            </span>
+            <h1 className="font-display text-4xl md:text-[56px] leading-none m-0">Today in AI</h1>
+          </div>
+          <div className="hidden md:flex gap-2 text-[13px] font-medium">
+            <span className="bg-ink text-white px-3.5 py-2 rounded-full">All</span>
+            <span className="border border-border-strong px-3 py-[7px] rounded-full">Policy</span>
+            <span className="border border-border-strong px-3 py-[7px] rounded-full">
+              Research
+            </span>
+            <span className="border border-border-strong px-3 py-[7px] rounded-full">
+              Products
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 md:gap-10">
           {lead && (
-            <article className="bg-white border border-border rounded-[10px] overflow-hidden">
-              <div className="h-[160px] md:h-[210px] bg-[#E7E2D9] flex items-center justify-center font-mono text-[11px] tracking-[.14em] text-[#8A8F9B] border-b border-border">
-                LEAD IMAGE 16:9
-              </div>
-              <div className="px-5 md:px-6 pt-[22px] pb-6 flex flex-col gap-2.5">
-                <div className="flex items-center gap-2.5">
-                  <span className="font-mono text-[10.5px] font-semibold tracking-[.14em] text-vermilion-deep">
-                    {lead.category?.name?.toUpperCase() ?? "NEWS"}
-                  </span>
-                  {lead.view_count > 0 && (
-                    <span className="font-mono text-[10.5px] text-muted">
-                      {lead.view_count.toLocaleString()} VIEWS
+            <article className="flex flex-col gap-5">
+              <Link
+                href={`/news/${lead.slug}`}
+                className="aspect-video rounded-[18px] bg-[repeating-linear-gradient(135deg,#E6E5DE_0,#E6E5DE_12px,#EDECE6_12px,#EDECE6_24px)] flex items-end p-4"
+              >
+                <span className="font-mono text-[11px] text-muted bg-white px-2.5 py-1.5 rounded-md">
+                  lead image · 16:9
+                </span>
+              </Link>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="font-mono text-[11px] font-semibold tracking-[.1em] text-primary">
+                  {lead.category?.name?.toUpperCase() ?? "NEWS"}
+                </span>
+                {lead.view_count > 0 && (
+                  <>
+                    <span className="text-border-strong">·</span>
+                    <span className="text-[13px] text-muted">
+                      {lead.view_count.toLocaleString()} views
                     </span>
-                  )}
-                </div>
-                <Link href={`/news/${lead.slug}`}>
-                  <h1 className="font-display text-2xl md:text-4xl leading-[1.08] hover:text-vermilion-deep transition-colors">
-                    {lead.title}
-                  </h1>
-                </Link>
-                <p className="text-[15px] leading-[1.6] text-graphite">{lead.excerpt}</p>
+                  </>
+                )}
+                <span className="flex-1" />
+                <span className="font-mono text-[11px] font-semibold bg-premium-bg text-premium px-2.5 py-[6px] rounded-md">
+                  READ TO EARN
+                </span>
               </div>
+              <Link href={`/news/${lead.slug}`}>
+                <h2 className="font-display text-3xl md:text-5xl leading-[1.02] m-0">
+                  {lead.title}
+                </h2>
+              </Link>
+              <p className="text-lg leading-[1.55] text-graphite max-w-[760px] m-0">
+                {lead.excerpt}
+              </p>
+              <span className="text-sm text-muted">
+                By <span className="text-ink font-semibold">{lead.author_name}</span>
+              </span>
             </article>
           )}
 
-          <div className="flex flex-col">
-            <div className="flex items-center justify-between border-b-2 border-ink pb-2 mb-1">
-              <span className="font-mono text-[11px] font-semibold tracking-[.16em]">LATEST</span>
-              <Link href="/news" className="text-[12.5px] text-vermilion-deep font-medium">
-                All news →
-              </Link>
+          <aside className="flex flex-col gap-5">
+            <ReadToEarnCard />
+
+            <div className="bg-white border border-border rounded-[20px] p-6 flex flex-col gap-3.5">
+              <div className="flex justify-between items-baseline">
+                <h3 className="font-display text-2xl m-0">AI Tool Directory</h3>
+                <Link href="/tools" className="text-sm font-semibold text-primary">
+                  Browse →
+                </Link>
+              </div>
+              {tools.length === 0 && <p className="text-sm text-muted">No tools listed yet.</p>}
+              {tools.slice(0, 4).map((tool) => (
+                <Link
+                  key={tool.id}
+                  href={`/tools/${tool.slug}`}
+                  className="flex items-center gap-3 py-2.5 border-t border-[#EFEEE8]"
+                >
+                  <div className="w-[38px] h-[38px] rounded-[10px] bg-[#E7E2D9] shrink-0" />
+                  <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+                    <span className="text-sm font-semibold truncate">{tool.title}</span>
+                    <span className="text-xs text-muted truncate">{tool.excerpt}</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-muted border border-border rounded-md px-[7px] py-[5px] shrink-0">
+                    {tool.visibility === "PREMIUM_ONLY" ? "PAID" : "FREE"}
+                  </span>
+                </Link>
+              ))}
             </div>
-            {rest.length === 0 && lead === undefined && (
+
+            {sidebarAd && (
+              <a
+                href={sidebarAd.target_url}
+                target="_blank"
+                rel="noopener sponsored"
+                className="block bg-white border border-border rounded-[20px] p-5"
+              >
+                <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
+                {sidebarAd.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={sidebarAd.image_url}
+                    alt={sidebarAd.advertiser_name}
+                    className="w-full rounded-sm border border-border"
+                  />
+                )}
+                <div className="text-xs text-muted mt-1">{sidebarAd.advertiser_name}</div>
+              </a>
+            )}
+          </aside>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 md:gap-10">
+          <div className="flex flex-col">
+            <div className="flex justify-between items-baseline pb-3 border-b border-ink">
+              <h3 className="font-display text-2xl md:text-[32px] m-0">Latest</h3>
+              <span className="font-mono text-[11px] text-muted hidden sm:inline">
+                {rest.length} more
+              </span>
+            </div>
+            {rest.length === 0 && !lead && (
               <p className="font-mono text-sm text-muted py-6">No news yet.</p>
             )}
             {rest.map((item, index) => (
               <div key={item.id}>
                 <Link
                   href={`/news/${item.slug}`}
-                  className="flex gap-4 py-4 border-b border-border"
+                  className="grid grid-cols-[70px_minmax(0,1fr)] sm:grid-cols-[90px_minmax(0,1fr)_140px] gap-4 md:gap-6 py-5 border-b border-border items-start"
                 >
-                  <div className="w-[90px] md:w-[120px] h-[64px] md:h-[78px] bg-[#E7E2D9] rounded-md shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <span className="font-mono text-[10px] font-semibold tracking-[.14em] text-vermilion-deep">
+                  <span className="font-mono text-xs text-muted">
+                    {item.published_at
+                      ? new Date(item.published_at).toLocaleTimeString("en-GB", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : ""}
+                  </span>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="font-mono text-[11px] font-semibold tracking-[.1em] text-primary">
                       {item.category?.name?.toUpperCase() ?? "NEWS"}
                     </span>
-                    <span className="font-display text-lg md:text-xl leading-[1.15]">
+                    <span className="font-display text-xl md:text-[26px] leading-[1.1]">
                       {item.title}
                     </span>
+                    <span className="text-sm text-muted leading-[1.4] hidden sm:block">
+                      {item.excerpt}
+                    </span>
+                    <span className="text-xs text-muted">By {item.author_name}</span>
                   </div>
+                  <div className="hidden sm:block w-[140px] aspect-[4/3] rounded-xl bg-[repeating-linear-gradient(135deg,#E6E5DE_0,#E6E5DE_10px,#EDECE6_10px,#EDECE6_20px)]" />
                 </Link>
                 {index === 0 && ad && (
                   <a
@@ -132,7 +239,9 @@ export default async function NewsPage() {
                     rel="noopener sponsored"
                     className="block py-4 border-b border-border"
                   >
-                    <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
+                    <div className="font-mono text-[10px] uppercase text-muted mb-2">
+                      Sponsored
+                    </div>
                     {ad.image_url && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -147,68 +256,27 @@ export default async function NewsPage() {
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="flex flex-col gap-5">
-          <ReadToEarnCard />
-
-          <div className="bg-white border border-border rounded-[10px] overflow-hidden">
-            <div className="px-[18px] py-3.5 border-b border-border flex items-center justify-between">
-              <span className="font-mono text-[11px] font-semibold tracking-[.16em]">
-                TOOL DIRECTORY
-              </span>
-              <Link href="/tools" className="text-[12.5px] text-vermilion-deep font-medium">
-                Browse all →
-              </Link>
-            </div>
-            {tools.length === 0 && (
-              <p className="text-sm text-muted px-[18px] py-4">No tools listed yet.</p>
-            )}
-            {tools.slice(0, 3).map((tool, i) => (
-              <Link
-                key={tool.id}
-                href={`/tools/${tool.slug}`}
-                className={`flex items-center gap-3 px-[18px] py-3.5 ${
-                  i < Math.min(tools.length, 3) - 1 ? "border-b border-[#F0EDE7]" : ""
-                }`}
-              >
-                <div className="w-[34px] h-[34px] rounded-lg bg-[#E7E2D9] shrink-0" />
-                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                  <span className="text-sm font-semibold truncate">{tool.title}</span>
-                  <span className="text-xs text-muted truncate">{tool.excerpt}</span>
-                </div>
-                <span
-                  className={`text-[10px] font-semibold tracking-[.06em] px-[7px] py-[3px] rounded shrink-0 ${
-                    tool.visibility === "PREMIUM_ONLY"
-                      ? "bg-premium text-white"
-                      : "border border-[#9AA0AC] text-[#4E5463]"
-                  }`}
-                >
-                  {tool.visibility === "PREMIUM_ONLY" ? "★ PREMIUM" : "FREE"}
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          {sidebarAd && (
-            <a
-              href={sidebarAd.target_url}
-              target="_blank"
-              rel="noopener sponsored"
-              className="block bg-white border border-border rounded-[10px] p-[18px]"
-            >
-              <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
-              {sidebarAd.image_url && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={sidebarAd.image_url}
-                  alt={sidebarAd.advertiser_name}
-                  className="w-full rounded-sm border border-border"
-                />
+          <div className="flex flex-col gap-4">
+            <div className="bg-white border border-border rounded-[20px] p-6 flex flex-col gap-3">
+              <span className="font-mono text-[11px] tracking-[.12em] text-muted">MOST READ</span>
+              {topRead.length === 0 && (
+                <p className="text-sm text-muted m-0">
+                  The most-read stories appear here once readers open them.
+                </p>
               )}
-              <div className="text-xs text-muted mt-1">{sidebarAd.advertiser_name}</div>
-            </a>
-          )}
+              {topRead.map((m, i) => (
+                <Link
+                  key={m.id}
+                  href={`/news/${m.slug}`}
+                  className="grid grid-cols-[32px_1fr] gap-2.5 py-2.5 border-t border-[#EFEEE8]"
+                >
+                  <span className="font-display text-[30px] leading-none text-primary">{i + 1}</span>
+                  <span className="text-[15px] font-medium leading-[1.35]">{m.title}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <PublicFooter />
