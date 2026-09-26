@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiFetch, login } from "@/lib/api-client";
+import { apiFetch, apiErrorMessage, login } from "@/lib/api-client";
 import { storeTokens, fetchCurrentUser } from "@/lib/auth";
 import PixelD from "@/components/PixelD";
 import PasswordStrength from "@/components/PasswordStrength";
@@ -52,7 +52,7 @@ export default function RegisterPage() {
       storeTokens(data.access, data.refresh);
       router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      setError(apiErrorMessage(err, "Registration failed."));
     } finally {
       setSubmitting(false);
     }

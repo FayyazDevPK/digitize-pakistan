@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api-client";
+import { ApiError, login } from "@/lib/api-client";
 import { storeTokens, fetchCurrentUser } from "@/lib/auth";
 import PixelD from "@/components/PixelD";
 
@@ -34,7 +34,13 @@ export default function LoginPage() {
       storeTokens(data.access, data.refresh);
       router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(
+        err instanceof ApiError && err.status === 401
+          ? "Incorrect username or password."
+          : err instanceof ApiError && err.status === 429
+            ? "Too many attempts. Please try again in a minute."
+            : "Login failed. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -98,7 +104,12 @@ export default function LoginPage() {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[13px] font-semibold">Password</span>
+              <div className="flex justify-between items-baseline">
+                <span className="text-[13px] font-semibold">Password</span>
+                <Link href="/forgot-password" className="text-xs font-semibold text-primary">
+                  Forgot password?
+                </Link>
+              </div>
               <input
                 type="password"
                 className="h-12 bg-white border border-border-strong rounded-[11px] px-3.5 text-[15px] outline-none focus:border-primary focus:ring-4 focus:ring-mint transition-shadow"

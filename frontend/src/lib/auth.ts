@@ -108,6 +108,7 @@ export interface CurrentUser {
   phone: string;
   city: string;
   email_digests: boolean;
+  email_verified: boolean;
   date_joined: string;
   password_changed_at: string | null;
 }

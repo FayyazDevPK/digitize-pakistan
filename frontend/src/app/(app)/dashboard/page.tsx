@@ -24,7 +24,12 @@ interface BalanceData {
 
 interface ReferralsData {
   referral_code: string;
-  referrals: { id: number; referred_username: string; status: string; created_at: string }[];
+  referrals: {
+    id: number;
+    referred_username: string;
+    status: string;
+    created_at: string;
+  }[];
 }
 
 interface LearningPathSummary {
@@ -44,6 +49,12 @@ export default function DashboardPage() {
   const [paths, setPaths] = useState<LearningPathSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [resend, setResend] = useState<{
+    state: "idle" | "sending" | "sent" | "error";
+    msg?: string;
+  }>({
+    state: "idle",
+  });
 
   useEffect(() => {
     fetchCurrentUser().then(async (u) => {
@@ -64,6 +75,23 @@ export default function DashboardPage() {
     });
   }, [router]);
 
+  async function resendVerification() {
+    setResend({ state: "sending" });
+    const res = await authFetch("/api/verify-email/resend/", {
+      method: "POST",
+    });
+    if (res.ok) {
+      setResend({ state: "sent" });
+    } else if (res.status === 429) {
+      setResend({
+        state: "error",
+        msg: "Too many requests — try again in an hour.",
+      });
+    } else {
+      setResend({ state: "error", msg: "Couldn't send. Please try again." });
+    }
+  }
+
   function copyReferral() {
     if (!referrals) return;
     navigator.clipboard.writeText(referrals.referral_code);
@@ -71,11 +99,14 @@ export default function DashboardPage() {
     setTimeout(() => setCopied(false), 1500);
   }
 
-  if (loading) return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
+  if (loading)
+    return <p className="p-10 font-mono text-sm text-muted">Loading...</p>;
   if (!user) return null;
 
   const points = rewards ? Number(rewards.balance) : 0;
-  const rupees = Math.floor(points / 1000) * 250 + Math.round(((points % 1000) / 1000) * 250);
+  const rupees =
+    Math.floor(points / 1000) * 250 +
+    Math.round(((points % 1000) / 1000) * 250);
   const weekGain =
     rewards?.recent_entries
       .filter((e) => Number(e.amount) > 0)
@@ -90,6 +121,35 @@ export default function DashboardPage() {
       />
 
       <div className="flex-1 min-w-0 px-6 md:px-10 py-8 md:py-8 pb-24 md:pb-10 flex flex-col gap-6">
+        {!user.email_verified && (
+          <div className="bg-premium-bg border border-[#F2D68A] rounded-2xl px-5 py-4 flex items-center gap-4 flex-wrap">
+            <div className="flex-1 min-w-[220px] flex flex-col gap-0.5">
+              <span className="text-sm font-semibold text-premium">
+                Verify your email
+              </span>
+              <span className="text-[13px] text-premium">
+                {resend.state === "sent"
+                  ? `Verification email sent to ${user.email}. Check your inbox.`
+                  : "Referral bonuses only count once your email is verified. We sent a link when you signed up."}
+              </span>
+              {resend.state === "error" && (
+                <span className="text-[13px] text-alert">{resend.msg}</span>
+              )}
+            </div>
+            {resend.state !== "sent" && (
+              <button
+                onClick={resendVerification}
+                disabled={resend.state === "sending"}
+                className="bg-ink text-white text-[13px] font-semibold px-4 py-2.5 rounded-[10px] disabled:opacity-60"
+              >
+                {resend.state === "sending"
+                  ? "Sending…"
+                  : "Resend verification email"}
+              </button>
+            )}
+          </div>
+        )}
+
         <div className="flex items-end gap-4 flex-wrap">
           <div className="flex flex-col gap-1 flex-1">
             <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
@@ -120,7 +180,9 @@ export default function DashboardPage() {
                 POINTS BALANCE
               </span>
               {user.kyc_status === "APPROVED" && (
-                <span className="text-xs text-primary-light">● KYC verified</span>
+                <span className="text-xs text-primary-light">
+                  ● KYC verified
+                </span>
               )}
             </div>
             <div className="flex items-baseline gap-2.5">
@@ -130,8 +192,11 @@ export default function DashboardPage() {
               <span className="text-[15px] text-muted-2">pts</span>
             </div>
             <span className="text-sm text-[#C9CFDC]">
-              ≈ <span className="font-mono text-white">Rs {rupees.toLocaleString()}</span> at Rs
-              250 / 1,000
+              ≈{" "}
+              <span className="font-mono text-white">
+                Rs {rupees.toLocaleString()}
+              </span>{" "}
+              at Rs 250 / 1,000
             </span>
             <div className="flex gap-2.5">
               <button
@@ -150,7 +215,9 @@ export default function DashboardPage() {
           </div>
 
           <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3.5">
-            <span className="font-mono text-[11px] tracking-[.12em] text-muted">THIS WEEK</span>
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">
+              THIS WEEK
+            </span>
             <div className="flex items-baseline gap-2">
               <span className="font-mono text-[34px] font-semibold">
                 +{weekGain.toLocaleString()}
@@ -163,7 +230,9 @@ export default function DashboardPage() {
           </div>
 
           <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-3.5">
-            <span className="font-mono text-[11px] tracking-[.12em] text-muted">REFERRALS</span>
+            <span className="font-mono text-[11px] tracking-[.12em] text-muted">
+              REFERRALS
+            </span>
             <div className="flex gap-4 items-baseline">
               <div>
                 <span className="font-mono text-[34px] font-semibold">
@@ -177,7 +246,9 @@ export default function DashboardPage() {
                 onClick={copyReferral}
                 className="mt-auto flex items-center justify-between border border-dashed border-iris bg-[#F4F4FD] rounded-[11px] px-3 py-2"
               >
-                <span className="font-mono text-sm font-semibold">{referrals.referral_code}</span>
+                <span className="font-mono text-sm font-semibold">
+                  {referrals.referral_code}
+                </span>
                 <span className="bg-iris text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg">
                   {copied ? "Copied" : "Copy link"}
                 </span>
@@ -197,7 +268,9 @@ export default function DashboardPage() {
                 All paths →
               </button>
             </div>
-            {paths.length === 0 && <p className="text-sm text-muted">No learning paths yet.</p>}
+            {paths.length === 0 && (
+              <p className="text-sm text-muted">No learning paths yet.</p>
+            )}
             {paths.map((p) => (
               <button
                 key={p.id}
@@ -221,7 +294,9 @@ export default function DashboardPage() {
                     style={{
                       width: `${
                         p.milestone_count > 0
-                          ? Math.round((p.completed_count / p.milestone_count) * 100)
+                          ? Math.round(
+                              (p.completed_count / p.milestone_count) * 100,
+                            )
                           : 0
                       }%`,
                     }}
@@ -234,7 +309,10 @@ export default function DashboardPage() {
           <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col">
             <div className="flex items-baseline justify-between mb-2">
               <h3 className="font-display text-2xl m-0">Recent activity</h3>
-              <button onClick={() => router.push("/rewards")} className="text-[13px] font-semibold">
+              <button
+                onClick={() => router.push("/rewards")}
+                className="text-[13px] font-semibold"
+              >
                 Full ledger →
               </button>
             </div>
