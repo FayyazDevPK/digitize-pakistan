@@ -1,0 +1,185 @@
+# Digitize Pakistan — Launch Cutover Runbook
+
+**Entity:** Digitize Online SMC (Private) Limited
+**Target VPS:** 162.35.160.133 (Ubuntu 24.04) — this is the **same server** currently hosting
+the old digitize.com.pk site.
+**Scope:** A fresh, from-scratch deployment of Digitize Pakistan onto this VPS, replacing the old
+digitize.com.pk site entirely. Per your explicit decision: no data, files, or backup from the
+old site carry forward — the old site is simply wiped, not migrated from or preserved. **No
+rollback mechanism exists for this decision** (see Section 5) — this is a deliberate, accepted
+trade-off, not an oversight.
+
+---
+
+## 1. Pre-cutover checklist (do all of this before wiping the VPS)
+
+### Database
+- [ ] Provision PostgreSQL on the VPS (or a managed instance). Development has been running on
+      SQLite throughout this build — SQLite is dev-only and must not be used in production.
+- [ ] Update `DATABASES` in `config/settings.py` (or an environment-based settings split) to
+      point at PostgreSQL. Install `psycopg` and add it to `requirements/base.txt`.
+- [ ] Run `python manage.py migrate` against the fresh production database.
+- [ ] Re-seed the `RewardRule` and initial `AdSlot` records that exist only as manual
+      `get_or_create` shell scripts in this build log — write these as a proper Django data
+      migration or management command so they aren't lost/forgotten. This was done ad hoc
+      during development and needs to become a real, repeatable step.
+- [ ] Create the real production superuser account (`createsuperuser`) — do not carry over the
+      dev `fayyazliaquat` test account or its password.
+- [ ] **Re-run the concurrency regression test** (`apps/rewards/tests.py::TestAwardPointsConcurrency`)
+      against PostgreSQL specifically. It was adjusted during development to tolerate a SQLite
+      single-writer limitation (`OperationalError: database table is locked`) — confirm that
+      limitation doesn't apply under PostgreSQL and that the test still passes cleanly. The same
+      applies to the withdrawal-balance row-lock fix (`select_for_update`), which also couldn't
+      be fully proven under SQLite.
+
+### Environment & secrets
+- [ ] Generate a fresh `SECRET_KEY` for production — never reuse the dev key.
+- [ ] Set `DEBUG = False`.
+- [ ] Set `ALLOWED_HOSTS` to `digitize.com.pk` (and any API subdomain — see the DNS section).
+- [ ] Move all secrets (DB credentials, `SECRET_KEY`, R2 credentials, email provider credentials,
+      any future payment/SMS provider keys) into environment variables or a `.env` file excluded
+      from git — confirm `.gitignore` already covers this (it does, per the original project
+      setup).
+- [ ] Set `CORS_ALLOWED_ORIGINS` to the real frontend domain only — remove `localhost:3000`.
+- [ ] Set `NEXT_PUBLIC_API_URL` (frontend) to the real API domain.
+- [ ] **Configure a real transactional email provider** (SendGrid, AWS SES, Mailgun, etc.) —
+      development uses Django's console email backend (prints to the terminal instead of
+      sending), which must be replaced before launch or email verification and password reset
+      will silently do nothing in production.
+
+### Backend services
+- [ ] Set up Gunicorn (or another WSGI server) behind Nginx, not `manage.py runserver` — the
+      dev server is not production-safe.
+- [ ] Run `python manage.py collectstatic`.
+- [ ] Set up Celery worker and Celery Beat as **systemd services** (not manually-run terminal
+      processes like in development) so they restart automatically on crash or reboot.
+- [ ] Confirm Redis is configured with persistence (AOF or RDB) appropriate for production, and
+      is not exposed publicly — bind to localhost or a private network only.
+- [ ] Point `CACHES` and Celery's broker URL at the production Redis instance.
+- [ ] Issue an SSL certificate (Let's Encrypt via Certbot, or your registrar/host's equivalent)
+      for the domain(s) in use. Enforce HTTPS.
+
+### Media storage
+- [ ] Set up the Cloudflare R2 bucket (per the original architecture decision) and configure
+      Django's media storage backend to use it, rather than local disk.
+
+### Frontend
+- [ ] Run a production build (`npm run build`) and confirm it completes cleanly.
+- [ ] Confirm environment variables are set correctly in whatever hosting the frontend
+      (Vercel, the same VPS via PM2/Nginx, etc.).
+
+### Monetization
+- [ ] Replace the placeholder AdSense publisher ID (`pub-0000000000000000`) in
+      `frontend/public/ads.txt` and any seeded `AdSlot` records with the real AdSense
+      publisher ID, once actually approved by Google AdSense — do not launch with placeholder
+      ad identifiers live.
+- [ ] Confirm the Privacy Policy, Terms of Service, and Payout Policy pages' content has had
+      real legal review — all three were written as reasonable, functionally-accurate
+      placeholders during development, not formal legal copy.
+
+### KYC & compliance
+- [ ] Confirm KYC document storage (CNIC front/back, selfie images) in production uses
+      **access-controlled storage with server-side encryption at rest enabled** (e.g. Cloudflare
+      R2's or S3's built-in encryption-at-rest option) — not a public bucket, and not left
+      unencrypted. The current dev implementation stores these files unencrypted in private,
+      staff-only-accessible storage; the app's own copy correctly says so rather than claiming
+      encryption that doesn't exist yet. This must actually be true — configured encryption at
+      rest — before launch, not just access-controlled.
+- [ ] Reconfirm the KYC-gated withdrawal flow's hard security boundary is intact after the
+      settings/database changes above — this is the platform's single most important security
+      control and should be spot-checked end-to-end one more time post-deploy.
+
+---
+
+## 2. VPS wipe (this IS the retirement of the old site — no separate step)
+
+Because `digitize.com.pk` and the new Digitize Pakistan deployment share the **same physical
+VPS**, and per your decision that no backup or data from the old site is needed, wiping this
+server clean is simultaneously the retirement of the old site and the preparation of the new
+one — there is no separate "decommission the old site later" phase the way there would be if
+they were on different infrastructure.
+
+- [ ] **Reprovision/reimage the VPS from a fresh Ubuntu 24.04 image** through your hosting
+      provider's control panel — this is the cleanest way to guarantee no leftover configuration
+      from the old site (old Nginx server blocks, old systemd services, old cron jobs, old
+      database installations) interferes with the new stack.
+- [ ] If a full reimage isn't practical, at minimum manually stop and remove the old site's web
+      server config, database service, and any systemd/cron jobs tied to the old codebase, and
+      confirm no old process is still listening on the ports the new stack needs (80/443, the
+      Django/Gunicorn port, PostgreSQL's port, Redis's port).
+- [ ] **No backup is being taken** (per your explicit decision) — once this step runs, the old
+      site and its data are gone. This is intentional, not a gap to fix.
+- [ ] Proceed with the pre-cutover checklist (Section 1) on this clean VPS.
+
+---
+
+## 3. DNS
+
+Because this is the same server, `digitize.com.pk`'s DNS most likely **already points at the
+correct IP** (162.35.160.133) — there is probably no A-record change needed at all, unlike a
+typical cutover to new infrastructure.
+
+- [ ] Confirm the existing A record for `digitize.com.pk` already resolves to 162.35.160.133 —
+      if so, no DNS change is needed for the root domain.
+- [ ] If the backend API will be served on a separate subdomain (e.g. `api.digitize.com.pk`)
+      rather than reverse-proxied under a path on the same domain (e.g. `digitize.com.pk/api/`),
+      add that subdomain's DNS record now, and make sure it's covered by the SSL certificate
+      issued in Section 1.
+- [ ] If for any reason DNS does need to change, lower the TTL a few days in advance so it
+      propagates quickly, and verify propagation with `dig` or an online checker before assuming
+      it's live everywhere.
+
+---
+
+## 4. Go-live smoke test
+
+Once the new deployment is live, manually walk through the critical paths **on production**, not
+just trusting that dev testing covers it:
+
+- [ ] Register a brand-new real account, confirm the welcome flow works and a real verification
+      email actually arrives (via the real production email provider, not the dev console
+      backend)
+- [ ] Log in, confirm the dashboard loads with real (empty, for a new account) data
+- [ ] Read an article, confirm points are awarded (check the dashboard ledger)
+- [ ] Submit a KYC document, confirm the submission is received
+- [ ] (As an admin) approve that KYC submission, confirm the user's status updates and they
+      receive a notification
+- [ ] Attempt a withdrawal below the KYC-approved threshold — confirm it's correctly blocked
+- [ ] Apply to the Creator Program as a Premium test account, confirm the flow works
+- [ ] Request a password reset for a real account, confirm the reset email arrives and the flow
+      actually works end-to-end in production
+- [ ] Confirm `/robots.txt` and `/sitemap.xml` are reachable and correct on the real domain
+- [ ] Confirm the consent banner and at least one ad placement render correctly
+- [ ] Check the Django admin is reachable and NOT publicly indexable (confirm `/admin/` isn't
+      in the sitemap, and consider IP-restricting it if the hosting setup allows)
+
+---
+
+## 5. Rollback — there isn't one
+
+Because you've chosen not to take a pre-wipe backup or snapshot, **there is no rollback path**
+if something goes seriously wrong after the VPS is wiped and the new site goes live. This is a
+deliberate, accepted trade-off, not an oversight — documenting it plainly here rather than
+leaving a rollback plan that wouldn't actually work (the classic "revert DNS to the old site's
+IP" approach doesn't apply, since the old site no longer exists once Section 2 runs on the same
+server it shared with the new one).
+
+Practical implication: **do not run Section 2 (the wipe) until everything in Section 1 has been
+fully prepared and tested as thoroughly as possible beforehand** — the margin for catching
+problems before they matter is entirely front-loaded into the pre-cutover checklist, since
+there's no "undo" once the wipe happens.
+
+---
+
+## 6. Post-launch monitoring (first week)
+
+- [ ] Watch Django/Gunicorn error logs and Celery worker logs daily for the first week.
+- [ ] Monitor the KYC-gated withdrawal path specifically — it's the platform's highest-stakes
+      code path and the one most worth watching closely with real users and real (if small)
+      money movement.
+- [ ] Check Redis memory usage and Celery queue length aren't growing unexpectedly.
+- [ ] Review the first batch of real KYC submissions and withdrawal requests manually before
+      fully trusting the admin approval workflow at scale.
+- [ ] Confirm the production email provider is actually delivering (check for bounces/spam-
+      folder issues) — email verification and password reset are only useful if the emails
+      reliably arrive.
