@@ -13,8 +13,10 @@ def evaluate_referral_qualifications():
     qualified_count = 0
 
     for ref in pending:
+        # Both required: a completed milestone (real activity) AND a verified email, so farming
+        # bonuses needs a working inbox per fake account, not just a username.
         has_activity = LearningPathProgress.objects.filter(user=ref.referred).exists()
-        if not has_activity:
+        if not has_activity or not ref.referred.email_verified:
             continue
 
         ref.status = "QUALIFIED"

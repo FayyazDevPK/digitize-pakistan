@@ -2,6 +2,7 @@ import secrets
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.functions import Lower
 
 from apps.kyc.validators import avatar_upload_path, validate_image_file
 
@@ -47,7 +48,16 @@ class User(AbstractUser):
     phone = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=30, choices=CITY_CHOICES, blank=True)
     email_digests = models.BooleanField(default=True)
+    email_verified = models.BooleanField(default=False)
     password_changed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta(AbstractUser.Meta):
+        constraints = [
+            # Case-insensitive uniqueness; blank emails (legacy/admin-created users) are exempt.
+            models.UniqueConstraint(
+                Lower("email"), condition=~models.Q(email=""), name="unique_user_email_ci"
+            ),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.referral_code:

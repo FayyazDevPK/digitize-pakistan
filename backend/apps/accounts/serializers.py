@@ -1,5 +1,6 @@
 import re
 
+from django.db import IntegrityError
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 from rest_framework import serializers
@@ -37,12 +38,14 @@ class UserSerializer(serializers.ModelSerializer):
             "phone",
             "city",
             "email_digests",
+            "email_verified",
             "date_joined",
             "password_changed_at",
             "referral_code",
         ]
         extra_kwargs = {"avatar": {"write_only": True, "required": False}}
         read_only_fields = [
+            "email_verified",
             "date_joined",
             "password_changed_at",
             "id",
@@ -58,12 +61,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(write_only=True, min_length=8)
     referral_code = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
     class Meta:
         model = User
         fields = ["username", "email", "password", "referral_code"]
+
+    def validate_email(self, value):
+        value = value.strip()
+        if User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError("An account with this email already exists.")
+        return value
 
     def create(self, validated_data):
         referral_code = validated_data.pop("referral_code", "")
@@ -78,7 +88,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             if referrer:
                 user.referred_by = referrer
 
-        user.save()
+        try:
+            user.save()
+        except IntegrityError:  # lost a race against a concurrent registration with the same email
+            raise serializers.ValidationError({"email": "An account with this email already exists."})
 
         if referrer:
             from apps.referrals.models import Referral
@@ -114,3 +127,16 @@ class DeactivateAccountSerializer(serializers.Serializer):
         if not self.context["request"].user.check_password(value):
             raise serializers.ValidationError("Incorrect password.")
         return value
+
+
+class UidTokenSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class PasswordResetConfirmSerializer(UidTokenSerializer):
+    new_password = serializers.CharField(write_only=True)

@@ -134,12 +134,27 @@ STATIC_URL = 'static/'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+#
+# Development default: the console backend prints each email (verification links, password
+# resets) to the `runserver` terminal instead of sending it.
+# PRODUCTION MUST configure a real transactional email service (SendGrid, AWS SES, Mailgun,
+# etc.) via the environment variables below, otherwise no user will ever receive a
+# verification or password-reset email.
+import os
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "1") == "1"
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "Digitize Pakistan <no-reply@digitize.com.pk>")
+
+# Base URL of the Next.js frontend, used to build links inside emails.
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+
+# Hard ceiling for signed email tokens; individual flows enforce shorter limits (see emails.py).
+PASSWORD_RESET_TIMEOUT = 3 * 24 * 3600
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -187,6 +202,9 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "subscription": "5/hour",
     "password_change": "5/hour",
     "deactivate": "5/hour",
+    "email_verification": "3/hour",
+    "email_verify_confirm": "20/hour",
+    "password_reset": "5/hour",
 }
 
 SIMPLE_JWT = {

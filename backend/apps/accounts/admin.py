@@ -21,6 +21,7 @@ class UserAdmin(BaseUserAdmin):
                     "phone",
                     "city",
                     "email_digests",
+                    "email_verified",
                 )
             },
         ),

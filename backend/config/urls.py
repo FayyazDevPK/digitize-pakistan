@@ -7,7 +7,11 @@ from apps.accounts.views import (
     MeAvatarView,
     MeView,
     PasswordChangeView,
+    PasswordResetConfirmView,
+    PasswordResetRequestView,
     RegisterView,
+    ResendVerificationView,
+    VerifyEmailView,
     ThrottledTokenObtainPairView,
 )
 
@@ -21,6 +25,10 @@ urlpatterns = [
     path("api/me/deactivate/", DeactivateAccountView.as_view(), name="me-deactivate"),
     path("api/me/password/", PasswordChangeView.as_view(), name="me-password"),
     path("api/register/", RegisterView.as_view(), name="register"),
+    path("api/verify-email/", VerifyEmailView.as_view(), name="verify-email"),
+    path("api/verify-email/resend/", ResendVerificationView.as_view(), name="verify-email-resend"),
+    path("api/password-reset/request/", PasswordResetRequestView.as_view(), name="password-reset-request"),
+    path("api/password-reset/confirm/", PasswordResetConfirmView.as_view(), name="password-reset-confirm"),
     path("api/content/", include("apps.content.urls")),
     path("api/learning-paths/", include("apps.learning_paths.urls")),
     path("api/rewards/", include("apps.rewards.urls")),

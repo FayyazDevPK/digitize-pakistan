@@ -1,0 +1,13 @@
+{% autoescape off %}
+Hi {{ user.display_name|default:user.username }},
+
+Welcome to Digitize Pakistan. Please confirm your email address:
+
+{{ link }}
+
+This link expires in 48 hours. Verifying your email is required for referral bonuses to count.
+
+If you didn't create this account, you can ignore this email.
+
+— Digitize Pakistan
+{% endautoescape %}
