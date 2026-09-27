@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import ConsentBanner from "@/components/ConsentBanner";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import "./globals.css";
@@ -31,6 +32,14 @@ export default function RootLayout({
       <body>
         {children}
         <ConsentBanner />
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8985190776574431"
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
