@@ -183,3 +183,43 @@ there's no "undo" once the wipe happens.
 - [ ] Confirm the production email provider is actually delivering (check for bounces/spam-
       folder issues) — email verification and password reset are only useful if the emails
       reliably arrive.
+
+---
+
+## Appendix — real gotchas found during the actual VPS deployment (2026-09-27)
+
+These weren't anticipated in the original checklist above and cost real debugging time. If this
+server is ever rebuilt from scratch, check for all of these again:
+
+1. **PostgreSQL 15+ schema permissions**: `GRANT ALL PRIVILEGES ON DATABASE ... TO app_user`
+   does NOT include permission to create tables in the `public` schema on PostgreSQL 15+ (a
+   security default change). Migrations fail with `permission denied for schema public` until
+   you also run `GRANT ALL ON SCHEMA public TO app_user;`.
+
+2. **`STATIC_ROOT` was never set** — never needed in dev (`runserver` serves static files
+   automatically), but `collectstatic` fails with `ImproperlyConfigured` without it in
+   production. Added `STATIC_ROOT = BASE_DIR / 'staticfiles'` to settings.py.
+
+3. **Home directory permissions block Nginx from serving static files.** If the app's static
+   files live under `/home/<deploy-user>/...`, and that user's home directory has the default
+   `750` permissions, Nginx (running as its own user) gets a `403 Forbidden` trying to traverse
+   into it — even though the actual static files themselves are correctly readable. Fix:
+   `chmod o+x /home/<deploy-user>` (adds traverse-only permission for "others", doesn't expose
+   directory listing).
+
+4. **`CORS_ALLOWED_ORIGINS` was left at the dev default** (`localhost:3000` only) — with the
+   frontend and backend on separate subdomains in production (`digitize.com.pk` and
+   `api.digitize.com.pk`), every API call from the browser was blocked by CORS until this was
+   set via the `CORS_ALLOWED_ORIGINS` environment variable to the real production origins.
+
+5. **`ALLOWED_HOSTS` needs the API's own subdomain too**, not just the frontend domain — Django
+   rejects requests where the `Host` header doesn't match, so `api.digitize.com.pk` itself must
+   be in `ALLOWED_HOSTS`, easy to forget since it feels like "the API doesn't need to allow
+   itself."
+
+6. **Domain-name text (especially anything starting with `www.`) gets corrupted when copied
+   through chat/terminal interfaces** with URL auto-detection — appeared as markdown link syntax
+   (`[text](url)`) inside actual files. When setting any config value containing a domain name,
+   verify the actual file content via a method immune to this (character count, hash, or
+   `repr()` output) rather than trusting a visual paste-back, and prefer `base64`-encoded
+   transfer for exact values.
