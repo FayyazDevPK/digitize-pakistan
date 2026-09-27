@@ -182,9 +182,17 @@ REST_FRAMEWORK = {
     ),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+# Production sets CORS_ALLOWED_ORIGINS via the environment (comma-separated,
+# e.g. "https://digitize.com.pk,https://www.digitize.com.pk") -- the
+# localhost:3000 dev default is preserved as a fallback so local development
+# is unaffected.
+_cors_env = os.environ.get("CORS_ALLOWED_ORIGINS", "")
+if _cors_env:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_env.split(",") if o.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+    ]
 
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "django-db"
