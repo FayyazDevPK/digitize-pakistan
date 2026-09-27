@@ -243,3 +243,53 @@ SIMPLE_JWT = {
 # access-controlled (private) storage, not a public bucket.
 MEDIA_ROOT = BASE_DIR / "private_media"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
+
+# Media storage (KYC documents, avatars, payment receipts).
+# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+#
+# Dev fallback: local disk (FileSystemStorage, via MEDIA_ROOT above) — unchanged from before
+# this file added R2 support. Set R2_ACCESS_KEY_ID (plus the other R2_* vars below) in
+# production to switch to Cloudflare R2, an S3-compatible object store, via django-storages.
+#
+# The R2 bucket is PRIVATE (confirmed at creation, not public) -- files are never served via a
+# public bucket URL. Two things keep that true in this codebase:
+#   1. Every uploaded field (KYCRecord.cnic_front/cnic_back/selfie/document_file,
+#      SubscriptionRequest.receipt_file, User.avatar) is only ever exposed through a
+#      staff/owner-gated Django view (apps/kyc/admin.py, apps/subscriptions/admin.py,
+#      apps/accounts/views.py MeAvatarView) that streams the file server-side via boto3
+#      credentials -- it never renders or redirects to field.url, so R2 credentials, not bucket
+#      publicity, are what gate access.
+#   2. QUERYSTRING_AUTH is still enabled (with a short expiry) as defense in depth, in case
+#      anything (e.g. Django admin's default FileField widget on the legacy/collapsed
+#      document_file field) ever renders `.url` directly -- that URL is a time-limited signed
+#      link, not a permanent public one.
+R2_ACCESS_KEY_ID = os.environ.get("R2_ACCESS_KEY_ID", "")
+R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY", "")
+R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME", "")
+R2_ENDPOINT_URL = os.environ.get("R2_ENDPOINT_URL", "")
+
+# Explicit so this file's fallback is self-contained rather than relying on Django's
+# implicit global_settings default -- functionally identical to that default either way.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
+if R2_ACCESS_KEY_ID:
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": R2_ACCESS_KEY_ID,
+            "secret_key": R2_SECRET_ACCESS_KEY,
+            "bucket_name": R2_BUCKET_NAME,
+            "endpoint_url": R2_ENDPOINT_URL,
+            "region_name": "auto",  # R2 doesn't use AWS regions; boto3 requires a value
+            "default_acl": None,  # R2 doesn't support canned ACLs the way S3 does
+            "file_overwrite": False,
+            "querystring_auth": True,  # signed URLs, not public links -- see note above
+            "querystring_expire": 3600,  # 1 hour
+        },
+    }
+# else: STORAGES["default"] keeps Django's built-in FileSystemStorage default (MEDIA_ROOT
+# above), exactly as before R2 support existed -- no change to local dev behavior.
