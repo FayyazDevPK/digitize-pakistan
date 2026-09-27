@@ -3,26 +3,10 @@ import { getContentList } from "@/lib/content";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import ReadToEarnCard from "@/components/ReadToEarnCard";
+import AdSenseUnit from "@/components/AdSenseUnit";
+import { getAd } from "@/lib/ads";
 import { SITE_URL } from "@/lib/site";
 import { safeJsonLd } from "@/lib/json-ld";
-
-interface AdSlotData {
-  id: number;
-  placement: string;
-  slot_type: string;
-  advertiser_name: string;
-  image_url: string;
-  target_url: string;
-}
-
-async function getAd(placement: string): Promise<AdSlotData | null> {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${API_URL}/api/ads/?placement=${placement}`, { cache: "no-store" });
-  if (!res.ok) return null;
-  const data = await res.json();
-  const slot = (data as AdSlotData[]).find((s) => s.image_url && s.target_url);
-  return slot ?? null;
-}
 
 export default async function NewsPageContent() {
   const dateLabel = new Date()
@@ -153,24 +137,31 @@ export default async function NewsPageContent() {
               ))}
             </div>
 
-            {sidebarAd && (
-              <a
-                href={sidebarAd.target_url}
-                target="_blank"
-                rel="noopener sponsored"
-                className="block bg-white border border-border rounded-[20px] p-5"
-              >
+            {sidebarAd && sidebarAd.slot_type === "ADSENSE" ? (
+              <div className="bg-white border border-border rounded-[20px] p-5">
                 <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
-                {sidebarAd.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={sidebarAd.image_url}
-                    alt={sidebarAd.advertiser_name}
-                    className="w-full rounded-sm border border-border"
-                  />
-                )}
-                <div className="text-xs text-muted mt-1">{sidebarAd.advertiser_name}</div>
-              </a>
+                <AdSenseUnit adClient={sidebarAd.ad_client} adSlot={sidebarAd.ad_slot_id} />
+              </div>
+            ) : (
+              sidebarAd && (
+                <a
+                  href={sidebarAd.target_url}
+                  target="_blank"
+                  rel="noopener sponsored"
+                  className="block bg-white border border-border rounded-[20px] p-5"
+                >
+                  <div className="font-mono text-[10px] uppercase text-muted mb-2">Sponsored</div>
+                  {sidebarAd.image_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={sidebarAd.image_url}
+                      alt={sidebarAd.advertiser_name}
+                      className="w-full rounded-sm border border-border"
+                    />
+                  )}
+                  <div className="text-xs text-muted mt-1">{sidebarAd.advertiser_name}</div>
+                </a>
+              )
             )}
           </aside>
         </div>
@@ -214,27 +205,36 @@ export default async function NewsPageContent() {
                   </div>
                   <div className="hidden sm:block w-[140px] aspect-[4/3] rounded-xl bg-[repeating-linear-gradient(135deg,#E6E5DE_0,#E6E5DE_10px,#EDECE6_10px,#EDECE6_20px)]" />
                 </Link>
-                {index === 0 && ad && (
-                  <a
-                    href={ad.target_url}
-                    target="_blank"
-                    rel="noopener sponsored"
-                    className="block py-4 border-b border-border"
-                  >
-                    <div className="font-mono text-[10px] uppercase text-muted mb-2">
-                      Sponsored
+                {index === 0 &&
+                  ad &&
+                  (ad.slot_type === "ADSENSE" ? (
+                    <div className="py-4 border-b border-border">
+                      <div className="font-mono text-[10px] uppercase text-muted mb-2">
+                        Sponsored
+                      </div>
+                      <AdSenseUnit adClient={ad.ad_client} adSlot={ad.ad_slot_id} />
                     </div>
-                    {ad.image_url && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={ad.image_url}
-                        alt={ad.advertiser_name}
-                        className="w-full rounded-sm border border-border"
-                      />
-                    )}
-                    <div className="text-xs text-muted mt-1">{ad.advertiser_name}</div>
-                  </a>
-                )}
+                  ) : (
+                    <a
+                      href={ad.target_url}
+                      target="_blank"
+                      rel="noopener sponsored"
+                      className="block py-4 border-b border-border"
+                    >
+                      <div className="font-mono text-[10px] uppercase text-muted mb-2">
+                        Sponsored
+                      </div>
+                      {ad.image_url && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={ad.image_url}
+                          alt={ad.advertiser_name}
+                          className="w-full rounded-sm border border-border"
+                        />
+                      )}
+                      <div className="text-xs text-muted mt-1">{ad.advertiser_name}</div>
+                    </a>
+                  ))}
               </div>
             ))}
           </div>

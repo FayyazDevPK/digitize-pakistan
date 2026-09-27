@@ -1,28 +1,8 @@
 import Link from "next/link";
 import PixelD from "@/components/PixelD";
 import NewsletterSignup from "@/components/NewsletterSignup";
-
-interface AdSlotData {
-  id: number;
-  placement: string;
-  slot_type: string;
-  advertiser_name: string;
-  image_url: string;
-  target_url: string;
-}
-
-async function getAd(placement: string): Promise<AdSlotData | null> {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${API_URL}/api/ads/?placement=${placement}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  // Only DIRECT slots with an image + link render as a "Sponsored" block —
-  // ADSENSE slots need the AdSense script, which isn't wired up yet.
-  const slot = (data as AdSlotData[]).find((s) => s.image_url && s.target_url);
-  return slot ?? null;
-}
+import AdSenseUnit from "@/components/AdSenseUnit";
+import { getAd } from "@/lib/ads";
 
 const COLUMNS: { title: string; links: { label: string; href?: string }[] }[] =
   [
@@ -62,24 +42,25 @@ export default async function PublicFooter() {
     <>
       {ad && (
         <section aria-label="Sponsored" className="bg-paper px-4 py-8 md:py-10">
-          <a
-            href={ad.target_url}
-            target="_blank"
-            rel="noopener sponsored"
-            className="block w-full max-w-[728px] mx-auto"
-          >
+          <div className="w-full max-w-[728px] mx-auto">
             <div className="font-mono text-[10px] uppercase tracking-[.1em] text-muted mb-1.5">
               Sponsored
             </div>
-            {/* 728×90 leaderboard; 320×50 proportions below the sm breakpoint */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={ad.image_url}
-              alt={ad.advertiser_name}
-              className="w-full aspect-[320/50] sm:aspect-[728/90] object-cover rounded-sm border border-border"
-            />
-            <div className="text-xs text-muted mt-1">{ad.advertiser_name}</div>
-          </a>
+            {ad.slot_type === "ADSENSE" ? (
+              <AdSenseUnit adClient={ad.ad_client} adSlot={ad.ad_slot_id} />
+            ) : (
+              <a href={ad.target_url} target="_blank" rel="noopener sponsored" className="block">
+                {/* 728×90 leaderboard; 320×50 proportions below the sm breakpoint */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ad.image_url}
+                  alt={ad.advertiser_name}
+                  className="w-full aspect-[320/50] sm:aspect-[728/90] object-cover rounded-sm border border-border"
+                />
+                <div className="text-xs text-muted mt-1">{ad.advertiser_name}</div>
+              </a>
+            )}
+          </div>
         </section>
       )}
       <footer className="bg-ink text-[#C9CFDC] font-sans flex flex-col gap-10 md:gap-12 px-6 md:px-12 pt-12 md:pt-16 pb-7">
