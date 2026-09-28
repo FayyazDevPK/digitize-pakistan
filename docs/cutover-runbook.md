@@ -42,10 +42,16 @@ trade-off, not an oversight.
       setup).
 - [ ] Set `CORS_ALLOWED_ORIGINS` to the real frontend domain only — remove `localhost:3000`.
 - [ ] Set `NEXT_PUBLIC_API_URL` (frontend) to the real API domain.
-- [ ] **Configure a real transactional email provider** (SendGrid, AWS SES, Mailgun, etc.) —
-      development uses Django's console email backend (prints to the terminal instead of
-      sending), which must be replaced before launch or email verification and password reset
-      will silently do nothing in production.
+- [x] **Transactional email configured (2026-09-29): Resend over SMTP.** Sending domain is
+      verified in Resend; its DNS records are in Cloudflare. In `backend/.env` set
+      `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend`, `EMAIL_HOST` to Resend's
+      SMTP host, `EMAIL_HOST_USER=resend`, and `EMAIL_HOST_PASSWORD` to a Resend API key with
+      Sending access restricted to our domain. `EMAIL_PORT` (587), `EMAIL_USE_TLS` (1) and
+      `DEFAULT_FROM_EMAIL` use the `settings.py` defaults. Without these, Django falls back to
+      the console backend and verification/reset emails silently print to the logs.
+- [x] **Restrict `backend/.env` to its owner:** `chmod 600 .env` (and any `.env` backups). Safe
+      because all three systemd services run as the deploy user; confirm with
+      `systemctl show -p User` before tightening.
 
 ### Backend services
 - [ ] Set up Gunicorn (or another WSGI server) behind Nginx, not `manage.py runserver` — the
@@ -223,3 +229,11 @@ server is ever rebuilt from scratch, check for all of these again:
    verify the actual file content via a method immune to this (character count, hash, or
    `repr()` output) rather than trusting a visual paste-back, and prefer `base64`-encoded
    transfer for exact values.
+
+7. **`backend/.env` was created world-readable (664)**, so any user on the server could read
+   every secret. Fixed with `chmod 600` after confirming gunicorn, celery-worker and
+   celery-beat all run as `deploy`. Lock backups too, since they hold the same secrets.
+
+8. **Services only read `.env` at startup.** A Django shell test (`python manage.py shell`
+   after loading `.env`) proves new settings work, but the live site keeps the old values
+   until gunicorn and the celery services are restarted. Always restart after editing `.env`.
