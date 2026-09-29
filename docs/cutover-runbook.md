@@ -237,3 +237,8 @@ server is ever rebuilt from scratch, check for all of these again:
 8. **Services only read `.env` at startup.** A Django shell test (`python manage.py shell`
    after loading `.env`) proves new settings work, but the live site keeps the old values
    until gunicorn and the celery services are restarted. Always restart after editing `.env`.
+
+9. **Nginx's default `client_max_body_size` is 1 MB**, which silently blocked KYC uploads
+   (three ~1.2 MB images) with a 413 before Django saw the request. Fixed on the VPS by
+   adding `client_max_body_size 20M` to the API server block (port 443). This was a manual
+   server change and is not in the repo, so re-apply it on any rebuild.
