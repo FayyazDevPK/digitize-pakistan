@@ -30,6 +30,8 @@ class Command(BaseCommand):
             ("FREE", "REFERRAL_BONUS", Decimal("150"), None),
             ("PREMIUM", "REFERRAL_BONUS", Decimal("300"), None),
             ("PREMIUM", "CREATOR_BOUNTY", Decimal("500"), None),
+            ("FREE", "SIGNUP_BONUS", Decimal("100"), None),
+            ("PREMIUM", "SIGNUP_BONUS", Decimal("100"), None),
         ]
 
         for tier, reward_type, rate, daily_cap in reward_rules:

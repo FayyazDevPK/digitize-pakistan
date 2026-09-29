@@ -9,7 +9,7 @@ import PixelD from "@/components/PixelD";
 import PasswordStrength from "@/components/PasswordStrength";
 
 const STEPS = [
-  { n: "01", label: "Create your free account", pts: "+100 pts" },
+  { n: "01", label: "Create your account & verify your email", pts: "+100 pts" },
   { n: "02", label: "Read articles and finish learning paths", pts: "+20–500" },
   { n: "03", label: "Verify your CNIC and withdraw", pts: "Rs 250 / 1k" },
 ];
@@ -159,7 +159,8 @@ export default function RegisterPage() {
                 onChange={(e) => setReferralCode(e.target.value)}
               />
               <span className="text-xs text-muted">
-                Got a code from a friend? You both earn +100 pts once you&apos;re active.
+                Got a code from a friend? They earn a bonus once you verify your email and finish
+                a lesson — you&apos;ll earn your own +100 pts for verifying your email either way.
               </span>
             </div>
 
@@ -170,7 +171,7 @@ export default function RegisterPage() {
               disabled={submitting}
               className="h-[50px] bg-primary text-white font-semibold text-base rounded-xl disabled:opacity-60"
             >
-              {submitting ? "Creating account…" : "Create account & claim 100 pts"}
+              {submitting ? "Creating account…" : "Create account & verify to earn 100 pts"}
             </button>
           </form>
 

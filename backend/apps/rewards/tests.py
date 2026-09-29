@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.db.utils import OperationalError
 
-from apps.rewards.models import RewardRule
+from apps.rewards.models import RewardRule, RewardsLedgerEntry
 from apps.rewards.services import (
     BelowMinimumWithdrawal,
     InsufficientBalance,
@@ -212,3 +212,67 @@ class TestPayoutPolicyConstants:
         assert num("MIN_WITHDRAWAL_RS") == MIN_WITHDRAWAL_RS
         rate = settings.REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["withdrawal"]
         assert rate == f"{num('WITHDRAWAL_REQUESTS_PER_HOUR')}/hour"
+
+
+@pytest.mark.django_db
+class TestSignupBonus:
+    def _rule(self):
+        return RewardRule.objects.create(tier="FREE", type="SIGNUP_BONUS", rate=Decimal("100"), daily_cap=None)
+
+    def test_awards_once_on_verification(self):
+        from apps.rewards.services import award_signup_bonus_once
+
+        self._rule()
+        user = User.objects.create_user(username="bonususer", password="x")
+        entry = award_signup_bonus_once(user)
+        assert entry is not None
+        assert entry.type == "SIGNUP_BONUS" and entry.amount == Decimal("100")
+        assert get_balance(user) == Decimal("100")
+
+    def test_never_awarded_twice(self):
+        from apps.rewards.services import award_signup_bonus_once
+
+        self._rule()
+        user = User.objects.create_user(username="bonususer2", password="x")
+        first = award_signup_bonus_once(user)
+        second = award_signup_bonus_once(user)
+        assert first is not None
+        assert second is None
+        assert get_balance(user) == Decimal("100")
+        assert RewardsLedgerEntry.objects.filter(user=user, type="SIGNUP_BONUS").count() == 1
+
+    def test_sends_notification(self):
+        from apps.notifications.models import Notification
+        from apps.rewards.services import award_signup_bonus_once
+
+        self._rule()
+        user = User.objects.create_user(username="bonususer3", password="x")
+        award_signup_bonus_once(user)
+        assert Notification.objects.filter(user=user, type="REWARD", title__icontains="bonus").exists()
+
+    def test_view_flow_awards_bonus_on_real_verification(self, mailoutbox):
+        import re
+
+        from rest_framework.test import APIClient
+
+        self._rule()
+        RewardRule.objects.create(tier="PREMIUM", type="SIGNUP_BONUS", rate=Decimal("100"), daily_cap=None)
+        client = APIClient()
+        res = client.post(
+            "/api/register/",
+            {"username": "verifyflow", "email": "verifyflow@example.com", "password": "Str0ngPass!x"},
+            format="json",
+        )
+        assert res.status_code == 201
+        user = User.objects.get(username="verifyflow")
+        assert get_balance(user) == Decimal("0.00")  # not awarded at signup
+
+        m = re.search(r"\?uid=([^&\s]+)&token=([^\s]+)", mailoutbox[0].body)
+        confirm = client.post("/api/verify-email/", {"uid": m.group(1), "token": m.group(2)}, format="json")
+        assert confirm.status_code == 200
+        user.refresh_from_db()
+        assert get_balance(user) == Decimal("100")
+
+        # Re-submitting the same token a second time must not award again.
+        client.post("/api/verify-email/", {"uid": m.group(1), "token": m.group(2)}, format="json")
+        assert get_balance(user) == Decimal("100")

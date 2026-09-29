@@ -187,3 +187,16 @@ class TestPasswordReset:
         c = APIClient()
         codes = [c.post("/api/password-reset/request/", {"email": "x@example.com"}, format="json").status_code for _ in range(7)]
         assert codes[:5] == [200] * 5 and 429 in codes[5:]
+
+
+@pytest.mark.django_db
+class TestVerificationSurvivesMissingRewardRule:
+    def test_verification_succeeds_even_if_signup_bonus_rule_is_missing(self, mailoutbox):
+        # No SIGNUP_BONUS RewardRule seeded -- award_signup_bonus_once would raise ValueError.
+        # Verifying the email itself must still succeed.
+        c = APIClient()
+        register(c, username="norule", email="norule@example.com")
+        params = link_params(mailoutbox[0])
+        res = c.post("/api/verify-email/", params, format="json")
+        assert res.status_code == 200
+        assert User.objects.get(username="norule").email_verified is True

@@ -6,6 +6,8 @@ from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Sum
 
+from apps.notifications.services import notify
+
 from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
 
 POINTS_TO_RS = Decimal("0.25")  # 1,000 pts = Rs 250
@@ -89,6 +91,36 @@ def award_points(user, reward_type, source_content=None):
         status="CONFIRMED",
     )
 
+    return entry
+
+
+def award_signup_bonus_once(user):
+    """
+    Awards the one-time SIGNUP_BONUS the Register page promises, on successful email
+    verification (not at signup, so it can't be farmed with unverifiable addresses).
+
+    Guarded against double-award under concurrency (a user retrying verification, or two
+    requests racing) the same way request_withdrawal guards its balance check: lock the
+    user's row, then check-then-create inside that lock, so two concurrent callers can't
+    both pass the "not yet awarded" check before either has created the ledger entry.
+    Not retroactive: only fires on a genuine unverified->verified transition, so accounts
+    that were already verified before this feature shipped are never backfilled.
+
+    Returns the created RewardsLedgerEntry, or None if already awarded.
+    """
+    with transaction.atomic():
+        User.objects.select_for_update().get(pk=user.pk)
+        if RewardsLedgerEntry.objects.filter(user=user, type="SIGNUP_BONUS").exists():
+            return None
+        entry = award_points(user, "SIGNUP_BONUS")
+
+    notify(
+        user,
+        "REWARD",
+        "Signup bonus credited",
+        f"Thanks for verifying your email — {entry.amount:.0f} points are now in your balance.",
+        link="/rewards",
+    )
     return entry
 
 

@@ -13,6 +13,7 @@ class RewardRule(models.Model):
         ("READ_ENGAGEMENT", "Read Engagement"),
         ("REFERRAL_BONUS", "Referral Bonus"),
         ("CREATOR_BOUNTY", "Creator Bounty"),
+        ("SIGNUP_BONUS", "Signup Bonus"),
     ]
 
     tier = models.CharField(max_length=20, choices=TIER_CHOICES)
@@ -33,6 +34,7 @@ class RewardsLedgerEntry(models.Model):
         ("READ_ENGAGEMENT", "Read Engagement"),
         ("REFERRAL_BONUS", "Referral Bonus"),
         ("CREATOR_BOUNTY", "Creator Bounty"),
+        ("SIGNUP_BONUS", "Signup Bonus"),
         ("WITHDRAWAL", "Withdrawal"),
         ("ADJUSTMENT", "Adjustment"),
     ]

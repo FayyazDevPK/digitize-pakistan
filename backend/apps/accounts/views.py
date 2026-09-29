@@ -1,3 +1,5 @@
+import logging
+
 from django.http import FileResponse, Http404
 from django.utils import timezone
 from rest_framework import generics
@@ -12,6 +14,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework.exceptions import ValidationError
+
+logger = logging.getLogger(__name__)
 
 from .emails import (
     decode_uid,
@@ -133,6 +137,17 @@ class VerifyEmailView(APIView):
             )
         user.email_verified = True
         user.save(update_fields=["email_verified"])
+
+        from apps.rewards.services import award_signup_bonus_once
+
+        try:
+            award_signup_bonus_once(user)
+        except Exception:
+            # A misconfigured/missing SIGNUP_BONUS RewardRule must never block the user's
+            # email from actually being verified -- same "never let a secondary effect break
+            # the primary action" rule this project already applies to send_verification_email.
+            logger.exception("Failed to award signup bonus for user %s", user.pk)
+
         return Response({"detail": "Email verified."})
 
 
