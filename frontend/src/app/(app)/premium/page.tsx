@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import { PREMIUM_PRICE_RS, PREMIUM_ORIGINAL_PRICE_RS, PREMIUM_PAY_TO } from "@/lib/premium";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 
@@ -17,10 +18,7 @@ interface SubscriptionRequest {
   rejection_reason: string;
 }
 
-const METHODS = [
-  { value: "EASYPAISA", label: "Easypaisa" },
-  { value: "JAZZCASH", label: "JazzCash" },
-];
+const METHODS = [{ value: "EASYPAISA", label: "Easypaisa" }];
 
 const STATUS_STYLE: Record<string, string> = {
   APPROVED: "bg-mint text-primary-deep",
@@ -28,12 +26,7 @@ const STATUS_STYLE: Record<string, string> = {
   REJECTED: "bg-alert-bg text-alert",
 };
 
-const PERKS = [
-  "Higher points on every read",
-  "All learning paths, incl. Advanced",
-  "Priority withdrawal processing",
-  "Ad-free reading",
-];
+const PERKS = ["Higher points on every read", "All learning paths, incl. Advanced"];
 
 export default function PremiumPage() {
   const router = useRouter();
@@ -43,7 +36,7 @@ export default function PremiumPage() {
 
   const [method, setMethod] = useState("EASYPAISA");
   const [transactionRef, setTransactionRef] = useState("");
-  const [amountPaid, setAmountPaid] = useState("");
+  const [amountPaid, setAmountPaid] = useState(String(PREMIUM_PRICE_RS));
   const [iban, setIban] = useState("");
   const [receipt, setReceipt] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -129,10 +122,16 @@ export default function PremiumPage() {
               <span className="font-mono text-[11px] font-semibold tracking-[.12em]">
                 MONTHLY
               </span>
-              <div className="flex items-baseline gap-2">
-                <span className="font-mono text-5xl font-semibold tracking-tight">Rs 950</span>
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="font-mono text-5xl font-semibold tracking-tight">
+                  Rs {PREMIUM_PRICE_RS.toLocaleString()}
+                </span>
                 <span className="text-sm">/ month</span>
+                <span className="font-mono text-lg line-through text-ink/50">
+                  Rs {PREMIUM_ORIGINAL_PRICE_RS.toLocaleString()}
+                </span>
               </div>
+              <span className="text-xs font-semibold -mt-2">Includes tax · 30 days</span>
               <div className="flex flex-col text-sm">
                 {PERKS.map((p, i) => (
                   <div
@@ -149,13 +148,18 @@ export default function PremiumPage() {
 
             <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col gap-2.5">
               <span className="font-mono text-[11px] tracking-[.12em] text-muted">PAY TO</span>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between items-start text-sm">
                 <span className="text-muted">Account title</span>
-                <span className="font-semibold">Digitize Online SMC (Pvt) Ltd</span>
+                <div className="flex flex-col items-end">
+                  <span className="font-semibold">{PREMIUM_PAY_TO.accountTitle}</span>
+                  <span className="text-xs text-muted text-right max-w-[180px]">
+                    {PREMIUM_PAY_TO.accountSubtitle}
+                  </span>
+                </div>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted">JazzCash / Easypaisa</span>
-                <span className="font-mono font-semibold">03XX-XXXXXXX</span>
+                <span className="text-muted">{PREMIUM_PAY_TO.method}</span>
+                <span className="font-mono font-semibold">{PREMIUM_PAY_TO.number}</span>
               </div>
             </div>
 
@@ -167,7 +171,7 @@ export default function PremiumPage() {
                   </span>
                   {user.tier_expires_at && (
                     <span className="text-[13px] text-[#C9CFDC]">
-                      Renews{" "}
+                      Active until{" "}
                       {new Date(user.tier_expires_at).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
@@ -176,6 +180,9 @@ export default function PremiumPage() {
                     </span>
                   )}
                 </div>
+                <span className="text-xs text-[#C9CFDC]">
+                  Premium doesn&apos;t auto-renew — pay again before then to keep your perks.
+                </span>
               </div>
             )}
           </div>
@@ -186,8 +193,8 @@ export default function PremiumPage() {
                 <div className="flex flex-col gap-1">
                   <h3 className="font-display text-2xl m-0">Submit payment proof</h3>
                   <span className="text-[13px] text-muted">
-                    Transfer Rs 950, then upload the receipt and transaction reference. We activate within
-                    one working day.
+                    Transfer Rs {PREMIUM_PRICE_RS.toLocaleString()}, then upload the receipt and
+                    transaction reference. We activate within one working day.
                   </span>
                 </div>
 
@@ -229,13 +236,10 @@ export default function PremiumPage() {
                         <span className="text-[13px] font-semibold">Amount</span>
                         <input
                           required
+                          readOnly
                           type="number"
-                          min="0"
-                          step="0.01"
-                          className="h-[46px] border border-border-strong rounded-[11px] px-3.5 font-mono text-sm outline-none focus:border-primary"
-                          placeholder="950"
+                          className="h-[46px] border border-border-strong rounded-[11px] px-3.5 font-mono text-sm bg-paper text-muted"
                           value={amountPaid}
-                          onChange={(e) => setAmountPaid(e.target.value)}
                         />
                       </div>
                     </div>

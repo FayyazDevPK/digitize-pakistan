@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, storeTokens, clearTokens, CurrentUser } from "@/lib/auth";
+import { PREMIUM_PRICE_RS } from "@/lib/premium";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 
@@ -437,7 +438,7 @@ export default function SettingsPage() {
                   onClick={() => router.push("/premium")}
                   className="bg-marigold text-ink font-bold text-sm text-center py-3.5 rounded-xl"
                 >
-                  Upgrade to Premium · Rs 950/mo
+                  Upgrade to Premium · Rs {PREMIUM_PRICE_RS.toLocaleString()}/mo
                 </button>
               )}
             </div>

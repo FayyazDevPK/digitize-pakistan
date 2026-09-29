@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authFetch, logout } from "@/lib/auth";
+import { PREMIUM_PRICE_RS } from "@/lib/premium";
 import PixelD from "@/components/PixelD";
 
 interface NavItem {
@@ -223,7 +224,7 @@ export default function AppSidebar({
               href="/premium"
               className="mt-1 self-start bg-ink text-white text-xs font-semibold px-3 py-2 rounded-[9px]"
             >
-              Upgrade · Rs 999/mo
+              Upgrade · Rs {PREMIUM_PRICE_RS.toLocaleString()}/mo
             </Link>
           </div>
         )}
