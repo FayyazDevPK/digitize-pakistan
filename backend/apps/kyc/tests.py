@@ -167,3 +167,74 @@ class TestKYCFullSubmission:
         KYCRecord.objects.create(user=user, document_type="CNIC", document_ref_url="https://e.com/a.jpg")
         res = c.get("/api/kyc/")
         assert res.status_code == 200 and res.data["has_legacy_document"] is True
+
+
+@pytest.mark.django_db
+class TestKYCAdminAutoStamping:
+    def test_reviewed_at_stamped_on_transition_to_terminal_status_at_model_level(self):
+        user = User.objects.create_user(username="kycadmin1", password="x")
+        record = KYCRecord.objects.create(user=user, document_type="CNIC", full_name="A", cnic_number="42101-1234567-2")
+        assert record.reviewed_at is None
+        record.status = "APPROVED"
+        record.save()
+        assert record.reviewed_at is not None
+        first_stamp = record.reviewed_at
+        record.status = "APPROVED"  # no-op transition, shouldn't restamp
+        record.save()
+        assert record.reviewed_at == first_stamp
+
+    def test_reviewed_by_set_by_admin_save_model_on_terminal_transition(self):
+        from django.contrib.admin.sites import AdminSite
+
+        from apps.kyc.admin import KYCRecordAdmin
+
+        class FakeRequest:
+            def __init__(self, user):
+                self.user = user
+
+        class FakeForm:
+            changed_data = ["status"]
+
+        staff = User.objects.create_user(username="kycstaff", password="x", is_staff=True)
+        user = User.objects.create_user(username="kycadmin2", password="x")
+        record = KYCRecord.objects.create(user=user, document_type="CNIC", full_name="B", cnic_number="42101-1234567-2")
+        record.status = "APPROVED"
+
+        admin_instance = KYCRecordAdmin(KYCRecord, AdminSite())
+        admin_instance.save_model(FakeRequest(staff), record, FakeForm(), change=True)
+        assert record.reviewed_by == staff
+        assert record.reviewed_at is not None
+
+    def test_rejection_requires_reason_via_admin_form(self):
+        from apps.kyc.admin import KYCRecordAdminForm
+
+        user = User.objects.create_user(username="kycadmin3", password="x")
+        record = KYCRecord.objects.create(user=user, document_type="CNIC", full_name="C", cnic_number="42101-1234567-2")
+        form = KYCRecordAdminForm(
+            data={
+                "user": user.pk, "status": "REJECTED", "document_type": "CNIC",
+                "full_name": "C", "cnic_number": "42101-1234567-2", "rejection_reason": "",
+                "document_ref_url": "", "audit_trail": "[]",
+            },
+            instance=record,
+        )
+        assert not form.is_valid()
+        assert "rejection_reason" in form.errors
+
+        form_ok = KYCRecordAdminForm(
+            data={
+                "user": user.pk, "status": "REJECTED", "document_type": "CNIC",
+                "full_name": "C", "cnic_number": "42101-1234567-2", "rejection_reason": "Blurry photo",
+                "document_ref_url": "", "audit_trail": "[]",
+            },
+            instance=record,
+        )
+        assert form_ok.is_valid(), form_ok.errors
+
+    def test_reviewed_fields_are_admin_readonly(self):
+        from django.contrib.admin.sites import AdminSite
+
+        from apps.kyc.admin import KYCRecordAdmin
+
+        admin_instance = KYCRecordAdmin(KYCRecord, AdminSite())
+        assert {"reviewed_at", "reviewed_by"} <= set(admin_instance.readonly_fields)

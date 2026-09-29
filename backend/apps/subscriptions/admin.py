@@ -55,10 +55,29 @@ def reject_subscription(modeladmin, request, queryset):
 
 @admin.register(SubscriptionRequest)
 class SubscriptionRequestAdmin(admin.ModelAdmin):
-    list_display = ("user", "method", "amount_paid", "iban", "status", "requested_at", "reviewer")
+    list_display = (
+        "user",
+        "method",
+        "amount_paid",
+        "transaction_ref",
+        "iban",
+        "status",
+        "requested_at",
+        "reviewed_at",
+        "reviewer",
+    )
     list_filter = ("status", "method")
     actions = [approve_subscription, reject_subscription]
-    readonly_fields = ("receipt_link",)
+
+    def get_readonly_fields(self, request, obj=None):
+        # Confirmed during testing: setting status to Approved directly on the form marked the
+        # request approved but skipped the real work (upgrading the user's tier, setting an
+        # expiry, sending the notification) -- only the actions above do all of that together.
+        # Making every field read-only forces status changes through the actions.
+        return [f.name for f in self.model._meta.fields] + ["receipt_link"]
+
+    def has_add_permission(self, request):
+        return False
 
     def get_urls(self):
         custom = [

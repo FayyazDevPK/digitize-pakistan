@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from .validators import (
     kyc_upload_path,
@@ -47,6 +48,24 @@ class KYCRecord(models.Model):
     )
     rejection_reason = models.TextField(blank=True)
     audit_trail = models.JSONField(default=list, blank=True)
+
+    TERMINAL_STATUSES = ("APPROVED", "REJECTED")
+
+    @classmethod
+    def from_db(cls, db, field_names, values, *, fetch_mode=None):
+        instance = super().from_db(db, field_names, values, fetch_mode=fetch_mode)
+        instance._loaded_status = instance.status
+        return instance
+
+    def save(self, *args, **kwargs):
+        # reviewed_at must never be typed by hand -- stamp it here (not just in the admin) so
+        # it's set correctly regardless of whether the status change comes from the admin form,
+        # an admin action, or any future API/script path.
+        loaded_status = getattr(self, "_loaded_status", None)
+        if self.status in self.TERMINAL_STATUSES and loaded_status != self.status:
+            self.reviewed_at = timezone.now()
+        super().save(*args, **kwargs)
+        self._loaded_status = self.status
 
     def __str__(self):
         return f"{self.user} - {self.status}"

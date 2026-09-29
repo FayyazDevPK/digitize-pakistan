@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.http import FileResponse, Http404
 from django.urls import path, reverse
@@ -8,12 +9,30 @@ from .models import KYCRecord
 FILE_FIELDS = ("cnic_front", "cnic_back", "selfie", "document_file")
 
 
+class KYCRecordAdminForm(forms.ModelForm):
+    class Meta:
+        model = KYCRecord
+        fields = "__all__"
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("status") == "REJECTED" and not cleaned.get("rejection_reason"):
+            raise forms.ValidationError(
+                {"rejection_reason": "A rejection reason is required when rejecting a submission."}
+            )
+        return cleaned
+
+
 @admin.register(KYCRecord)
 class KYCRecordAdmin(admin.ModelAdmin):
+    form = KYCRecordAdminForm
     list_display = ("user", "status", "full_name", "cnic_number", "submitted_at", "reviewed_at")
     list_filter = ("status", "document_type")
     search_fields = ("full_name", "cnic_number", "user__username")
-    readonly_fields = ("submitted_at", "review_documents")
+    # reviewed_at/reviewed_by must never be typed by hand: reviewed_at is auto-stamped by
+    # KYCRecord.save() on any transition into APPROVED/REJECTED, reviewed_by is stamped below
+    # from the acting admin user.
+    readonly_fields = ("submitted_at", "reviewed_at", "reviewed_by", "review_documents")
     fieldsets = (
         ("Applicant", {"fields": ("user", "document_type", "full_name", "cnic_number")}),
         ("Documents for review", {"fields": ("review_documents",)}),
@@ -24,6 +43,11 @@ class KYCRecordAdmin(admin.ModelAdmin):
             {"classes": ("collapse",), "fields": ("document_ref_url", "document_file")},
         ),
     )
+
+    def save_model(self, request, obj, form, change):
+        if "status" in form.changed_data and obj.status in KYCRecord.TERMINAL_STATUSES:
+            obj.reviewed_by = request.user
+        super().save_model(request, obj, form, change)
 
     def get_urls(self):
         custom = [

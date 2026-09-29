@@ -52,6 +52,8 @@ class RewardsLedgerEntry(models.Model):
         Content, null=True, blank=True, on_delete=models.SET_NULL, related_name="ledger_entries"
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="CONFIRMED")
+    # Required (enforced in admin) for ADJUSTMENT entries, so a manual credit/debit is explained.
+    note = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -84,6 +86,13 @@ class WithdrawalRequest(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="REQUESTED")
     requested_at = models.DateTimeField(auto_now_add=True)
     processed_at = models.DateTimeField(null=True, blank=True)
+    processed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="withdrawals_processed",
+    )
 
     class Meta:
         ordering = ["-requested_at"]
