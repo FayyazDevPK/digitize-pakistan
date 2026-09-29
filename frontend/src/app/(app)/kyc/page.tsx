@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import { authFetchErrorMessage } from "@/lib/api-client";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 
@@ -108,14 +109,12 @@ export default function KYCPage() {
       if (res.ok) {
         setRecord(await res.json());
         setFiles({ cnic_front: null, cnic_back: null, selfie: null });
+        // The sidebar's KYC status comes from this page's `user` state, set once on mount --
+        // without this, it only shows the real status (NONE -> PENDING) after a full reload.
+        const refreshed = await fetchCurrentUser();
+        if (refreshed) setUser(refreshed);
       } else {
-        const body = await res.json().catch(() => ({}));
-        const fieldError =
-          body.cnic_number?.[0] ??
-          body.full_name?.[0] ??
-          UPLOADS.map((u) => body[u.key]?.[0]).find(Boolean) ??
-          body.non_field_errors?.[0];
-        setError(body.detail || fieldError || "Submission failed.");
+        setError(await authFetchErrorMessage(res, "Submission failed."));
       }
     } catch {
       setError("Something went wrong.");

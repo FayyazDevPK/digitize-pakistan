@@ -25,7 +25,7 @@ export default function AppSidebar({
   const pathname = usePathname();
   const router = useRouter();
   const [unreadCount, setUnreadCount] = useState(0);
-  const [balance, setBalance] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
   const [weekChange, setWeekChange] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -41,7 +41,9 @@ export default function AppSidebar({
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return;
-        setBalance(data.balance);
+        // The API sends `balance` as a bare number (0 for a fresh account), so a truthy check
+        // here previously treated a real, correct 0 balance the same as "not loaded yet".
+        setBalance(Number(data.balance));
         const gained = (data.recent_entries || [])
           .filter((e: { amount: string }) => Number(e.amount) > 0)
           .reduce((sum: number, e: { amount: string }) => sum + Number(e.amount), 0);
@@ -77,7 +79,7 @@ export default function AppSidebar({
     },
   ];
 
-  const rupees = balance ? Math.round((Number(balance) / 1000) * 250) : 0;
+  const rupees = balance !== null ? Math.round((balance / 1000) * 250) : 0;
   const initial = (userName || "?").charAt(0).toUpperCase();
 
   return (
@@ -103,7 +105,7 @@ export default function AppSidebar({
             )}
           </div>
           <div className="font-mono text-2xl font-semibold text-marigold tracking-tight">
-            {balance ? Number(balance).toLocaleString() : "—"}
+            {balance !== null ? balance.toLocaleString() : "—"}
             <span className="text-xs text-muted-2 ml-1.5">pts</span>
           </div>
           <div className="flex justify-between items-center">

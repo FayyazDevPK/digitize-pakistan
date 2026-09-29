@@ -49,6 +49,7 @@ export default function DashboardPage() {
   const [paths, setPaths] = useState<LearningPathSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(false);
   const [resend, setResend] = useState<{
     state: "idle" | "sending" | "sent" | "error";
     msg?: string;
@@ -63,6 +64,9 @@ export default function DashboardPage() {
         return;
       }
       setUser(u);
+      // No login-history field exists yet, so account age is the closest available proxy for
+      // "this is (effectively) their first visit" -- avoids "Welcome back" on a brand-new account.
+      setIsNewUser(Date.now() - new Date(u.date_joined).getTime() < 24 * 60 * 60 * 1000);
       const [rewardsRes, referralsRes, pathsRes] = await Promise.all([
         authFetch("/api/rewards/balance/"),
         authFetch("/api/referrals/"),
@@ -153,7 +157,7 @@ export default function DashboardPage() {
         <div className="flex items-end gap-4 flex-wrap">
           <div className="flex flex-col gap-1 flex-1">
             <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
-              Welcome back, {user.display_name || user.username}.
+              {isNewUser ? "Welcome" : "Welcome back"}, {user.display_name || user.username}.
             </h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap">

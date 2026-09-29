@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import { authFetchErrorMessage } from "@/lib/api-client";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 import BalanceOverTimeChart from "@/components/charts/BalanceOverTimeChart";
@@ -60,10 +61,18 @@ export default function RewardsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [withdrawalsError, setWithdrawalsError] = useState<string | null>(null);
 
   async function loadWithdrawals() {
+    setWithdrawalsError(null);
     const res = await authFetch("/api/rewards/withdrawals/");
-    if (res.ok) setWithdrawals(await res.json());
+    if (res.ok) {
+      setWithdrawals(await res.json());
+    } else {
+      // A failed fetch must never render as "no withdrawals yet" -- that reads as a real,
+      // empty history rather than "we couldn't load it."
+      setWithdrawalsError(await authFetchErrorMessage(res, "Couldn't load your request history."));
+    }
   }
 
   useEffect(() => {
@@ -101,8 +110,7 @@ export default function RewardsPage() {
         if (balanceRes.ok) setRewards(await balanceRes.json());
         await loadWithdrawals();
       } else {
-        const body = await res.json().catch(() => ({}));
-        setError(body.detail || "Withdrawal failed.");
+        setError(await authFetchErrorMessage(res, "Withdrawal failed."));
       }
     } catch {
       setError("Something went wrong.");
@@ -302,7 +310,17 @@ export default function RewardsPage() {
 
           <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col">
             <h3 className="font-display text-2xl mb-3 m-0">Request history</h3>
-            {withdrawals.length === 0 ? (
+            {withdrawalsError ? (
+              <div className="flex flex-col items-start gap-2 mt-3">
+                <p className="text-sm text-alert m-0">{withdrawalsError}</p>
+                <button
+                  onClick={loadWithdrawals}
+                  className="text-sm font-semibold text-primary"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : withdrawals.length === 0 ? (
               <p className="text-sm text-muted mt-3">No withdrawals yet.</p>
             ) : (
               <>

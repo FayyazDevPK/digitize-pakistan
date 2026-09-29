@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import { authFetchErrorMessage } from "@/lib/api-client";
 import { PREMIUM_PRICE_RS, PREMIUM_ORIGINAL_PRICE_RS, PREMIUM_PAY_TO } from "@/lib/premium";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
@@ -42,10 +43,18 @@ export default function PremiumPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [requestsError, setRequestsError] = useState<string | null>(null);
 
   async function loadRequests() {
+    setRequestsError(null);
     const res = await authFetch("/api/subscriptions/");
-    if (res.ok) setRequests(await res.json());
+    if (res.ok) {
+      setRequests(await res.json());
+    } else {
+      // A failed fetch must never render as "no requests yet" -- that reads as a real,
+      // empty history rather than "we couldn't load it."
+      setRequestsError(await authFetchErrorMessage(res, "Couldn't load your request history."));
+    }
   }
 
   useEffect(() => {
@@ -84,9 +93,7 @@ export default function PremiumPage() {
         setReceipt(null);
         await loadRequests();
       } else {
-        const body = await res.json().catch(() => ({}));
-        const fieldError = body.iban?.[0] ?? body.receipt_file?.[0];
-        setError(body.detail || fieldError || "Submission failed.");
+        setError(await authFetchErrorMessage(res, "Submission failed."));
       }
     } catch {
       setError("Something went wrong.");
@@ -307,10 +314,20 @@ export default function PremiumPage() {
 
             <div className="bg-white border border-border rounded-[22px] p-6 flex flex-col">
               <h3 className="font-display text-xl mb-3 m-0">Request history</h3>
-              {requests.length === 0 && (
-                <p className="text-sm text-muted mt-3">No requests yet.</p>
+              {requestsError ? (
+                <div className="flex flex-col items-start gap-2 mt-3">
+                  <p className="text-sm text-alert m-0">{requestsError}</p>
+                  <button onClick={loadRequests} className="text-sm font-semibold text-primary">
+                    Retry
+                  </button>
+                </div>
+              ) : (
+                requests.length === 0 && (
+                  <p className="text-sm text-muted mt-3">No requests yet.</p>
+                )
               )}
-              {requests.map((r, i) => (
+              {!requestsError &&
+                requests.map((r, i) => (
                 <div
                   key={r.id}
                   className={`grid grid-cols-[110px_minmax(0,1fr)_90px_auto] gap-3 items-center py-3.5 ${

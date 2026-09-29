@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, storeTokens, clearTokens, CurrentUser } from "@/lib/auth";
 import { PREMIUM_PRICE_RS } from "@/lib/premium";
+import { authFetchErrorMessage } from "@/lib/api-client";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 
@@ -14,14 +15,6 @@ const CITIES = [
 
 const INPUT =
   "h-[46px] bg-white border border-border-strong rounded-[11px] px-3.5 text-sm outline-none focus:border-primary transition-colors";
-
-function firstError(body: Record<string, unknown>): string {
-  for (const v of Object.values(body)) {
-    if (Array.isArray(v) && typeof v[0] === "string") return v[0];
-    if (typeof v === "string") return v;
-  }
-  return "Something went wrong.";
-}
 
 function daysAgo(iso: string | null): string {
   if (!iso) return "Never changed since signup";
@@ -86,7 +79,7 @@ export default function SettingsPage() {
       body,
     });
     if (!res.ok) {
-      setError(firstError(await res.json().catch(() => ({}))));
+      setError(await authFetchErrorMessage(res));
       return null;
     }
     const updated: CurrentUser = await res.json();
@@ -134,8 +127,8 @@ export default function SettingsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
     });
-    const body = await res.json().catch(() => ({}));
     if (res.ok) {
+      const body = await res.json();
       storeTokens(body.access, body.refresh);
       setCurrentPassword("");
       setNewPassword("");
@@ -143,10 +136,8 @@ export default function SettingsPage() {
       setPasswordMsg({ ok: true, text: "Password changed. Other devices were signed out." });
       const fresh = await fetchCurrentUser();
       if (fresh) setUser(fresh);
-    } else if (res.status === 429) {
-      setPasswordMsg({ ok: false, text: "Too many attempts. Try again later." });
     } else {
-      setPasswordMsg({ ok: false, text: firstError(body) });
+      setPasswordMsg({ ok: false, text: await authFetchErrorMessage(res) });
     }
     setChangingPassword(false);
   }
@@ -165,8 +156,7 @@ export default function SettingsPage() {
       router.replace("/login");
       return;
     }
-    if (res.status === 429) setDeactivateError("Too many attempts. Try again later.");
-    else setDeactivateError(firstError(await res.json().catch(() => ({}))));
+    setDeactivateError(await authFetchErrorMessage(res));
     setDeactivating(false);
   }
 

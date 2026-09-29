@@ -55,6 +55,11 @@ export default function BalanceOverTimeChart({ entries }: { entries: LedgerEntry
       isWithdrawal: Number(e.amount) < 0,
     }));
 
+  // A single point has no line to draw (Area/Line need >= 2 points for a path) and the custom
+  // dot renderer below only draws a marker for withdrawals -- together that meant one real,
+  // non-withdrawal ledger entry rendered as a totally blank chart. Force a visible dot then.
+  const singlePoint = data.length === 1;
+
   return (
     <ResponsiveContainer width="100%" height={230}>
       <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -93,23 +98,27 @@ export default function BalanceOverTimeChart({ entries }: { entries: LedgerEntry
           stroke="#087A54"
           strokeWidth={2.5}
           fill="url(#balanceFill)"
-          dot={(props: { cx?: number; cy?: number; payload?: { isWithdrawal?: boolean } }) => {
-            const { cx, cy, payload } = props;
-            if (!payload?.isWithdrawal || cx === undefined || cy === undefined) {
-              return <g key={`dot-${cx}-${cy}`} />;
-            }
-            return (
-              <circle
-                key={`dot-${cx}-${cy}`}
-                cx={cx}
-                cy={cy}
-                r={5}
-                fill="#FFFFFF"
-                stroke="#D6453D"
-                strokeWidth={2.5}
-              />
-            );
-          }}
+          dot={
+            singlePoint
+              ? { r: 5, fill: "#087A54", stroke: "#FFFFFF", strokeWidth: 2 }
+              : (props: { cx?: number; cy?: number; payload?: { isWithdrawal?: boolean } }) => {
+                  const { cx, cy, payload } = props;
+                  if (!payload?.isWithdrawal || cx === undefined || cy === undefined) {
+                    return <g key={`dot-${cx}-${cy}`} />;
+                  }
+                  return (
+                    <circle
+                      key={`dot-${cx}-${cy}`}
+                      cx={cx}
+                      cy={cy}
+                      r={5}
+                      fill="#FFFFFF"
+                      stroke="#D6453D"
+                      strokeWidth={2.5}
+                    />
+                  );
+                }
+          }
           activeDot={{ r: 5, fill: "#F2B233", stroke: "#0B1426", strokeWidth: 2 }}
         />
       </AreaChart>
