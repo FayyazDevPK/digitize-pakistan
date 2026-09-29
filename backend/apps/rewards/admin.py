@@ -2,6 +2,8 @@ from django import forms
 from django.contrib import admin, messages
 from django.utils import timezone
 
+from apps.notifications.services import notify
+
 from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
 from .services import get_balance
 
@@ -53,8 +55,18 @@ class RewardsLedgerEntryAdmin(admin.ModelAdmin):
 
 @admin.action(description="Mark selected as APPROVED")
 def mark_approved(modeladmin, request, queryset):
-    updated = queryset.filter(status="REQUESTED").update(status="APPROVED")
-    skipped = queryset.count() - updated
+    eligible = queryset.filter(status="REQUESTED")
+    skipped = queryset.count() - eligible.count()
+    for withdrawal in eligible:
+        withdrawal.status = "APPROVED"
+        withdrawal.save(update_fields=["status"])
+        notify(
+            withdrawal.user,
+            "REWARD",
+            "Withdrawal approved",
+            f"Your withdrawal of Rs {withdrawal.amount_rs} was approved and will be paid shortly.",
+            link="/rewards",
+        )
     if skipped:
         modeladmin.message_user(
             request, f"Skipped {skipped} request(s) not in REQUESTED status.", level=messages.WARNING
@@ -63,9 +75,20 @@ def mark_approved(modeladmin, request, queryset):
 
 @admin.action(description="Mark selected as PAID")
 def mark_paid(modeladmin, request, queryset):
-    to_pay = queryset.filter(status="APPROVED")
-    skipped = queryset.count() - to_pay.count()
-    updated = to_pay.update(status="PAID", processed_at=timezone.now(), processed_by=request.user)
+    eligible = queryset.filter(status="APPROVED")
+    skipped = queryset.count() - eligible.count()
+    for withdrawal in eligible:
+        withdrawal.status = "PAID"
+        withdrawal.processed_at = timezone.now()
+        withdrawal.processed_by = request.user
+        withdrawal.save(update_fields=["status", "processed_at", "processed_by"])
+        notify(
+            withdrawal.user,
+            "REWARD",
+            "Withdrawal paid",
+            f"Rs {withdrawal.amount_rs} was sent to your {withdrawal.get_method_display()} account.",
+            link="/rewards",
+        )
     if skipped:
         modeladmin.message_user(
             request,
@@ -92,6 +115,14 @@ def reject_and_refund(modeladmin, request, queryset):
         withdrawal.processed_at = timezone.now()
         withdrawal.processed_by = request.user
         withdrawal.save(update_fields=["status", "processed_at", "processed_by"])
+        notify(
+            withdrawal.user,
+            "REWARD",
+            "Withdrawal rejected",
+            f"Your withdrawal request was rejected and the {withdrawal.points_requested:.0f} points "
+            f"were refunded to your balance.",
+            link="/rewards",
+        )
     if skipped:
         modeladmin.message_user(
             request,

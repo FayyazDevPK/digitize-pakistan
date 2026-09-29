@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 from django.contrib.auth import get_user_model
 
+from apps.notifications.models import Notification
 from apps.rewards.admin import mark_approved, mark_paid, reject_and_refund
 from apps.rewards.models import RewardsLedgerEntry, WithdrawalRequest
 from apps.rewards.services import get_balance
@@ -162,3 +163,41 @@ class TestSubscriptionRequestAdminReadOnly:
         fields = admin_instance.get_readonly_fields(FakeRequest(staff))
         assert set(f.name for f in SubscriptionRequest._meta.fields) <= set(fields)
         assert admin_instance.has_add_permission(FakeRequest(staff)) is False
+
+
+@pytest.mark.django_db
+class TestWithdrawalNotifications:
+    def test_approve_notifies_user(self, staff, withdrawer):
+        req = _withdrawal(withdrawer, "REQUESTED")
+
+        class Admin:
+            def message_user(self, *a, **k):
+                pass
+
+        mark_approved(Admin(), FakeRequest(staff), WithdrawalRequest.objects.filter(pk=req.pk))
+        n = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at")
+        assert "approved" in n.title.lower()
+
+    def test_paid_notifies_user(self, staff, withdrawer):
+        req = _withdrawal(withdrawer, "APPROVED")
+
+        class Admin:
+            def message_user(self, *a, **k):
+                pass
+
+        mark_paid(Admin(), FakeRequest(staff), WithdrawalRequest.objects.filter(pk=req.pk))
+        n = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at")
+        assert "paid" in n.title.lower()
+
+    def test_reject_notifies_user_and_mentions_refund(self, staff, withdrawer):
+        req = _withdrawal(withdrawer, "REQUESTED")
+
+        class Admin:
+            def message_user(self, *a, **k):
+                pass
+
+        reject_and_refund(Admin(), FakeRequest(staff), WithdrawalRequest.objects.filter(pk=req.pk))
+        n = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at")
+        assert "rejected" in n.title.lower()
+        assert "refund" in n.message.lower()
+        assert str(int(req.points_requested)) in n.message
