@@ -342,7 +342,7 @@ export default function DashboardPage() {
                       className="font-mono text-[10px] font-semibold px-[7px] py-[5px] rounded-md hidden sm:inline shrink-0"
                       style={{ background: style.bg, color: style.text }}
                     >
-                      {e.type}
+                      {style.label}
                     </span>
                     <span
                       className={`font-mono font-semibold text-sm shrink-0 ${

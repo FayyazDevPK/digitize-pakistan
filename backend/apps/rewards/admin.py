@@ -64,7 +64,7 @@ def mark_approved(modeladmin, request, queryset):
             withdrawal.user,
             "REWARD",
             "Withdrawal approved",
-            f"Your withdrawal of Rs {withdrawal.amount_rs} was approved and will be paid shortly.",
+            f"Your withdrawal of Rs {withdrawal.amount_rs:,.0f} was approved and will be paid shortly.",
             link="/rewards",
         )
     if skipped:
@@ -86,7 +86,7 @@ def mark_paid(modeladmin, request, queryset):
             withdrawal.user,
             "REWARD",
             "Withdrawal paid",
-            f"Rs {withdrawal.amount_rs} was sent to your {withdrawal.get_method_display()} account.",
+            f"Rs {withdrawal.amount_rs:,.0f} was sent to your {withdrawal.get_method_display()} account.",
             link="/rewards",
         )
     if skipped:
@@ -119,7 +119,7 @@ def reject_and_refund(modeladmin, request, queryset):
             withdrawal.user,
             "REWARD",
             "Withdrawal rejected",
-            f"Your withdrawal request was rejected and the {withdrawal.points_requested:.0f} points "
+            f"Your withdrawal request was rejected and the {withdrawal.points_requested:,.0f} points "
             f"were refunded to your balance.",
             link="/rewards",
         )

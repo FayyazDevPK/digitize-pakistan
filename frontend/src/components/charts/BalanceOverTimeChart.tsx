@@ -93,7 +93,7 @@ export default function BalanceOverTimeChart({ entries }: { entries: LedgerEntry
           formatter={(value) => [`${Number(value).toLocaleString()} pts`, "Balance"]}
         />
         <Area
-          type="monotone"
+          type="stepAfter"
           dataKey="balance"
           stroke="#087A54"
           strokeWidth={2.5}

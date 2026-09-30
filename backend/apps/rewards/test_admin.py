@@ -29,10 +29,12 @@ def withdrawer(db):
 
 
 def _withdrawal(user, status="REQUESTED", **kw):
-    return WithdrawalRequest.objects.create(
+    defaults = dict(
         user=user, points_requested=8000, amount_rs=2000, method="JAZZCASH",
-        account_ref="0300", status=status, **kw,
+        account_ref="0300", status=status,
     )
+    defaults.update(kw)
+    return WithdrawalRequest.objects.create(**defaults)
 
 
 @pytest.mark.django_db
@@ -200,4 +202,32 @@ class TestWithdrawalNotifications:
         n = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at")
         assert "rejected" in n.title.lower()
         assert "refund" in n.message.lower()
-        assert str(int(req.points_requested)) in n.message
+        assert f"{int(req.points_requested):,}" in n.message
+
+
+@pytest.mark.django_db
+class TestNotificationAmountFormatting:
+    def test_withdrawal_notifications_use_thousands_separators(self, staff, withdrawer):
+        big = _withdrawal(withdrawer, "REQUESTED", points_requested=12000, amount_rs=3000)
+
+        class Admin:
+            def message_user(self, *a, **k):
+                pass
+
+        mark_approved(Admin(), FakeRequest(staff), WithdrawalRequest.objects.filter(pk=big.pk))
+        approved_msg = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at").message
+        assert "3,000" in approved_msg and "3000" not in approved_msg.replace("3,000", "")
+
+        mark_paid(Admin(), FakeRequest(staff), WithdrawalRequest.objects.filter(pk=big.pk))
+        paid_msg = Notification.objects.filter(user=withdrawer, type="REWARD").latest("created_at").message
+        assert "3,000" in paid_msg
+
+    def test_signup_bonus_notification_uses_thousands_separator(self):
+        from apps.rewards.models import RewardRule
+        from apps.rewards.services import award_signup_bonus_once
+
+        RewardRule.objects.create(tier="FREE", type="SIGNUP_BONUS", rate=Decimal("1000"), daily_cap=None)
+        user = User.objects.create_user(username="bignewuser", password="x")
+        award_signup_bonus_once(user)
+        n = Notification.objects.filter(user=user, type="REWARD").latest("created_at")
+        assert "1,000" in n.message

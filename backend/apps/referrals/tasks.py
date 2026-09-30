@@ -30,7 +30,7 @@ def evaluate_referral_qualifications():
                 ref.referrer,
                 "REFERRAL",
                 "Referral bonus earned",
-                f"{ref.referred.username} qualified — you earned {entry.amount} pts.",
+                f"{ref.referred.username} qualified — you earned {entry.amount:,.0f} pts.",
                 link="/referrals",
             )
         except (RewardCapExceeded, ValueError):

@@ -54,7 +54,7 @@ def approve_submission(modeladmin, request, queryset):
                 profile.user,
                 "CREATOR",
                 "Your submission was published",
-                f'"{content.title}" is live — you earned {entry.amount} pts.',
+                f'"{content.title}" is live — you earned {entry.amount:,.0f} pts.',
                 link="/creator",
             )
         except (RewardCapExceeded, ValueError):

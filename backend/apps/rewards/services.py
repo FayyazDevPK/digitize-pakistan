@@ -118,7 +118,7 @@ def award_signup_bonus_once(user):
         user,
         "REWARD",
         "Signup bonus credited",
-        f"Thanks for verifying your email — {entry.amount:.0f} points are now in your balance.",
+        f"Thanks for verifying your email — {entry.amount:,.0f} points are now in your balance.",
         link="/rewards",
     )
     return entry
