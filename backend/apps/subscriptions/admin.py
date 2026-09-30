@@ -1,4 +1,5 @@
 from datetime import timedelta
+from decimal import Decimal
 
 from django.contrib import admin
 from django.http import FileResponse, Http404
@@ -11,6 +12,12 @@ from apps.notifications.services import notify
 from .models import SubscriptionRequest
 
 PREMIUM_DURATION_DAYS = 30
+
+# Must match PREMIUM_PRICE_RS in frontend/src/lib/premium.ts -- kept in sync by
+# TestPremiumPriceConstant (apps/subscriptions/tests.py). The server does not validate or
+# reject on amount_paid (a human approves each request against the receipt), so this constant
+# only drives the admin's visible amount-check column below, never blocks a request.
+PREMIUM_PRICE_RS = Decimal("2300")
 
 
 @admin.action(description="Approve selected requests (upgrades user to Premium for 30 days)")
@@ -59,6 +66,7 @@ class SubscriptionRequestAdmin(admin.ModelAdmin):
         "user",
         "method",
         "amount_paid",
+        "amount_check",
         "transaction_ref",
         "iban",
         "status",
@@ -97,6 +105,20 @@ class SubscriptionRequestAdmin(admin.ModelAdmin):
         if obj is None or not obj.receipt_file:
             raise Http404
         return FileResponse(obj.receipt_file.open("rb"))
+
+    @admin.display(description="Amount check")
+    def amount_check(self, obj):
+        # Flag only -- never blocks approval. The human reviewer still decides, comparing
+        # against the actual receipt; this just makes a mismatch impossible to miss at a glance.
+        if obj.amount_paid == PREMIUM_PRICE_RS:
+            return format_html(
+                '<span style="color:#065C40;font-weight:600">✓ matches Rs {}</span>', PREMIUM_PRICE_RS
+            )
+        return format_html(
+            '<span style="color:#A12E27;font-weight:700">⚠ Rs {} ≠ Rs {}</span>',
+            obj.amount_paid,
+            PREMIUM_PRICE_RS,
+        )
 
     @admin.display(description="Receipt")
     def receipt_link(self, obj):

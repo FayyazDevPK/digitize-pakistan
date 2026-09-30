@@ -74,3 +74,69 @@ class TestSubscriptionProof:
         assert c.post("/api/subscriptions/", {**base, "iban": "nope"}, format="multipart").status_code == 400
         pdf = SimpleUploadedFile("r.pdf", b"%PDF-1.4", content_type="application/pdf")
         assert c.post("/api/subscriptions/", {**base, "receipt_file": pdf}, format="multipart").status_code == 400
+
+
+class TestPremiumPriceConstant:
+    """apps/subscriptions/admin.py's PREMIUM_PRICE_RS must match frontend/src/lib/premium.ts,
+    the same way TestPayoutPolicyConstants keeps payout.ts in sync (apps/rewards/tests.py)."""
+
+    def test_backend_premium_price_matches_frontend_constant(self):
+        import re
+        from decimal import Decimal
+        from pathlib import Path
+
+        from django.conf import settings
+
+        from apps.subscriptions.admin import PREMIUM_PRICE_RS
+
+        src = (Path(settings.BASE_DIR).parent / "frontend/src/lib/premium.ts").read_text()
+        m = re.search(r"PREMIUM_PRICE_RS = ([\d_.]+);", src)
+        assert m, "PREMIUM_PRICE_RS not found in frontend/src/lib/premium.ts"
+        assert Decimal(m.group(1).replace("_", "")) == PREMIUM_PRICE_RS
+
+
+@pytest.mark.django_db
+class TestSubscriptionAdminAmountCheck:
+    def _sub(self, amount):
+        user = User.objects.create_user(username=f"amtcheck{amount}", password="x")
+        return SubscriptionRequest.objects.create(
+            user=user, method="EASYPAISA", transaction_ref="TX-1", amount_paid=amount
+        )
+
+    def test_matching_amount_shows_check(self):
+        from apps.subscriptions.admin import PREMIUM_PRICE_RS, SubscriptionRequestAdmin
+        from django.contrib.admin.sites import AdminSite
+
+        admin_instance = SubscriptionRequestAdmin(SubscriptionRequest, AdminSite())
+        sub = self._sub(PREMIUM_PRICE_RS)
+        html = admin_instance.amount_check(sub)
+        assert "matches" in html and "✓" in html
+
+    def test_mismatched_amount_shows_warning(self):
+        from apps.subscriptions.admin import SubscriptionRequestAdmin
+        from django.contrib.admin.sites import AdminSite
+
+        admin_instance = SubscriptionRequestAdmin(SubscriptionRequest, AdminSite())
+        sub = self._sub(500)
+        html = admin_instance.amount_check(sub)
+        assert "≠" in html and "500" in html
+
+    def test_mismatch_does_not_block_approval(self):
+        from apps.subscriptions.admin import approve_subscription
+        from django.core.cache import cache
+
+        cache.clear()
+        sub = self._sub(1)  # wildly wrong amount
+
+        class FakeRequest:
+            def __init__(self, user):
+                self.user = user
+
+        class Admin:
+            pass
+
+        approve_subscription(Admin(), FakeRequest(sub.user), SubscriptionRequest.objects.filter(pk=sub.pk))
+        sub.refresh_from_db()
+        assert sub.status == "APPROVED"
+        sub.user.refresh_from_db()
+        assert sub.user.tier == "PREMIUM"
