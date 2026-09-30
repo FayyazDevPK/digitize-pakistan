@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authFetch, logout } from "@/lib/auth";
 import { PREMIUM_PRICE_RS } from "@/lib/premium";
+import { isEarningEntry } from "@/lib/ledger";
 import PixelD from "@/components/PixelD";
 
 interface NavItem {
@@ -45,7 +46,7 @@ export default function AppSidebar({
         // here previously treated a real, correct 0 balance the same as "not loaded yet".
         setBalance(Number(data.balance));
         const gained = (data.recent_entries || [])
-          .filter((e: { amount: string }) => Number(e.amount) > 0)
+          .filter((e: { type: string }) => isEarningEntry(e.type))
           .reduce((sum: number, e: { amount: string }) => sum + Number(e.amount), 0);
         setWeekChange(gained);
       })

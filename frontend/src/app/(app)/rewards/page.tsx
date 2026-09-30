@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import { authFetchErrorMessage } from "@/lib/api-client";
+import { isEarningEntry } from "@/lib/ledger";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 import BalanceOverTimeChart from "@/components/charts/BalanceOverTimeChart";
@@ -128,7 +129,7 @@ export default function RewardsPage() {
   const pendingWithdrawal = withdrawals.find((w) => w.status === "REQUESTED");
   const entries = rewards?.recent_entries ?? [];
   const lifetimeEarned = entries
-    .filter((e) => Number(e.amount) > 0)
+    .filter((e) => isEarningEntry(e.type))
     .reduce((sum, e) => sum + Number(e.amount), 0);
   const withdrawnRs = withdrawals
     .filter((w) => w.status === "PAID" || w.status === "APPROVED")

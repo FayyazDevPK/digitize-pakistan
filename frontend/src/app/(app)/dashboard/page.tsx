@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
-import { ledgerStyle } from "@/lib/ledger";
+import { isEarningEntry, ledgerStyle } from "@/lib/ledger";
 
 interface LedgerEntry {
   id: number;
@@ -113,7 +113,7 @@ export default function DashboardPage() {
     Math.round(((points % 1000) / 1000) * 250);
   const weekGain =
     rewards?.recent_entries
-      .filter((e) => Number(e.amount) > 0)
+      .filter((e) => isEarningEntry(e.type))
       .reduce((sum, e) => sum + Number(e.amount), 0) ?? 0;
 
   return (
