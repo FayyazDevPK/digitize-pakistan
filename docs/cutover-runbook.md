@@ -84,13 +84,17 @@ trade-off, not an oversight.
       placeholders during development, not formal legal copy.
 
 ### KYC & compliance
-- [ ] Confirm KYC document storage (CNIC front/back, selfie images) in production uses
-      **access-controlled storage with server-side encryption at rest enabled** (e.g. Cloudflare
-      R2's or S3's built-in encryption-at-rest option) — not a public bucket, and not left
-      unencrypted. The current dev implementation stores these files unencrypted in private,
-      staff-only-accessible storage; the app's own copy correctly says so rather than claiming
-      encryption that doesn't exist yet. This must actually be true — configured encryption at
-      rest — before launch, not just access-controlled.
+- [x] **KYC document encryption at rest — verified 2026-09-30.** The storage backend is
+      `storages.backends.s3.S3Storage` against Cloudflare R2; a real KYC file exists in the
+      bucket; no copy exists on the VPS disk; the local media folder has zero files. Cloudflare's
+      R2 documentation states that all objects are encrypted at rest with AES-256-GCM
+      automatically — this is provider-managed encryption, not something this app configures or
+      can inspect the keys for. Because the provider holds the keys, the real protection against
+      misuse is everything this app and its operators control: the bucket is private, access uses
+      a single-bucket-scoped API token (not an account-wide key), files are only ever served
+      through authenticated streaming (never a public or direct bucket URL — see
+      `apps/kyc/admin.py`/`apps/subscriptions/admin.py`), and the Cloudflare account itself has
+      two-factor authentication enabled.
 - [ ] Reconfirm the KYC-gated withdrawal flow's hard security boundary is intact after the
       settings/database changes above — this is the platform's single most important security
       control and should be spot-checked end-to-end one more time post-deploy.

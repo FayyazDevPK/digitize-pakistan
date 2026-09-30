@@ -342,8 +342,8 @@ export default function KYCPage() {
               </span>
               <span className="text-[13px] leading-[1.55] text-[#C9CFDC]">
                 We verify once. Withdrawals must go to an account registered in your own name.
-                Your documents are kept private and are only seen by our compliance team, never
-                by other users.
+                Your documents are stored encrypted at rest in private storage and are only
+                viewable by our compliance team.
               </span>
             </div>
           </aside>
