@@ -14,6 +14,7 @@ from .services import (
     InsufficientBalance,
     KYCNotApproved,
     get_balance,
+    get_earned_this_week,
     request_withdrawal,
 )
 from .tasks import award_read_engagement
@@ -27,6 +28,7 @@ class BalanceView(APIView):
         return Response(
             {
                 "balance": get_balance(request.user),
+                "earned_this_week": get_earned_this_week(request.user),
                 "recent_entries": RewardsLedgerEntrySerializer(entries, many=True).data,
             }
         )

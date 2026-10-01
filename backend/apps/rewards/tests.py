@@ -276,3 +276,83 @@ class TestSignupBonus:
         # Re-submitting the same token a second time must not award again.
         client.post("/api/verify-email/", {"uid": m.group(1), "token": m.group(2)}, format="json")
         assert get_balance(user) == Decimal("100")
+
+
+@pytest.mark.django_db
+class TestEarnedThisWeek:
+    def test_excludes_entries_older_than_seven_days(self):
+        from datetime import timedelta
+
+        from django.utils import timezone
+
+        from apps.rewards.services import get_earned_this_week
+
+        user = User.objects.create_user(username="weekuser1", password="x")
+        recent = RewardsLedgerEntry.objects.create(
+            user=user, type="READ_ENGAGEMENT", amount=100, balance_after=100
+        )
+        old = RewardsLedgerEntry.objects.create(
+            user=user, type="READ_ENGAGEMENT", amount=500, balance_after=600
+        )
+        RewardsLedgerEntry.objects.filter(pk=old.pk).update(
+            created_at=timezone.now() - timedelta(days=10)
+        )
+        assert get_earned_this_week(user) == Decimal("100")
+
+    def test_excludes_adjustment_and_withdrawal(self):
+        from apps.rewards.services import get_earned_this_week
+
+        user = User.objects.create_user(username="weekuser2", password="x")
+        RewardsLedgerEntry.objects.create(
+            user=user, type="READ_ENGAGEMENT", amount=50, balance_after=50
+        )
+        RewardsLedgerEntry.objects.create(
+            user=user, type="ADJUSTMENT", amount=10000, balance_after=10050, note="credit"
+        )
+        RewardsLedgerEntry.objects.create(
+            user=user, type="WITHDRAWAL", amount=-20, balance_after=10030
+        )
+        assert get_earned_this_week(user) == Decimal("50")
+
+    def test_includes_all_four_earning_types_within_window(self):
+        from apps.rewards.services import EARNING_TYPES, get_earned_this_week
+
+        user = User.objects.create_user(username="weekuser3", password="x")
+        balance = Decimal("0")
+        for t in EARNING_TYPES:
+            balance += 10
+            RewardsLedgerEntry.objects.create(user=user, type=t, amount=10, balance_after=balance)
+        assert get_earned_this_week(user) == Decimal("10") * len(EARNING_TYPES)
+
+    def test_zero_when_no_recent_earning_entries(self):
+        from apps.rewards.services import get_earned_this_week
+
+        user = User.objects.create_user(username="weekuser4", password="x")
+        assert get_earned_this_week(user) == Decimal("0.00")
+
+    def test_balance_endpoint_returns_earned_this_week(self):
+        from datetime import timedelta
+
+        from django.utils import timezone
+        from rest_framework.test import APIClient
+
+        user = User.objects.create_user(username="weekuser5", password="x")
+        RewardsLedgerEntry.objects.create(
+            user=user, type="READ_ENGAGEMENT", amount=50, balance_after=50
+        )
+        old = RewardsLedgerEntry.objects.create(
+            user=user, type="REFERRAL_BONUS", amount=150, balance_after=200
+        )
+        RewardsLedgerEntry.objects.filter(pk=old.pk).update(
+            created_at=timezone.now() - timedelta(days=8)
+        )
+        RewardsLedgerEntry.objects.create(
+            user=user, type="ADJUSTMENT", amount=5000, balance_after=5200, note="credit"
+        )
+
+        client = APIClient()
+        client.force_authenticate(user)
+        res = client.get("/api/rewards/balance/")
+        assert res.status_code == 200
+        assert Decimal(res.data["earned_this_week"]) == Decimal("50")
+        assert Decimal(res.data["balance"]) == Decimal("5200")

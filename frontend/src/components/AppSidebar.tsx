@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authFetch, logout } from "@/lib/auth";
 import { PREMIUM_PRICE_RS } from "@/lib/premium";
-import { formatPoints, isEarningEntry } from "@/lib/ledger";
+import { formatPoints } from "@/lib/ledger";
 import PixelD from "@/components/PixelD";
 
 interface NavItem {
@@ -45,10 +45,9 @@ export default function AppSidebar({
         // The API sends `balance` as a bare number (0 for a fresh account), so a truthy check
         // here previously treated a real, correct 0 balance the same as "not loaded yet".
         setBalance(Number(data.balance));
-        const gained = (data.recent_entries || [])
-          .filter((e: { type: string }) => isEarningEntry(e.type))
-          .reduce((sum: number, e: { amount: string }) => sum + Number(e.amount), 0);
-        setWeekChange(gained);
+        // Backend-computed over the real last 7 days (Finding 25) -- previously summed
+        // whatever was in recent_entries, which isn't the same as "this week".
+        setWeekChange(Number(data.earned_this_week));
       })
       .catch(() => {});
   }, [pathname]);

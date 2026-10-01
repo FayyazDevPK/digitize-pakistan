@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
-import { formatPoints, isEarningEntry, ledgerStyle } from "@/lib/ledger";
+import { formatPoints, ledgerStyle } from "@/lib/ledger";
 
 interface LedgerEntry {
   id: number;
@@ -19,6 +19,7 @@ interface LedgerEntry {
 
 interface BalanceData {
   balance: string;
+  earned_this_week: string;
   recent_entries: LedgerEntry[];
 }
 
@@ -111,10 +112,11 @@ export default function DashboardPage() {
   const rupees =
     Math.floor(points / 1000) * 250 +
     Math.round(((points % 1000) / 1000) * 250);
-  const weekGain =
-    rewards?.recent_entries
-      .filter((e) => isEarningEntry(e.type))
-      .reduce((sum, e) => sum + Number(e.amount), 0) ?? 0;
+  // Backend-computed over the real last 7 days (see get_earned_this_week) -- previously this
+  // summed whatever happened to be in the last-20-entries window, which isn't the same thing
+  // (Finding 25): could show stale old activity as "this week", or miss real recent earnings
+  // pushed out of that window by an active account.
+  const weekGain = rewards ? Number(rewards.earned_this_week) : 0;
 
   return (
     <div className="min-h-screen flex bg-paper">

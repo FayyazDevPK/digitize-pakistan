@@ -1,10 +1,11 @@
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Sum
+from django.utils import timezone
 
 from apps.notifications.services import notify
 
@@ -12,6 +13,12 @@ from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
 
 POINTS_TO_RS = Decimal("0.25")  # 1,000 pts = Rs 250
 MIN_WITHDRAWAL_RS = Decimal("2000")
+
+# The single shared definition of "earnings" -- mirrors frontend/src/lib/ledger.ts's
+# EARNING_TYPES exactly (kept in sync by eye; both lists are short and rarely change).
+# ADJUSTMENT (admin credits AND withdrawal refunds are both recorded as ADJUSTMENT) and
+# WITHDRAWAL are never earnings, even when their amount is positive.
+EARNING_TYPES = {"READ_ENGAGEMENT", "REFERRAL_BONUS", "CREATOR_BOUNTY", "SIGNUP_BONUS"}
 
 # Redis INCR/INCRBY only work on integers. Rates carry up to 4 decimal
 # places (see RewardRule.rate), so we scale to an integer for the atomic
@@ -45,6 +52,25 @@ def get_balance(user):
     total = RewardsLedgerEntry.objects.filter(user=user, status="CONFIRMED").aggregate(
         total=Sum("amount")
     )["total"]
+    return total or Decimal("0.00")
+
+
+def get_earned_this_week(user):
+    """
+    Sum of earnings-type entries (see EARNING_TYPES) from the last 7 days, in Asia/Karachi
+    time (settings.TIME_ZONE) -- NOT just whatever happens to be in the last 20 ledger
+    entries, which is what the frontend used to sum (Finding 25: a user with few but old
+    entries could see a non-zero "this week" figure for activity from weeks ago, or a very
+    active user's genuine recent earnings could be pushed out of the last-20 window
+    entirely). `timezone.now() - timedelta(days=7)` is a fixed point in absolute time
+    regardless of which zone's wall-clock labels it with, so the Asia/Karachi setting
+    doesn't change this calculation -- it would only matter for calendar-day-aligned (e.g.
+    "since Karachi midnight") boundaries, not a rolling 7-day window like this one.
+    """
+    week_ago = timezone.now() - timedelta(days=7)
+    total = RewardsLedgerEntry.objects.filter(
+        user=user, status="CONFIRMED", type__in=EARNING_TYPES, created_at__gte=week_ago
+    ).aggregate(total=Sum("amount"))["total"]
     return total or Decimal("0.00")
 
 
