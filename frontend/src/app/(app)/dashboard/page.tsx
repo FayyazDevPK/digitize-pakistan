@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
-import { isEarningEntry, ledgerStyle } from "@/lib/ledger";
+import { formatPoints, isEarningEntry, ledgerStyle } from "@/lib/ledger";
 
 interface LedgerEntry {
   id: number;
@@ -191,7 +191,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-baseline gap-2.5">
               <span className="font-mono text-5xl font-semibold text-marigold tracking-tight">
-                {points.toLocaleString()}
+                {formatPoints(points)}
               </span>
               <span className="text-[15px] text-muted-2">pts</span>
             </div>
@@ -224,7 +224,7 @@ export default function DashboardPage() {
             </span>
             <div className="flex items-baseline gap-2">
               <span className="font-mono text-[34px] font-semibold">
-                +{weekGain.toLocaleString()}
+                {formatPoints(weekGain, { signed: true })}
               </span>
               <span className="text-[13px] text-muted">pts</span>
             </div>
@@ -349,8 +349,7 @@ export default function DashboardPage() {
                         isNegative ? "text-alert" : "text-primary"
                       }`}
                     >
-                      {isNegative ? "" : "+"}
-                      {e.amount}
+                      {formatPoints(e.amount, { signed: true })}
                     </span>
                   </div>
                 );

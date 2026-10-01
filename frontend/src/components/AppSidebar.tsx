@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authFetch, logout } from "@/lib/auth";
 import { PREMIUM_PRICE_RS } from "@/lib/premium";
-import { isEarningEntry } from "@/lib/ledger";
+import { formatPoints, isEarningEntry } from "@/lib/ledger";
 import PixelD from "@/components/PixelD";
 
 interface NavItem {
@@ -101,12 +101,12 @@ export default function AppSidebar({
             </span>
             {weekChange > 0 && (
               <span className="font-mono text-[10px] text-primary-light">
-                +{weekChange.toLocaleString()} this wk
+                {formatPoints(weekChange, { signed: true })} this wk
               </span>
             )}
           </div>
           <div className="font-mono text-2xl font-semibold text-marigold tracking-tight">
-            {balance !== null ? balance.toLocaleString() : "—"}
+            {balance !== null ? formatPoints(balance) : "—"}
             <span className="text-xs text-muted-2 ml-1.5">pts</span>
           </div>
           <div className="flex justify-between items-center">

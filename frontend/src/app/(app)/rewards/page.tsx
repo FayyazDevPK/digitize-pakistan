@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import { authFetchErrorMessage } from "@/lib/api-client";
-import { isEarningEntry } from "@/lib/ledger";
+import { formatPoints, isEarningEntry } from "@/lib/ledger";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 import BalanceOverTimeChart from "@/components/charts/BalanceOverTimeChart";
@@ -27,7 +27,9 @@ interface BalanceData {
 
 interface Withdrawal {
   id: number;
-  points_requested: number;
+  // A DecimalField on the backend, so DRF serializes it as a string like "8000.00" --
+  // this was previously (wrongly) typed as number, which masked the raw-decimal display bug.
+  points_requested: string;
   amount_rs: string;
   method: string;
   account_ref: string;
@@ -158,7 +160,7 @@ export default function RewardsPage() {
           <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
             <span className="font-mono text-[11px] tracking-[.12em] text-muted-2">AVAILABLE</span>
             <span className="font-mono text-4xl md:text-5xl font-semibold text-marigold tracking-tight">
-              {balance.toLocaleString()}
+              {formatPoints(balance)}
               <span className="text-sm text-muted-2 ml-1.5">pts</span>
             </span>
             <span className="text-sm text-[#C9CFDC]">≈ Rs {rupees.toLocaleString()}</span>
@@ -166,7 +168,7 @@ export default function RewardsPage() {
           <div className="flex flex-col gap-1.5 border-l border-[#24304A] pl-5">
             <span className="text-xs text-muted-2">Lifetime earned</span>
             <span className="font-mono text-xl font-semibold">
-              {lifetimeEarned.toLocaleString()}
+              {formatPoints(lifetimeEarned)}
             </span>
           </div>
           <div className="flex flex-col gap-1.5 border-l border-[#24304A] pl-5">
@@ -198,7 +200,7 @@ export default function RewardsPage() {
             <div className="flex flex-col gap-1">
               <h3 className="font-display text-2xl m-0">Where it came from</h3>
               <span className="text-[13px] text-muted">
-                From your last {entries.length} entries · {lifetimeEarned.toLocaleString()} pts
+                From your last {entries.length} entries · {formatPoints(lifetimeEarned)} pts
               </span>
             </div>
             <EarningsBreakdown entries={entries} />
@@ -356,7 +358,7 @@ export default function RewardsPage() {
                       {METHODS.find((m) => m.value === w.method)?.label ?? w.method}
                     </span>
                     <span className="font-mono text-right text-muted">
-                      {w.points_requested.toLocaleString()}
+                      {formatPoints(w.points_requested)}
                     </span>
                     <span className="font-mono font-semibold text-right">
                       Rs {Number(w.amount_rs).toLocaleString()}

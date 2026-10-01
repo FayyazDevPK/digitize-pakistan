@@ -7,6 +7,7 @@ import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 import CreatorEarningsChart from "@/components/charts/CreatorEarningsChart";
 import { getContentList } from "@/lib/content";
+import { formatPoints } from "@/lib/ledger";
 
 const TYPE_OPTIONS = [
   { value: "TUTORIAL", label: "Tutorial" },
@@ -219,7 +220,7 @@ export default function CreatorPage() {
               <div className="bg-ink text-white rounded-2xl p-[18px] flex flex-col gap-2">
                 <span className="text-xs text-muted-2">Lifetime bounties</span>
                 <span className="font-mono text-[28px] font-semibold text-marigold">
-                  {profile.total_earnings}
+                  {formatPoints(profile.total_earnings)}
                 </span>
                 <span className="text-xs text-muted-2">
                   ≈ Rs {Math.round((Number(profile.total_earnings) / 1000) * 250).toLocaleString()}

@@ -31,3 +31,16 @@ export const EARNING_TYPES = new Set([
 export function isEarningEntry(type: string): boolean {
   return EARNING_TYPES.has(type);
 }
+
+// The single shared formatter for point amounts. API ledger fields (e.g. RewardsLedgerEntry
+// .amount, WithdrawalRequest.points_requested) are DecimalFields, which DRF serializes as
+// strings like "8000.00" -- rendering those directly, or calling .toLocaleString() on the
+// string (a no-op, since that's a String method with no numeric formatting behavior), prints
+// the raw decimal straight into the UI. This always converts to a number first, adds thousands
+// separators, and only keeps decimal places when the value is genuinely fractional (ledger
+// amounts are effectively always whole points, but this doesn't assume that).
+export function formatPoints(value: number | string, options: { signed?: boolean } = {}): string {
+  const n = Number(value);
+  const formatted = n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  return options.signed && n >= 0 ? `+${formatted}` : formatted;
+}

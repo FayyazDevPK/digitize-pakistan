@@ -1,6 +1,6 @@
 "use client";
 
-import { EARNING_TYPES, ledgerStyle } from "@/lib/ledger";
+import { EARNING_TYPES, formatPoints, ledgerStyle } from "@/lib/ledger";
 
 interface LedgerEntry {
   type: string;
@@ -82,7 +82,7 @@ export default function EarningsBreakdown({ entries }: { entries: LedgerEntry[] 
                 <span className="text-sm font-semibold">{s.label}</span>
               </div>
               <span className="font-mono text-sm font-semibold">
-                {t.total.toLocaleString()}
+                {formatPoints(t.total)}
               </span>
               <span className="font-mono text-xs text-muted text-right">{pct}%</span>
             </div>
@@ -100,7 +100,7 @@ export default function EarningsBreakdown({ entries }: { entries: LedgerEntry[] 
               <div key={t.type} className="flex justify-between text-[13px]">
                 <span>{s.label}</span>
                 <span className="font-mono font-semibold" style={{ color: s.text }}>
-                  {t.total.toLocaleString()}
+                  {formatPoints(t.total)}
                 </span>
               </div>
             );

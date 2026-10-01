@@ -10,6 +10,8 @@ import {
   Tooltip,
 } from "recharts";
 
+import { formatPoints } from "@/lib/ledger";
+
 interface LedgerEntry {
   id: number;
   type: string;
@@ -90,7 +92,7 @@ export default function BalanceOverTimeChart({ entries }: { entries: LedgerEntry
             fontSize: 12,
             fontFamily: "JetBrains Mono",
           }}
-          formatter={(value) => [`${Number(value).toLocaleString()} pts`, "Balance"]}
+          formatter={(value) => [`${formatPoints(value as number)} pts`, "Balance"]}
         />
         <Area
           type="stepAfter"
