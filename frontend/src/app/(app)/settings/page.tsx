@@ -408,7 +408,6 @@ export default function SettingsPage() {
                   { label: "Beginner & Intermediate paths", ok: true },
                   { label: "Referral bonuses", ok: true },
                   { label: "Advanced paths", ok: user.tier === "PREMIUM" },
-                  { label: "Priority payouts", ok: user.tier === "PREMIUM" },
                 ].map((row) => (
                   <div
                     key={row.label}
