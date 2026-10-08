@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import { getContentList, ContentItem } from "@/lib/content";
 import PixelD from "@/components/PixelD";
+import { SIGNUP_BONUS } from "@/lib/rewards";
 
 const NAV_LINKS = [
   { label: "News", href: "/news" },
@@ -101,7 +102,7 @@ export default function PublicHeader({ active }: { active?: "News" | "AI Tools" 
             >
               Start earning
               <span className="font-mono text-[10px] font-semibold bg-marigold text-ink px-1.5 py-1 rounded">
-                +100
+                +{SIGNUP_BONUS}
               </span>
             </Link>
           </>

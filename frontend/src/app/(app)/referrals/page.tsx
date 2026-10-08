@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
+import { REFERRAL_BONUS } from "@/lib/rewards";
 import ReferralGrowthChart from "@/components/charts/ReferralGrowthChart";
 
 interface ReferralEntry {
@@ -77,7 +78,7 @@ export default function ReferralsPage() {
         <div className="flex flex-col gap-2">
           <span className="font-mono text-[11px] tracking-[.12em] text-iris">REFERRALS</span>
           <h1 className="font-display text-4xl md:text-5xl leading-none m-0">
-            Bring a friend. Both of you earn.
+            Bring a friend. Earn the bonus.
           </h1>
         </div>
 
@@ -149,8 +150,10 @@ export default function ReferralsPage() {
                   </div>
                 </div>
                 <div className="bg-paper rounded-2xl p-3.5 text-[13px] leading-[1.5] text-graphite">
-                  A referral <b>qualifies</b> once your friend shows real activity (reads or
-                  learning). It&apos;s <b>rewarded</b> when the +100 pts bonus is paid to you.
+                  A referral <b>qualifies</b> once your friend verifies their email and completes
+                  a learning-path lesson. It&apos;s <b>rewarded</b> when the +{REFERRAL_BONUS.free}{" "}
+                  pts bonus (+{REFERRAL_BONUS.premium} on Premium) is paid to you — only you earn
+                  the referral bonus.
                 </div>
               </div>
 

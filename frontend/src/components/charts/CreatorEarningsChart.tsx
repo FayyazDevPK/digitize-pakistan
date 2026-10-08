@@ -41,7 +41,7 @@ export default function CreatorEarningsChart({ entries }: { entries: LedgerEntry
           ))}
         </div>
         <span className="text-sm text-graphite leading-[1.45]">
-          Bars appear when editors pay a bounty on your published work.
+          Bars appear when a piece of yours is published and its bounty is paid.
         </span>
       </div>
     );

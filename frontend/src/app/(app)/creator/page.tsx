@@ -8,6 +8,7 @@ import MobileTabBar from "@/components/MobileTabBar";
 import CreatorEarningsChart from "@/components/charts/CreatorEarningsChart";
 import { getContentList } from "@/lib/content";
 import { formatPoints } from "@/lib/ledger";
+import { CREATOR_BOUNTY } from "@/lib/rewards";
 
 const TYPE_OPTIONS = [
   { value: "TUTORIAL", label: "Tutorial" },
@@ -324,7 +325,7 @@ export default function CreatorPage() {
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted">Bounties set by editors on publish</span>
+                      <span className="text-xs text-muted">A fixed {formatPoints(CREATOR_BOUNTY)}-pt bounty is paid when it&apos;s published</span>
                       <button
                         type="submit"
                         disabled={submitting || categoryId === null}

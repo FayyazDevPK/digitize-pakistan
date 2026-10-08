@@ -7,10 +7,15 @@ import { apiFetch, apiErrorMessage, login } from "@/lib/api-client";
 import { storeTokens, fetchCurrentUser } from "@/lib/auth";
 import PixelD from "@/components/PixelD";
 import PasswordStrength from "@/components/PasswordStrength";
+import { PATH_COMPLETION_BONUS, READ_REWARD, REFERRAL_BONUS, SIGNUP_BONUS } from "@/lib/rewards";
 
 const STEPS = [
-  { n: "01", label: "Create your account & verify your email", pts: "+100 pts" },
-  { n: "02", label: "Read articles and finish learning paths", pts: "+20–500" },
+  { n: "01", label: "Create your account & verify your email", pts: `+${SIGNUP_BONUS} pts` },
+  {
+    n: "02",
+    label: "Read articles and finish learning paths",
+    pts: `+${READ_REWARD.free} / read · +${PATH_COMPLETION_BONUS} / path`,
+  },
   { n: "03", label: "Verify your CNIC and withdraw", pts: "Rs 250 / 1k" },
 ];
 
@@ -160,7 +165,7 @@ export default function RegisterPage() {
               />
               <span className="text-xs text-muted">
                 Got a code from a friend? They earn a bonus once you verify your email and finish
-                a lesson — you&apos;ll earn your own +100 pts for verifying your email either way.
+                a lesson — you&apos;ll earn your own +{SIGNUP_BONUS} pts for verifying your email either way. (Your friend earns +{REFERRAL_BONUS.free}.)
               </span>
             </div>
 
@@ -171,7 +176,7 @@ export default function RegisterPage() {
               disabled={submitting}
               className="h-[50px] bg-primary text-white font-semibold text-base rounded-xl disabled:opacity-60"
             >
-              {submitting ? "Creating account…" : "Create account & verify to earn 100 pts"}
+              {submitting ? "Creating account…" : `Create account & verify to earn ${SIGNUP_BONUS} pts`}
             </button>
           </form>
 

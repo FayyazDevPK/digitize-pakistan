@@ -3,11 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchCurrentUser, CurrentUser } from "@/lib/auth";
+import {
+  PATH_COMPLETION_BONUS,
+  READ_REWARD,
+  REFERRAL_BONUS,
+  SIGNUP_BONUS,
+} from "@/lib/rewards";
 
 const ACTIONS = [
-  { label: "Read an article", pts: "+20–40" },
-  { label: "Finish a learning path", pts: "+500" },
-  { label: "Refer an active friend", pts: "+100" },
+  { label: "Verify your email", pts: `+${SIGNUP_BONUS}` },
+  { label: "Read an article", pts: `+${READ_REWARD.free} (Premium +${READ_REWARD.premium})` },
+  { label: "Finish a learning path", pts: `+${PATH_COMPLETION_BONUS}` },
+  {
+    label: "Friend qualifies (you earn)",
+    pts: `+${REFERRAL_BONUS.free} (Premium +${REFERRAL_BONUS.premium})`,
+  },
 ];
 
 export default function ReadToEarnCard() {

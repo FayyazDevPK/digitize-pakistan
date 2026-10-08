@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { authFetch, fetchCurrentUser, CurrentUser } from "@/lib/auth";
 import { formatPoints } from "@/lib/ledger";
+import { READ_DAILY_CAP, READ_REWARD } from "@/lib/rewards";
 
 interface ReadInfo {
   minSeconds: number;
@@ -151,7 +152,8 @@ export default function ArticleReadToEarn({ slug, targetId }: { slug: string; ta
           <Link href="/register" className="text-white font-semibold border-b border-primary-light">
             create a free account
           </Link>
-          . Reads only count for signed-in readers.
+          . Reads only count for signed-in readers: free accounts earn {READ_REWARD.free} points per
+          article (up to {READ_DAILY_CAP.free} a day).
         </div>
       </div>
     );
