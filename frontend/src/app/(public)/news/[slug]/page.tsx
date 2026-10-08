@@ -137,7 +137,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </article>
 
         <aside className="flex flex-col gap-4 pt-11">
-          <ArticleReadToEarn />
+          <ArticleReadToEarn slug={article.slug} targetId="article-body" />
           <div className="bg-white border border-border rounded-[20px] p-5 flex flex-col gap-2.5">
             <span className="font-mono text-[11px] tracking-[.12em] text-muted">CATEGORY</span>
             <span className="text-sm font-semibold">{article.category?.name}</span>

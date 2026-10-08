@@ -101,3 +101,30 @@ class WithdrawalRequest(models.Model):
 
     def __str__(self):
         return f"{self.user} - Rs {self.amount_rs} ({self.status})"
+
+
+class ReadSession(models.Model):
+    """
+    Server-side record of a user reading an article, so read rewards can't be claimed
+    instantly or repeatedly by calling the API directly:
+      started_at   -- first time the user opened the article (never moved forward)
+      completed_at -- set once a claim passes the minimum-reading-time check; this is the
+                      "recorded read" that learning-path completion later requires
+      rewarded_at  -- set when READ_ENGAGEMENT points were actually paid (at most once)
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="read_sessions"
+    )
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="read_sessions")
+    started_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    rewarded_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "content"], name="unique_read_session")
+        ]
+
+    def __str__(self):
+        return f"{self.user} read {self.content}"

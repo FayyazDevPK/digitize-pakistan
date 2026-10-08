@@ -14,10 +14,14 @@ from .services import (
     InsufficientBalance,
     KYCNotApproved,
     get_balance,
+    ReadNotEligible,
+    ReadNotStarted,
+    claim_read,
     get_earned_this_week,
+    get_read_reward,
     request_withdrawal,
+    start_read,
 )
-from .tasks import award_read_engagement
 
 
 class BalanceView(APIView):
@@ -34,19 +38,62 @@ class BalanceView(APIView):
         )
 
 
+def _get_content_or_error(request):
+    slug = request.data.get("content_slug")
+    if not slug:
+        return None, Response({"detail": "content_slug is required."}, status=400)
+    content = Content.objects.filter(slug=slug).first()
+    if content is None:
+        return None, Response({"detail": "Content not found."}, status=404)
+    return content, None
+
+
+class ReadStartView(APIView):
+    """Records that the user opened an article (the start of the minimum-reading-time clock)."""
+
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "read_start"
+
+    def post(self, request):
+        content, error = _get_content_or_error(request)
+        if error:
+            return error
+        try:
+            session, needed, remaining = start_read(request.user, content)
+        except ReadNotEligible as e:
+            return Response({"detail": str(e)}, status=403)
+        points, cap = get_read_reward(request.user)
+        return Response(
+            {
+                "status": "started",
+                "min_seconds": needed,
+                "seconds_remaining": remaining,
+                "already_rewarded": session.rewarded_at is not None,
+                "reward_points": points,
+                "daily_cap": cap,
+            }
+        )
+
+
 class TriggerReadView(APIView):
+    """Claims the read reward: needs a prior start, enough elapsed time, and pays at most once."""
+
     permission_classes = [IsAuthenticated]
     throttle_scope = "read_engagement"
 
     def post(self, request):
-        content_slug = request.data.get("content_slug")
-        content_id = None
-        if content_slug:
-            content = Content.objects.filter(slug=content_slug).first()
-            content_id = content.id if content else None
-
-        task = award_read_engagement.delay(request.user.id, content_id)
-        return Response({"status": "queued", "task_id": task.id})
+        content, error = _get_content_or_error(request)
+        if error:
+            return error
+        try:
+            result = claim_read(request.user, content)
+        except ReadNotEligible as e:
+            return Response({"detail": str(e)}, status=403)
+        except ReadNotStarted as e:
+            return Response({"status": "not_started", "detail": str(e)}, status=400)
+        if result["status"] == "too_soon":
+            return Response(result, status=400)
+        return Response(result)
 
 
 class WithdrawalView(APIView):

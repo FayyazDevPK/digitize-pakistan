@@ -6,10 +6,11 @@ from .models import LearningPath, LearningPathProgress, Milestone
 class MilestoneSerializer(serializers.ModelSerializer):
     locked = serializers.SerializerMethodField()
     completed = serializers.SerializerMethodField()
+    content_slug = serializers.CharField(source="content.slug", read_only=True, default=None)
 
     class Meta:
         model = Milestone
-        fields = ["id", "title", "order", "is_free", "locked", "completed"]
+        fields = ["id", "title", "order", "is_free", "locked", "completed", "content_slug"]
 
     def get_locked(self, obj):
         if obj.is_free:

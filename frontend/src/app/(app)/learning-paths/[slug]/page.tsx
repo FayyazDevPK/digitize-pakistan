@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, getAccessToken } from "@/lib/auth";
 import AppSidebar from "@/components/AppSidebar";
@@ -14,6 +15,7 @@ interface Milestone {
   is_free: boolean;
   locked: boolean;
   completed: boolean;
+  content_slug: string | null;
 }
 
 interface LearningPathDetail {
@@ -201,6 +203,15 @@ export default function LearningPathDetailPage() {
                               {m.is_free ? " · Free" : ""}
                             </span>
                           </div>
+                          <div className="flex items-center gap-3">
+                          {m.content_slug && !m.locked && (
+                            <Link
+                              href={`/news/${m.content_slug}`}
+                              className="text-xs font-semibold text-primary underline whitespace-nowrap"
+                            >
+                              Read lesson
+                            </Link>
+                          )}
                           {m.completed && (
                             <span className="text-xs font-semibold text-primary-deep bg-mint px-2.5 py-1.5 rounded-full">
                               Complete
@@ -215,6 +226,7 @@ export default function LearningPathDetailPage() {
                               Continue →
                             </button>
                           )}
+                          </div>
                         </div>
                       );
                     })}

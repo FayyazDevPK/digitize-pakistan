@@ -1,3 +1,4 @@
+import math
 from datetime import date, timedelta
 from decimal import Decimal
 
@@ -9,7 +10,7 @@ from django.utils import timezone
 
 from apps.notifications.services import notify
 
-from .models import RewardRule, RewardsLedgerEntry, WithdrawalRequest
+from .models import ReadSession, RewardRule, RewardsLedgerEntry, WithdrawalRequest
 
 POINTS_TO_RS = Decimal("0.25")  # 1,000 pts = Rs 250
 MIN_WITHDRAWAL_RS = Decimal("2000")
@@ -219,3 +220,93 @@ def request_withdrawal(user, points, method, account_ref):
         )
 
     return withdrawal
+
+
+# --- Read-to-earn -----------------------------------------------------------------------
+# The client is not a security boundary (anyone can call the API directly), so everything that
+# makes a read count is enforced here: one reward per user per article, a minimum time between
+# first opening the article and claiming, and the existing daily cap + request throttle.
+READ_ELIGIBLE_TYPES = {"NEWS", "TUTORIAL", "GUIDE"}
+MIN_READ_SECONDS = 30
+MAX_READ_SECONDS = 300
+SECONDS_PER_WORD = 0.15  # ~400 words/min: faster than a real reader, so honest readers pass
+
+
+class ReadNotEligible(Exception):
+    pass
+
+
+class ReadNotStarted(Exception):
+    pass
+
+
+def min_read_seconds(content):
+    words = len(content.body.split())
+    return int(min(MAX_READ_SECONDS, max(MIN_READ_SECONDS, math.ceil(words * SECONDS_PER_WORD))))
+
+
+def assert_read_eligible(user, content):
+    if content.status != "PUBLISHED" or content.type not in READ_ELIGIBLE_TYPES:
+        raise ReadNotEligible("This content doesn't earn reading points.")
+    if content.visibility == "PREMIUM_ONLY" and user.tier != "PREMIUM":
+        raise ReadNotEligible("This content requires a Premium subscription.")
+
+
+def get_read_reward(user):
+    """(points per read, daily cap) from the active READ_ENGAGEMENT rule for the user's tier."""
+    rule = RewardRule.objects.filter(
+        tier=user.tier, type="READ_ENGAGEMENT", is_active=True
+    ).first()
+    return (rule.rate, rule.daily_cap) if rule else (None, None)
+
+
+def start_read(user, content):
+    assert_read_eligible(user, content)
+    session, _ = ReadSession.objects.get_or_create(user=user, content=content)
+    needed = min_read_seconds(content)
+    remaining = 0
+    if session.completed_at is None:
+        elapsed = (timezone.now() - session.started_at).total_seconds()
+        remaining = max(0, math.ceil(needed - elapsed))
+    return session, needed, remaining
+
+
+def claim_read(user, content):
+    """
+    Returns {"status": ...}: awarded | already_claimed | cap_reached | too_soon | unavailable.
+    Raises ReadNotEligible / ReadNotStarted.
+    """
+    assert_read_eligible(user, content)
+    try:
+        session = ReadSession.objects.get(user=user, content=content)
+    except ReadSession.DoesNotExist:
+        raise ReadNotStarted("Open the article first.")
+
+    now = timezone.now()
+    if session.completed_at is None:
+        needed = min_read_seconds(content)
+        elapsed = (now - session.started_at).total_seconds()
+        if elapsed < needed:
+            return {"status": "too_soon", "seconds_remaining": math.ceil(needed - elapsed)}
+        ReadSession.objects.filter(pk=session.pk, completed_at__isnull=True).update(
+            completed_at=now
+        )
+    if session.rewarded_at is not None:
+        return {"status": "already_claimed"}
+
+    try:
+        with transaction.atomic():
+            # Conditional update: exactly one concurrent claim can flip rewarded_at from NULL,
+            # so two simultaneous requests can never both pay. Any failure below rolls it back.
+            won = ReadSession.objects.filter(pk=session.pk, rewarded_at__isnull=True).update(
+                rewarded_at=now
+            )
+            if not won:
+                return {"status": "already_claimed"}
+            entry = award_points(user, "READ_ENGAGEMENT", source_content=content)
+    except RewardCapExceeded:
+        # The read still counts as completed (it can be paid tomorrow, and counts toward paths).
+        return {"status": "cap_reached"}
+    except ValueError:
+        return {"status": "unavailable"}
+    return {"status": "awarded", "points": entry.amount}
