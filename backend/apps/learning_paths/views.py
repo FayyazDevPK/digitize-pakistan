@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.rewards.services import award_path_completion_if_earned
+
 from .models import LearningPath, LearningPathProgress, Milestone
 from .serializers import LearningPathDetailSerializer, LearningPathListSerializer
 
@@ -36,4 +38,11 @@ class CompleteMilestoneView(APIView):
         LearningPathProgress.objects.get_or_create(
             user=request.user, milestone=milestone, learning_path=path
         )
-        return Response({"status": "completed", "milestone_id": milestone.id})
+        entry = award_path_completion_if_earned(request.user, path)
+        return Response(
+            {
+                "status": "completed",
+                "milestone_id": milestone.id,
+                "path_completion_points": entry.amount if entry else None,
+            }
+        )

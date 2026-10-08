@@ -58,3 +58,26 @@ class LearningPathProgress(models.Model):
 
     def __str__(self):
         return f"{self.user} completed {self.milestone}"
+
+
+class PathCompletionAward(models.Model):
+    """One row per (user, path), ever: the unique constraint is what makes the completion
+    bonus pay at most once, even under concurrent requests."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="path_completion_awards"
+    )
+    learning_path = models.ForeignKey(
+        LearningPath, on_delete=models.CASCADE, related_name="completion_awards"
+    )
+    awarded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "learning_path"], name="unique_path_completion_award"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user} completed {self.learning_path}"

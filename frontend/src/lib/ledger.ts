@@ -6,6 +6,7 @@ export const LEDGER_TYPE_STYLE: Record<string, { bg: string; text: string; dot: 
   REFERRAL_BONUS: { bg: "#E7E7FB", text: "#3A3BA8", dot: "#5A5BD5", label: "Referral bonus" },
   CREATOR_BOUNTY: { bg: "#FCEFCC", text: "#7A5300", dot: "#F2B233", label: "Creator bounty" },
   SIGNUP_BONUS: { bg: "#E6F7F3", text: "#0B6E5C", dot: "#12B886", label: "Signup bonus" },
+  LEARNING_PATH_COMPLETION: { bg: "#E3EEFB", text: "#1F4E8C", dot: "#3B82C4", label: "Path completion" },
   WITHDRAWAL: { bg: "#FBE3E0", text: "#A12E27", dot: "#D6453D", label: "Withdrawal" },
   ADJUSTMENT: { bg: "#ECECE6", text: "#454B5C", dot: "#8A8F9C", label: "Adjustment" },
 };
@@ -26,6 +27,7 @@ export const EARNING_TYPES = new Set([
   "REFERRAL_BONUS",
   "CREATOR_BOUNTY",
   "SIGNUP_BONUS",
+  "LEARNING_PATH_COMPLETION",
 ]);
 
 export function isEarningEntry(type: string): boolean {

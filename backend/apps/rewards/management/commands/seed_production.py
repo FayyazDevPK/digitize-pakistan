@@ -20,19 +20,26 @@ from apps.ads.models import AdSlot
 from apps.rewards.models import RewardRule
 
 
+# (tier, type, rate, daily_cap) -- the single source of truth for the seeded reward rules;
+# apps/rewards/test_reward_constants.py checks frontend/src/lib/rewards.ts against this.
+REWARD_RULES = [
+    ("FREE", "READ_ENGAGEMENT", Decimal("5"), Decimal("25")),
+    ("PREMIUM", "READ_ENGAGEMENT", Decimal("10"), Decimal("100")),
+    ("FREE", "REFERRAL_BONUS", Decimal("150"), None),
+    ("PREMIUM", "REFERRAL_BONUS", Decimal("300"), None),
+    ("PREMIUM", "CREATOR_BOUNTY", Decimal("500"), None),
+    ("FREE", "SIGNUP_BONUS", Decimal("100"), None),
+    ("PREMIUM", "SIGNUP_BONUS", Decimal("100"), None),
+    ("FREE", "LEARNING_PATH_COMPLETION", Decimal("500"), None),
+    ("PREMIUM", "LEARNING_PATH_COMPLETION", Decimal("500"), None),
+]
+
+
 class Command(BaseCommand):
     help = "Seed RewardRule records and the real AdSense slot for production."
 
     def handle(self, *args, **options):
-        reward_rules = [
-            ("FREE", "READ_ENGAGEMENT", Decimal("5"), Decimal("25")),
-            ("PREMIUM", "READ_ENGAGEMENT", Decimal("10"), Decimal("100")),
-            ("FREE", "REFERRAL_BONUS", Decimal("150"), None),
-            ("PREMIUM", "REFERRAL_BONUS", Decimal("300"), None),
-            ("PREMIUM", "CREATOR_BOUNTY", Decimal("500"), None),
-            ("FREE", "SIGNUP_BONUS", Decimal("100"), None),
-            ("PREMIUM", "SIGNUP_BONUS", Decimal("100"), None),
-        ]
+        reward_rules = REWARD_RULES
 
         for tier, reward_type, rate, daily_cap in reward_rules:
             obj, created = RewardRule.objects.get_or_create(

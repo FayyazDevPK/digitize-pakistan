@@ -14,10 +14,11 @@ class RewardRule(models.Model):
         ("REFERRAL_BONUS", "Referral Bonus"),
         ("CREATOR_BOUNTY", "Creator Bounty"),
         ("SIGNUP_BONUS", "Signup Bonus"),
+        ("LEARNING_PATH_COMPLETION", "Learning Path Completion"),
     ]
 
     tier = models.CharField(max_length=20, choices=TIER_CHOICES)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    type = models.CharField(max_length=30, choices=TYPE_CHOICES)
     rate = models.DecimalField(max_digits=10, decimal_places=4, help_text="Points awarded per unit")
     daily_cap = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -35,6 +36,7 @@ class RewardsLedgerEntry(models.Model):
         ("REFERRAL_BONUS", "Referral Bonus"),
         ("CREATOR_BOUNTY", "Creator Bounty"),
         ("SIGNUP_BONUS", "Signup Bonus"),
+        ("LEARNING_PATH_COMPLETION", "Learning Path Completion"),
         ("WITHDRAWAL", "Withdrawal"),
         ("ADJUSTMENT", "Adjustment"),
     ]
@@ -47,7 +49,7 @@ class RewardsLedgerEntry(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="ledger_entries"
     )
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    type = models.CharField(max_length=30, choices=TYPE_CHOICES)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     balance_after = models.DecimalField(max_digits=12, decimal_places=2)
     source_content = models.ForeignKey(

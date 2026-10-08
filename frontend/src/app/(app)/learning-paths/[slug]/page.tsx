@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { authFetch, fetchCurrentUser, getAccessToken } from "@/lib/auth";
+import { formatPoints } from "@/lib/ledger";
 import AppSidebar from "@/components/AppSidebar";
 import MobileTabBar from "@/components/MobileTabBar";
 import BackLink from "@/components/BackLink";
@@ -38,6 +39,7 @@ export default function LearningPathDetailPage() {
   const [path, setPath] = useState<LearningPathDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   async function load() {
     const res = await authFetch(`/api/learning-paths/${slug}/`);
@@ -63,6 +65,7 @@ export default function LearningPathDetailPage() {
 
   async function handleComplete(milestoneId: number) {
     setError(null);
+    setNotice(null);
     if (!getAccessToken()) {
       router.push("/login");
       return;
@@ -72,6 +75,10 @@ export default function LearningPathDetailPage() {
       { method: "POST" }
     );
     if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (data.path_completion_points) {
+        setNotice(`Path complete — you earned ${formatPoints(data.path_completion_points)} points.`);
+      }
       load();
     } else if (res.status === 403) {
       setError("This milestone requires a Premium subscription.");
@@ -152,6 +159,11 @@ export default function LearningPathDetailPage() {
 
                 <div className="p-6 md:p-10 pb-24 md:pb-10 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_300px] gap-6">
                   <div className="bg-white border border-border rounded-[22px] px-4 md:px-7 py-2">
+                    {notice && (
+                      <div className="my-3 px-4 py-2.5 bg-mint rounded-lg text-primary-deep text-sm font-semibold">
+                        {notice}
+                      </div>
+                    )}
                     {error && (
                       <div className="my-3 px-4 py-2.5 bg-alert-bg border border-alert rounded-lg text-alert text-sm">
                         {error}

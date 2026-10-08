@@ -19,7 +19,13 @@ MIN_WITHDRAWAL_RS = Decimal("2000")
 # EARNING_TYPES exactly (kept in sync by eye; both lists are short and rarely change).
 # ADJUSTMENT (admin credits AND withdrawal refunds are both recorded as ADJUSTMENT) and
 # WITHDRAWAL are never earnings, even when their amount is positive.
-EARNING_TYPES = {"READ_ENGAGEMENT", "REFERRAL_BONUS", "CREATOR_BOUNTY", "SIGNUP_BONUS"}
+EARNING_TYPES = {
+    "READ_ENGAGEMENT",
+    "REFERRAL_BONUS",
+    "CREATOR_BOUNTY",
+    "SIGNUP_BONUS",
+    "LEARNING_PATH_COMPLETION",
+}
 
 # Redis INCR/INCRBY only work on integers. Rates carry up to 4 decimal
 # places (see RewardRule.rate), so we scale to an integer for the atomic
@@ -75,7 +81,7 @@ def get_earned_this_week(user):
     return total or Decimal("0.00")
 
 
-def award_points(user, reward_type, source_content=None):
+def award_points(user, reward_type, source_content=None, note=""):
     """
     Awards points to a user for a given reward type, respecting the
     RewardRule for their tier and the daily cap (tracked in Redis).
@@ -116,6 +122,7 @@ def award_points(user, reward_type, source_content=None):
         balance_after=balance,
         source_content=source_content,
         status="CONFIRMED",
+        note=note,
     )
 
     return entry
@@ -310,3 +317,56 @@ def claim_read(user, content):
     except ValueError:
         return {"status": "unavailable"}
     return {"status": "awarded", "points": entry.amount}
+
+
+def award_path_completion_if_earned(user, path):
+    """
+    Pays LEARNING_PATH_COMPLETION once per user per path, ever. The exact rule:
+      1. the user has completed EVERY milestone of the path, and
+      2. EVERY milestone has a linked lesson (Milestone.content), and
+      3. the user has a recorded read (ReadSession.completed_at set, i.e. a read that passed
+         the server's minimum-time check) for EVERY one of those lessons.
+    Merely clicking "complete" never satisfies 2-3. A path with an unlinked milestone can't pay.
+    Returns the ledger entry, or None if not (yet) earned / already paid.
+    """
+    from django.db import IntegrityError
+
+    from apps.learning_paths.models import LearningPathProgress, PathCompletionAward
+
+    milestones = list(path.milestones.select_related("content"))
+    if not milestones or any(m.content_id is None for m in milestones):
+        return None
+    done = set(
+        LearningPathProgress.objects.filter(user=user, learning_path=path).values_list(
+            "milestone_id", flat=True
+        )
+    )
+    if any(m.id not in done for m in milestones):
+        return None
+    read_ids = set(
+        ReadSession.objects.filter(
+            user=user, content_id__in=[m.content_id for m in milestones], completed_at__isnull=False
+        ).values_list("content_id", flat=True)
+    )
+    if any(m.content_id not in read_ids for m in milestones):
+        return None
+
+    try:
+        with transaction.atomic():
+            PathCompletionAward.objects.create(user=user, learning_path=path)
+            entry = award_points(
+                user, "LEARNING_PATH_COMPLETION", note=f"Completed learning path: {path.title}"
+            )
+    except IntegrityError:
+        return None  # already paid
+    except ValueError:
+        return None  # no active rule; the award row was rolled back so it can still pay later
+
+    notify(
+        user,
+        "REWARD",
+        "Learning path completed",
+        f"You finished \u201c{path.title}\u201d and earned {entry.amount:,.0f} points.",
+        link="/rewards",
+    )
+    return entry
