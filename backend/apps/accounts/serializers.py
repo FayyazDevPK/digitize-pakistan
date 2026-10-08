@@ -1,10 +1,12 @@
 import re
 
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 from rest_framework import serializers
 
+from .email_utils import email_alias_taken, normalize_email
 from .models import User
 
 
@@ -71,7 +73,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         value = value.strip()
-        if User.objects.filter(email__iexact=value).exists():
+        if User.objects.filter(email__iexact=value).exists() or email_alias_taken(value):
             raise serializers.ValidationError("An account with this email already exists.")
         return value
 
@@ -86,11 +88,17 @@ class RegisterSerializer(serializers.ModelSerializer):
         if referral_code:
             referrer = User.objects.filter(referral_code=referral_code.upper()).first()
             if referrer:
+                if normalize_email(referrer.email) == normalize_email(user.email):
+                    raise serializers.ValidationError(
+                        {"referral_code": "You can't use your own referral code."}
+                    )
                 user.referred_by = referrer
 
         try:
             user.save()
         except IntegrityError:  # lost a race against a concurrent registration with the same email
+            raise serializers.ValidationError({"email": "An account with this email already exists."})
+        except DjangoValidationError:  # alias check inside User.save()
             raise serializers.ValidationError({"email": "An account with this email already exists."})
 
         if referrer:

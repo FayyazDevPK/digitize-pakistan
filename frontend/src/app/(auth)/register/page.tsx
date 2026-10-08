@@ -164,8 +164,8 @@ export default function RegisterPage() {
                 onChange={(e) => setReferralCode(e.target.value)}
               />
               <span className="text-xs text-muted">
-                Got a code from a friend? They earn a bonus once you verify your email and finish
-                a lesson — you&apos;ll earn your own +{SIGNUP_BONUS} pts for verifying your email either way. (Your friend earns +{REFERRAL_BONUS.free}.)
+                Got a code from a friend? They earn a bonus once you verify your email, read a lesson and finish
+                it — you&apos;ll earn your own +{SIGNUP_BONUS} pts for verifying your email either way. (Your friend earns +{REFERRAL_BONUS.free}.)
               </span>
             </div>
 

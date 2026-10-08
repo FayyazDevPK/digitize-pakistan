@@ -150,8 +150,8 @@ export default function ReferralsPage() {
                   </div>
                 </div>
                 <div className="bg-paper rounded-2xl p-3.5 text-[13px] leading-[1.5] text-graphite">
-                  A referral <b>qualifies</b> once your friend verifies their email and completes
-                  a learning-path lesson. It&apos;s <b>rewarded</b> when the +{REFERRAL_BONUS.free}{" "}
+                  A referral <b>qualifies</b> once your friend verifies their email,
+                  reads a learning-path lesson and marks it complete. It&apos;s <b>rewarded</b> when the +{REFERRAL_BONUS.free}{" "}
                   pts bonus (+{REFERRAL_BONUS.premium} on Premium) is paid to you — only you earn
                   the referral bonus.
                 </div>

@@ -82,7 +82,7 @@ class TestEmailVerification:
 
         User.objects.create_user(username="a", email="dup@example.com", password="x")
         with pytest.raises(IntegrityError), transaction.atomic():
-            User.objects.create_user(username="b", email="DUP@example.com", password="x")
+            User.objects.bulk_create([User(username="b", email="DUP@example.com")])  # bypasses save()
         User.objects.create_user(username="c", password="x")
         User.objects.create_user(username="d", password="x")  # several blank emails are fine
 
