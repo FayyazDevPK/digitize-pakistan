@@ -4,6 +4,7 @@ import PublicFooter from "@/components/PublicFooter";
 import BackLink from "@/components/BackLink";
 import InfoPageNav from "@/components/InfoPageNav";
 import { SITE_NAME } from "@/lib/site";
+import { CREATOR_BOUNTY } from "@/lib/rewards";
 
 const TITLE = "Terms of Service — Digitize Pakistan";
 const DESCRIPTION =
@@ -74,8 +75,9 @@ export default function TermsPage() {
               <p className="m-0">
                 Content you submit through the Creator Program remains yours, but by submitting
                 it you grant Digitize Pakistan a license to publish, distribute, and monetize it
-                on the platform. Approved creators earn a revenue share on their published
-                content as described in the Creator dashboard.
+                on the platform. Approved creators are currently paid a fixed bounty of{" "}
+                {CREATOR_BOUNTY} points for each piece of their content that we publish. The
+                creator reward model may change with notice.
               </p>
             </section>
 
